@@ -8,6 +8,9 @@
   "compatibility_date": "2025-07-01",
   // The Agents SDK (MCP Durable Object) relies on Node built-ins (e.g. node:async_hooks).
   "compatibility_flags": ["nodejs_compat"],
+  // CORS allow-list for browser clients (the dashboard). "*" echoes any origin;
+  // tighten to the dashboard's Pages URL once it is known.
+  "vars": { "ALLOWED_ORIGINS": "*" },
   "d1_databases": [
     {
       "binding": "DB",

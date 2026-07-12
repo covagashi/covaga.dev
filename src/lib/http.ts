@@ -49,7 +49,8 @@ export function corsHeaders(request: Request, env: Env): Headers {
     .map((value) => value.trim())
     .filter((value) => value.length > 0);
 
-  if (origin !== undefined && allowed.includes(origin)) {
+  const allowAny = allowed.includes("*");
+  if (origin !== undefined && (allowAny || allowed.includes(origin))) {
     headers.set("Access-Control-Allow-Origin", origin);
     headers.set("Vary", "Origin");
   }
