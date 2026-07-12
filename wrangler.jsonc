@@ -2,8 +2,12 @@
   // Cloudflare Worker configuration for byndr-dev.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "byndr-dev",
-  "main": "src/index.ts",
+  // Production entry re-exports the request handler plus the `GymMcp` Durable
+  // Object class. Tests load `src/index.ts` directly (see wrangler.test.jsonc).
+  "main": "src/worker.ts",
   "compatibility_date": "2025-07-01",
+  // The Agents SDK (MCP Durable Object) relies on Node built-ins (e.g. node:async_hooks).
+  "compatibility_flags": ["nodejs_compat"],
   "d1_databases": [
     {
       "binding": "DB",
@@ -12,5 +16,10 @@
       "database_id": "8199672e-0663-486c-a70b-487d839246a8",
       "migrations_dir": "migrations"
     }
-  ]
+  ],
+  // Gym MCP agent, hosted as a Durable Object backed by its own SQLite storage.
+  "durable_objects": {
+    "bindings": [{ "name": "GYM_MCP", "class_name": "GymMcp" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["GymMcp"] }]
 }

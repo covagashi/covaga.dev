@@ -1,5 +1,5 @@
 import type { Env } from "../env.js";
-import type { ArticleUpsert } from "../models/article.js";
+import type { Article, ArticleUpsert } from "../models/article.js";
 
 /** Max number of statements per `env.DB.batch(...)` call (D1 limit safety). */
 const BATCH_CHUNK_SIZE = 50;
@@ -69,6 +69,87 @@ export async function deleteStaleArticles(
   )
     .bind(tenantId, snapshotId)
     .run();
+}
+
+/** Shape of a selectable row from the `articles` table. */
+interface ArticleRow {
+  part_number: string;
+  variant: string;
+  manufacturer: string;
+  description: string;
+  data: string;
+  snapshot_id: string;
+  updated_at: number;
+}
+
+/** Map a raw D1 row to the `Article` model. */
+function toArticle(tenantId: string, row: ArticleRow): Article {
+  return {
+    tenantId,
+    partNumber: row.part_number,
+    variant: row.variant,
+    manufacturer: row.manufacturer,
+    description: row.description,
+    data: row.data,
+    snapshotId: row.snapshot_id,
+    updatedAt: row.updated_at,
+  };
+}
+
+/**
+ * Columns selected for read queries. The optional text columns are coalesced
+ * to '' in SQL so the mapped model never carries a missing text value.
+ */
+const ARTICLE_COLUMNS =
+  "part_number, variant, COALESCE(manufacturer, '') AS manufacturer, " +
+  "COALESCE(description, '') AS description, data, snapshot_id, updated_at";
+
+/**
+ * Read a single article by its natural key.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @param partNumber - Manufacturer part number.
+ * @param variant - Variant discriminator ('' when none).
+ * @returns The article, or `undefined` when absent.
+ */
+export async function findArticleForTenant(
+  env: Env,
+  tenantId: string,
+  partNumber: string,
+  variant: string,
+): Promise<Article | undefined> {
+  const row = await env.DB.prepare(
+    `SELECT ${ARTICLE_COLUMNS} FROM articles
+       WHERE tenant_id = ? AND part_number = ? AND variant = ?`,
+  )
+    .bind(tenantId, partNumber, variant)
+    .first<ArticleRow>();
+  return row ? toArticle(tenantId, row) : undefined;
+}
+
+/**
+ * List a tenant's articles, most-recently-updated first, capped at `limit`.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @param limit - Maximum number of rows to return.
+ * @returns The tenant's articles (up to `limit`).
+ */
+export async function listArticlesByTenant(
+  env: Env,
+  tenantId: string,
+  limit: number,
+): Promise<Article[]> {
+  const result = await env.DB.prepare(
+    `SELECT ${ARTICLE_COLUMNS} FROM articles
+       WHERE tenant_id = ?
+       ORDER BY updated_at DESC, part_number ASC, variant ASC
+       LIMIT ?`,
+  )
+    .bind(tenantId, limit)
+    .all<ArticleRow>();
+  return result.results.map((row) => toArticle(tenantId, row));
 }
 
 /**

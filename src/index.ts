@@ -8,11 +8,31 @@ import {
   startIngest,
 } from "./services/ingest.service.js";
 
+/** Execution context carrying MCP props read by the Agents SDK `serve`. */
+type McpContext = ExecutionContext & { props?: Record<string, unknown> };
+
+/**
+ * Dynamically load the requested MCP mount handler. The Agents SDK / MCP SDK
+ * module graph is heavy (and unloadable in the test pool), so it is imported
+ * lazily only when an MCP route is actually hit — keeping it out of the eager
+ * module graph that the rest of the worker (and its tests) depend on.
+ */
+async function mcpHandler(
+  path: string,
+): Promise<import("./mcp/gym.js").MountHandler> {
+  const mcp = await import("./mcp/gym.js");
+  return path === "/mcp" ? mcp.gymStreamableHandler : mcp.gymSseHandler;
+}
+
 /**
  * Route a single request. Kept small: CORS preflight, health, an
- * auth-protected probe, and a uniform 404 for everything else.
+ * auth-protected probe, the MCP mounts, and a uniform 404 otherwise.
  */
-async function route(request: Request, env: Env): Promise<Response> {
+async function route(
+  request: Request,
+  env: Env,
+  ctx?: McpContext,
+): Promise<Response> {
   const cors = corsHeaders(request, env);
 
   if (request.method === "OPTIONS") {
@@ -21,6 +41,16 @@ async function route(request: Request, env: Env): Promise<Response> {
 
   const url = new URL(request.url);
   const path = url.pathname;
+
+  if (path === "/mcp" || path === "/sse" || path === "/sse/message") {
+    if (ctx === undefined) {
+      throw new HttpError(500, "no_execution_context");
+    }
+    const tenant = await authenticateTenant(env, request);
+    ctx.props = { tenantId: tenant.id };
+    const handler = await mcpHandler(path === "/mcp" ? "/mcp" : "/sse");
+    return handler.fetch(request, env, ctx);
+  }
 
   if (request.method === "GET" && path === "/") {
     return jsonResponse(
@@ -69,9 +99,13 @@ async function route(request: Request, env: Env): Promise<Response> {
  * anything unexpected so the platform surfaces a 500.
  */
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx?: ExecutionContext,
+  ): Promise<Response> {
     try {
-      return await route(request, env);
+      return await route(request, env, ctx as McpContext | undefined);
     } catch (error: unknown) {
       if (error instanceof HttpError) {
         return jsonResponse(
