@@ -31,3 +31,5 @@
   color:var(--ac);font-weight:600;border:1px solid var(--hl2);border-radius:6px;padding:4px 8px}
 .copy:hover{border-color:var(--ac)}
 .warn{color:var(--warn);font-size:11.5px;margin:-4px 0 0}
+.selfhost{align-self:center;font-size:10.5px;color:var(--dim);margin-top:2px}
+.selfhost:hover{color:var(--mut)}

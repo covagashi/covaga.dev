@@ -1,0 +1,17 @@
+.wrap{flex:1;display:flex;min-height:0}
+.lst{flex:1.4;border-right:1px solid var(--hl);overflow-y:auto}
+.head{display:flex;align-items:baseline;gap:10px;padding:16px 20px 10px}
+.head h2{font-size:15px;font-weight:600}
+.head span{color:var(--dim);font-size:11px}
+.empty{padding:20px;color:var(--dim);font-size:12.5px;max-width:420px;line-height:1.6}
+.r{display:flex;align-items:center;gap:12px;padding:9px 20px;border-top:1px solid var(--hl)}
+.tx{flex:1;min-width:0}
+.tx b{font-size:13px;font-weight:500;display:block}
+.tx span{font-size:10px;color:var(--dim)}
+.rm{color:var(--dim);font-size:11px;border:1px solid var(--hl2);border-radius:6px;padding:3px 9px}
+.rm:hover{color:var(--err)}
+.aside{flex:1;padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.cap{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.step{display:flex;gap:12px;align-items:flex-start}
+.n{font-family:var(--mono);font-size:10px;border:1.5px solid var(--tx);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex:none;font-weight:600}
+.step p{font-size:12px;color:var(--mut);line-height:1.55}

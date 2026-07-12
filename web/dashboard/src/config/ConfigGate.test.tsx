@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { ConfigGate } from './ConfigGate'
 
@@ -21,10 +21,12 @@ function routeFetch(routes: { match: string; res: FakeRes }[]) {
   )
 }
 
+// el gate usa i18n sin provider → idioma por defecto 'es'; forzamos 'es' explícito.
+beforeEach(() => localStorage.setItem('byndr.lang', 'es'))
 afterEach(() => vi.unstubAllGlobals())
 
 describe('ConfigGate — crear cuenta', () => {
-  it('camino feliz: carga planes, crea cuenta y muestra la clave una vez', async () => {
+  it('camino feliz: carga planes, crea cuenta y entra directo (sin muro de clave)', async () => {
     routeFetch([
       { match: '/api/plans', res: { ok: true, status: 200, json: async () => ({ plans: ['free', 'pro'] }) } },
       {
@@ -41,14 +43,10 @@ describe('ConfigGate — crear cuenta', () => {
     fireEvent.change(screen.getByPlaceholderText('tu@correo.com'), { target: { value: 'a@b.com' } })
     fireEvent.click(screen.getByRole('button', { name: 'crear cuenta' }))
 
-    // la clave se muestra una única vez en la caja destacada.
-    expect(await screen.findByText('AK-SECRET-123')).toBeInTheDocument()
-    expect(screen.getByText('guárdala — no se vuelve a mostrar')).toBeInTheDocument()
-    expect(onConnect).not.toHaveBeenCalled()
-
-    fireEvent.click(screen.getByRole('button', { name: 'continuar' }))
+    // sin muro: se entra directo con la sesión completa.
     await waitFor(() => expect(onConnect).toHaveBeenCalledTimes(1))
     expect(onConnect.mock.calls[0][0]).toMatchObject({ key: 'AK-SECRET-123', tenant: 'ten-9' })
+    expect(screen.queryByText('guárdala — no se vuelve a mostrar')).not.toBeInTheDocument()
   })
 
   it('con 409 muestra "ese email ya tiene cuenta" y no conecta', async () => {
