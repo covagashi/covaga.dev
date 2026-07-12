@@ -1,74 +1,14 @@
 ---
 // Events are grounded in real EPLAN Electric P8 API actions
-// (export / label / backup / ExportProductionWiring). "live" = targeted first;
-// "soon" = on the roadmap. Copy is placeholder / early-access.
-const events = [
-  {
-    id: "pdf-exported",
-    title: "PDF exported",
-    body: "Fires when a schematic or documentation PDF is exported from a project.",
-    action: "action export · PDF",
-    soon: false,
-  },
-  {
-    id: "bom-exported",
-    title: "BOM / parts list exported",
-    body: "Fires when a bill of materials, parts list or terminal label is exported.",
-    action: "action label",
-    soon: false,
-  },
-  {
-    id: "project-closed",
-    title: "Project closed",
-    body: "Fires when a project is closed — useful for sign-off and archival flows.",
-    action: "event lifecycle",
-    soon: false,
-  },
-  {
-    id: "dxf-dwg-exported",
-    title: "DXF / DWG exported",
-    body: "Fires when pages or the project are exported to DXF or DWG for mechanical or client hand-off.",
-    action: "action export · DXF/DWG",
-    soon: true,
-  },
-  {
-    id: "project-backed-up",
-    title: "Project backed up",
-    body: "Fires when a project backup (.zw1) is created — ready for off-site archival.",
-    action: "action backup",
-    soon: true,
-  },
-  {
-    id: "wiring-exported",
-    title: "Production wiring exported",
-    body: "Fires when production wiring data is exported for the machine build.",
-    action: "action ExportProductionWiring",
-    soon: true,
-  },
-];
+// (export / label / backup / ExportProductionWiring) — the routing surface
+// competitors don't map. "live" = supported first; "soon" = on the roadmap.
+import { getLocaleFromUrl } from "../i18n/config";
+import { useContent } from "../i18n/content";
 
-const destinations = [
-  {
-    title: "Microsoft Teams",
-    body: "Post a message to a channel on every event.",
-    soon: false,
-  },
-  {
-    title: "Email",
-    body: "Send the export to a distribution list or an inbox.",
-    soon: false,
-  },
-  {
-    title: "Shared drive",
-    body: "Drop the exported file onto a network share via a small local agent.",
-    soon: false,
-  },
-  {
-    title: "Webhook",
-    body: "POST the payload to any HTTP endpoint you control — forward it anywhere.",
-    soon: false,
-  },
-];
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const events = t.events.items;
+const destinations = t.events.destinations;
 ---
 
 <section
@@ -77,31 +17,30 @@ const destinations = [
 >
   <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
     <div>
-      <span class="eyebrow">events &#183; automations</span>
+      <span class="eyebrow">{t.events.eyebrow}</span>
       <h2
         class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
       >
-        What your EPLAN can trigger.
+        {t.events.heading}
       </h2>
       <p class="mt-3 max-w-md text-base leading-relaxed text-[var(--color-muted)]">
-        Each event maps to a real EPLAN API action — including the ones most
-        integrations never touch.
+        {t.events.lead}
       </p>
       <ul class="mt-8 space-y-4">
         {
           events.map((event) => (
             <li class="panel p-5">
               <div class="flex flex-wrap items-center gap-3">
-                <code class="rounded-sm border border-[var(--color-ink-12)] bg-[var(--color-paper)] px-2 py-1 font-mono text-xs text-[var(--color-accent-deep)]">
+                <code class="rounded-sm border border-[var(--color-ink-12)] bg-[var(--color-panel)] px-2 py-1 font-mono text-xs text-[var(--color-accent-deep)]">
                   {event.id}
                 </code>
                 {event.soon ? (
                   <span class="rounded-sm border border-[var(--color-accent)] px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider text-[var(--color-accent)]">
-                    coming soon
+                    {t.events.soonLabel}
                   </span>
                 ) : (
                   <span class="rounded-sm border border-[var(--color-ink-12)] px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider text-[var(--color-muted)]">
-                    targeted
+                    {t.events.liveLabel}
                   </span>
                 )}
               </div>
@@ -121,11 +60,11 @@ const destinations = [
     </div>
 
     <div>
-      <span class="eyebrow">destinations &#183; dst</span>
+      <span class="eyebrow">{t.events.destEyebrow}</span>
       <h2
         class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
       >
-        Where it goes — tools OT teams use.
+        {t.events.destHeading}
       </h2>
       <ul class="mt-8 grid gap-4 sm:grid-cols-2">
         {
@@ -137,7 +76,7 @@ const destinations = [
                 </p>
                 {destination.soon && (
                   <span class="rounded-sm border border-[var(--color-accent)] px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-wider text-[var(--color-accent)]">
-                    soon
+                    {t.events.destSoonLabel}
                   </span>
                 )}
               </div>
@@ -149,9 +88,7 @@ const destinations = [
         }
       </ul>
       <p class="mt-6 font-mono text-xs leading-relaxed text-[var(--color-muted)]">
-        no slack — by design. OT and engineering teams run on Microsoft Teams,
-        email and their own file shares. A generic webhook forwards the payload
-        anywhere else.
+        {t.events.footnote}
       </p>
     </div>
   </div>

@@ -1,25 +1,28 @@
 ---
-interface Section {
-  heading: string;
-  body: string[];
-}
+import { getLocaleFromUrl, localizePath } from "../i18n/config";
+import { useContent } from "../i18n/content";
+import type { LegalDoc } from "../i18n/types";
 
 interface Props {
-  eyebrow: string;
-  title: string;
-  updated: string;
-  intro: string;
-  sections: Section[];
+  doc: LegalDoc;
 }
 
-const { eyebrow, title, updated, intro, sections } = Astro.props;
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const { eyebrow, title, intro, sections } = Astro.props.doc;
+const updated = t.legal.updated;
+const home = localizePath("/", lang);
 ---
 
 <main
   class="mx-auto max-w-3xl border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-24"
 >
-  <a href="/" class="eyebrow mb-8 no-underline" style="text-decoration: none;">
-    <span class="arrow" aria-hidden="true">&#8592;</span>&nbsp;back to byndr
+  <a
+    href={home}
+    class="eyebrow mb-8 no-underline"
+    style="text-decoration: none;"
+  >
+    <span class="arrow" aria-hidden="true">&#8592;</span>&nbsp;{t.legal.back}
   </a>
 
   <p class="eyebrow">{eyebrow}</p>
@@ -29,17 +32,8 @@ const { eyebrow, title, updated, intro, sections } = Astro.props;
     {title}
   </h1>
   <p class="mt-3 font-mono text-xs tracking-wide text-[var(--color-muted)]">
-    last updated · {updated} · placeholder draft
+    {t.legal.lastUpdatedLabel} · {updated} · {t.legal.draftLabel}
   </p>
-
-  <div
-    class="mt-8 border border-[var(--color-accent)] bg-[rgba(91,138,255,0.06)] px-4 py-3 font-mono text-xs leading-relaxed text-[var(--color-ink-70)]"
-    role="note"
-  >
-    PLACEHOLDER — this document is an early, non-binding draft for an
-    early-access product. It is not legal advice and does not yet constitute a
-    contract.
-  </div>
 
   <p class="mt-8 text-lg leading-relaxed text-[var(--color-muted)]">{intro}</p>
 
@@ -66,8 +60,7 @@ const { eyebrow, title, updated, intro, sections } = Astro.props;
   <p
     class="mt-12 border-t border-[var(--color-ink-12)] pt-6 font-mono text-xs leading-relaxed text-[var(--color-ink-35)]"
   >
-    This document is a placeholder draft and does not yet constitute legal
-    advice. Questions? <a
+    {t.legal.disclaimer}{" "}<a
       href="mailto:hello@covaga.xyz"
       class="text-[var(--color-accent-deep)]">hello@covaga.xyz</a
     >.

@@ -1,0 +1,110 @@
+---
+import {
+  locales,
+  localeNames,
+  localeShort,
+  getLocaleFromUrl,
+  localizePath,
+  stripLocale,
+} from "../i18n/config";
+import { useContent } from "../i18n/content";
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const route = stripLocale(Astro.url.pathname);
+---
+
+<details class="lang-switcher relative">
+  <summary
+    class="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-sm border border-[var(--color-ink-12)] px-2.5 py-2 font-mono text-[12px] font-medium text-[var(--color-ink-70)] transition-colors hover:text-[var(--color-ink)] marker:content-none [&::-webkit-details-marker]:hidden"
+    aria-label={t.a11y.languageLabel}
+  >
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="15"
+      height="15"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+    >
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path>
+    </svg>
+    <span>{localeShort[lang]}</span>
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="12"
+      height="12"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      class="opacity-60"
+    >
+      <path d="M6 9l6 6 6-6"></path>
+    </svg>
+  </summary>
+
+  <ul
+    class="absolute right-0 z-50 mt-2 min-w-[9rem] overflow-hidden rounded-sm border border-[var(--color-ink-12)] bg-[var(--color-paper)] py-1 shadow-lg"
+  >
+    {
+      locales.map((locale) => (
+        <li>
+          <a
+            href={localizePath(route, locale)}
+            hreflang={locale === "zh-cn" ? "zh-CN" : locale}
+            data-lang-choice={locale}
+            aria-current={locale === lang ? "true" : undefined}
+            class:list={[
+              "flex items-center justify-between gap-3 px-3 py-2 text-sm transition-colors hover:bg-[var(--color-panel)]",
+              locale === lang
+                ? "font-semibold text-[var(--color-ink)]"
+                : "text-[var(--color-ink-70)]",
+            ]}
+          >
+            <span>{localeNames[locale]}</span>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-[var(--color-muted)]">
+              {localeShort[locale]}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  // Persist an explicit language choice so the auto-detect banner won't nag.
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-lang-choice]")
+    .forEach((link) => {
+      link.addEventListener("click", () => {
+        try {
+          window.localStorage.setItem(
+            "byndr:lang",
+            link.dataset.langChoice || "",
+          );
+        } catch {
+          /* storage disabled — non-fatal */
+        }
+      });
+    });
+
+  // Close the language menu on outside click or Escape.
+  document.addEventListener("click", (event) => {
+    document
+      .querySelectorAll<HTMLDetailsElement>("details.lang-switcher[open]")
+      .forEach((el) => {
+        if (!el.contains(event.target as Node)) el.removeAttribute("open");
+      });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      document
+        .querySelectorAll<HTMLDetailsElement>("details.lang-switcher[open]")
+        .forEach((el) => el.removeAttribute("open"));
+    }
+  });
+</script>

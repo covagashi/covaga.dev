@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/base-layout.astro";
+import SiteNav from "../../components/site-nav.astro";
+import HeroSection from "../../components/hero-section.astro";
+import ProblemSolutionSection from "../../components/problem-solution-section.astro";
+import HowItWorksSection from "../../components/how-it-works-section.astro";
+import EventsDestinationsSection from "../../components/events-destinations-section.astro";
+import PricingSection from "../../components/pricing-section.astro";
+import FaqSection from "../../components/faq-section.astro";
+import SiteFooter from "../../components/site-footer.astro";
+import { locales, defaultLocale } from "../../i18n/config";
+
+// One static page per non-default locale (en lives at the site root).
+export function getStaticPaths() {
+  return locales
+    .filter((lang) => lang !== defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+---
+
+<BaseLayout>
+  <SiteNav />
+  <main>
+    <HeroSection />
+    <ProblemSolutionSection />
+    <HowItWorksSection />
+    <EventsDestinationsSection />
+    <PricingSection />
+    <FaqSection />
+  </main>
+  <SiteFooter />
+</BaseLayout>

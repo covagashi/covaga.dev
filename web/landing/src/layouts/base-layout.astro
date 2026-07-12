@@ -1,31 +1,55 @@
 ---
 import "../styles/global.css";
+import {
+  locales,
+  localeHtmlLang,
+  getLocaleFromUrl,
+  localizePath,
+  stripLocale,
+  defaultLocale,
+} from "../i18n/config";
+import { useContent } from "../i18n/content";
+import LanguageBanner from "../components/language-banner.astro";
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const {
-  title = "byndr — one platform for your EPLAN data and events",
-  description =
-    "byndr ingests your EPLAN article database and closes text gaps with a reviewed, validated loop — and routes EPLAN events to Microsoft Teams, email or a webhook. The cloud never writes to EPLAN directly.",
-} = Astro.props;
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+
+const { title = t.meta.homeTitle, description = t.meta.homeDescription } =
+  Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL("/og.svg", Astro.site);
+const ogImage = new URL("/og.png", Astro.site);
+
+// hreflang alternates: same page, every locale.
+const route = stripLocale(Astro.url.pathname);
+const alternates = locales.map((locale) => ({
+  hreflang: localeHtmlLang[locale],
+  href: new URL(localizePath(route, locale), Astro.site).href,
+}));
+const xDefault = new URL(localizePath(route, defaultLocale), Astro.site).href;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={localeHtmlLang[lang]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0b0c0f" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={canonicalURL} />
+    {
+      alternates.map((alt) => (
+        <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -42,9 +66,9 @@ const ogImage = new URL("/og.svg", Astro.site);
   <body>
     <a
       href="#top"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-[var(--color-accent)] focus:px-4 focus:py-2 focus:font-medium focus:text-[#07080b]"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-[var(--color-accent)] focus:px-4 focus:py-2 focus:font-medium focus:text-[var(--color-ink)]"
     >
-      Skip to content
+      {t.a11y.skipToContent}
     </a>
 
     <div class="grid-overlay" aria-hidden="true"></div>
@@ -52,6 +76,8 @@ const ogImage = new URL("/og.svg", Astro.site);
     <div class="site-shell">
       <slot />
     </div>
+
+    <LanguageBanner />
 
     <script>
       // Spotlight-reveal grid: follow the pointer, "develop" the drafting grid.

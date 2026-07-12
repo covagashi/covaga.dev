@@ -3,60 +3,15 @@ import BaseLayout from "../layouts/base-layout.astro";
 import SiteNav from "../components/site-nav.astro";
 import SiteFooter from "../components/site-footer.astro";
 import LegalPage from "../components/legal-page.astro";
+import { getLocaleFromUrl } from "../i18n/config";
+import { useContent } from "../i18n/content";
 
-const sections = [
-  {
-    heading: "Who we are",
-    body: [
-      "byndr is an independent, open-source platform for EPLAN teams — reviewed data enrichment and event automations in one place. This placeholder policy sketches what data we would handle when you use the website and hosted service.",
-    ],
-  },
-  {
-    heading: "What we collect",
-    body: [
-      "Website: the site is static and uses no advertising or third-party tracking cookies.",
-      "Contact: if you email us for early access, we keep your message and address to reply and follow up about the product.",
-      "Hosted service: when your tenant is active, we process the event and article metadata your local clients send in order to run the gym and deliver automations.",
-    ],
-  },
-  {
-    heading: "Your data stays yours",
-    body: [
-      "Real article data lives in your own per-tenant database — never in our repository. The gym is overlay-only and never mutates ingested data; the cloud never writes to EPLAN directly.",
-    ],
-  },
-  {
-    heading: "Credentials",
-    body: [
-      "Per-tenant API keys and any destination secrets are held server-side, hashed or encrypted. They are never stored on your EPLAN workstation.",
-    ],
-  },
-  {
-    heading: "Sub-processors",
-    body: [
-      "The hosted service runs on Cloudflare. Delivery destinations (for example Microsoft Teams or email) receive only the payloads you route to them.",
-    ],
-  },
-  {
-    heading: "Your rights & changes",
-    body: [
-      "You can ask us to access, correct or delete personal data we hold about you by emailing hello@covaga.xyz. This is an early draft and may change as the product develops; material changes will move the 'last updated' date above.",
-    ],
-  },
-];
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
 ---
 
-<BaseLayout
-  title="byndr — Privacy (placeholder)"
-  description="Placeholder privacy notes for byndr, an open platform for EPLAN teams. Early-access draft, not legal advice."
->
+<BaseLayout title={t.meta.privacyTitle} description={t.meta.privacyDescription}>
   <SiteNav />
-  <LegalPage
-    eyebrow="legal · privacy"
-    title="Privacy Policy"
-    updated="2026-07-12"
-    intro="A placeholder outline while byndr is in early access. We keep data collection minimal, keep your data yours, and keep credentials server-side."
-    sections={sections}
-  />
+  <LegalPage doc={t.legal.privacy} />
   <SiteFooter />
 </BaseLayout>

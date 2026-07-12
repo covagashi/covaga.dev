@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/base-layout.astro";
+import SiteNav from "../../components/site-nav.astro";
+import SiteFooter from "../../components/site-footer.astro";
+import LegalPage from "../../components/legal-page.astro";
+import { locales, defaultLocale, getLocaleFromUrl } from "../../i18n/config";
+import { useContent } from "../../i18n/content";
+
+export function getStaticPaths() {
+  return locales
+    .filter((lang) => lang !== defaultLocale)
+    .map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+---
+
+<BaseLayout title={t.meta.privacyTitle} description={t.meta.privacyDescription}>
+  <SiteNav />
+  <LegalPage doc={t.legal.privacy} />
+  <SiteFooter />
+</BaseLayout>

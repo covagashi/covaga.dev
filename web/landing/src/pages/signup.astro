@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/base-layout.astro";
 import SiteNav from "../components/site-nav.astro";
 import SiteFooter from "../components/site-footer.astro";
-import LegalPage from "../components/legal-page.astro";
+import SignupSection from "../components/signup-section.astro";
 import { getLocaleFromUrl } from "../i18n/config";
 import { useContent } from "../i18n/content";
 
@@ -10,8 +10,8 @@ const lang = getLocaleFromUrl(Astro.url);
 const t = useContent(lang);
 ---
 
-<BaseLayout title={t.meta.termsTitle} description={t.meta.termsDescription}>
+<BaseLayout title={t.signup.metaTitle} description={t.signup.metaDescription}>
   <SiteNav />
-  <LegalPage doc={t.legal.terms} />
+  <SignupSection />
   <SiteFooter />
 </BaseLayout>

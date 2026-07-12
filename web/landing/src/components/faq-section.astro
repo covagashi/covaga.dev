@@ -1,30 +1,10 @@
 ---
-const faqs = [
-  {
-    q: "Which EPLAN tools do you support?",
-    a: "EPLAN Electric P8 is the first target. The clients are small and single-purpose, and the platform is designed so other EPLAN tools and event sources can be added the same way.",
-  },
-  {
-    q: "Does the cloud ever write to my EPLAN database?",
-    a: "No. The cloud only produces proposals and a write queue. A local client next to EPLAN applies human-approved changes. That boundary is a hard invariant — nothing in the cloud touches EPLAN directly.",
-  },
-  {
-    q: "How does the gym avoid bad data?",
-    a: "The LLM only proposes. Deterministic, server-side validators decide whether a value is acceptable, and a human reviews every proposal like a pull request before anything is queued. The gym is overlay-only: it never mutates your ingested data.",
-  },
-  {
-    q: "Where does my article data live?",
-    a: "In your own per-tenant database. Real article data never enters our repository — you bring your own, and it stays yours.",
-  },
-  {
-    q: "Why no Slack?",
-    a: "Because OT and engineering teams don't run on Slack. byndr targets the tools they actually use — Microsoft Teams, email, and shared drives — with a generic webhook for anything else.",
-  },
-  {
-    q: "Is it really self-hostable?",
-    a: "Yes. byndr runs on Cloudflare (Workers + D1 + Durable Objects); you can deploy it to your own account. It's open source under the MIT licence, and a fully-local runtime is on the roadmap.",
-  },
-];
+import { getLocaleFromUrl } from "../i18n/config";
+import { useContent } from "../i18n/content";
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const faqs = t.faq.items;
 ---
 
 <section
@@ -32,11 +12,11 @@ const faqs = [
   class="mx-auto max-w-3xl scroll-mt-20 border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-24"
 >
   <div class="max-w-2xl">
-    <span class="eyebrow">faq</span>
+    <span class="eyebrow">{t.faq.eyebrow}</span>
     <h2
       class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
     >
-      Straight answers.
+      {t.faq.heading}
     </h2>
   </div>
 

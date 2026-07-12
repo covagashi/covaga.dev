@@ -1,43 +1,45 @@
 @import "tailwindcss";
 
-/* Self-hosted faces: Inter (display/body) + IBM Plex Mono (labels/identifiers). */
-@import "@fontsource-variable/inter";
-@import "@fontsource/ibm-plex-mono/400.css";
-@import "@fontsource/ibm-plex-mono/500.css";
+/* Self-hosted faces: Space Grotesk (display/body) + JetBrains Mono (labels). */
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
 
 /* ---------------------------------------------------------------------------
-   byndr — graphite platform theme
-   Dark drafting surface, blue signal accent used sparingly, wiring-schematic
-   diagram. Retuned from the source "Blueprint" system to match the byndr-dev
-   product design language (see app/src/styles/tokens.css).
+   byndr — "Blueprint" design system
+   Pure-white base, drafting grid revealed under the cursor, signal-orange
+   accent, wiring-schematic diagram. Engineering-credible, ECAD-agnostic.
 --------------------------------------------------------------------------- */
 @theme {
   /* Surfaces */
-  --color-paper: #0b0c0f; /* Graphite base */
-  --color-panel: #14161c; /* Raised surface (chips, code) */
+  --color-paper: #ffffff; /* Pure White */
+  --color-panel: #fbfaf7; /* Warm Off-white (raised chips) */
 
-  /* Ink ramp (light-on-dark, WCAG AA on graphite) */
-  --color-ink: #e7e9ee; /* Primary text */
-  --color-ink-70: rgba(231, 233, 238, 0.7);
-  --color-ink-55: rgba(231, 233, 238, 0.55);
-  --color-ink-35: rgba(231, 233, 238, 0.34);
-  --color-ink-12: rgba(231, 233, 238, 0.11);
-  --color-muted: #9aa1ad; /* Muted text (>= 4.5:1 on graphite) */
+  /* Ink ramp (WCAG AA on white) */
+  --color-ink: #14110e; /* Graphite Ink */
+  --color-ink-70: rgba(20, 17, 14, 0.7);
+  --color-ink-55: rgba(20, 17, 14, 0.55);
+  --color-ink-35: rgba(20, 17, 14, 0.35);
+  --color-ink-12: rgba(20, 17, 14, 0.12);
+  --color-muted: #55504a; /* Muted Ink (>= 4.5:1) */
 
-  /* Single accent — Signal Blue */
-  --color-accent: #5b8aff; /* Signal Blue */
-  --color-accent-deep: #7aa0ff; /* Brighter — hover / links */
+  /* Single accent — Signal Orange */
+  --color-accent: #f26419; /* Signal Orange */
+  --color-accent-deep: #d6520f; /* Signal Orange (hover) */
 
   /* Drafting grid */
-  --color-grid-line: rgba(231, 236, 245, 0.07);
-  --color-grid-major: rgba(231, 236, 245, 0.045);
+  --color-grid-line: rgba(20, 17, 14, 0.1);
+  --color-grid-major: rgba(20, 17, 14, 0.06);
 
   /* Type */
-  --font-display: "Inter Variable", "Segoe UI", system-ui, -apple-system,
-    BlinkMacSystemFont, Roboto, sans-serif;
-  --font-sans: "Inter Variable", "Segoe UI", system-ui, -apple-system,
-    BlinkMacSystemFont, Roboto, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, Menlo,
+  --font-display: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo,
     monospace;
 
   /* Motion */
@@ -45,7 +47,7 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
@@ -63,7 +65,6 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -141,7 +142,7 @@ body {
    Reusable component classes
 --------------------------------------------------------------------------- */
 
-/* Schematic terminal box: square-cornered, hairline stroke. */
+/* Schematic terminal box: square-cornered, hairline stroke, white fill. */
 .term-box {
   border: 1px solid var(--color-ink-55);
   background-color: var(--color-paper);
@@ -151,13 +152,13 @@ body {
 /* Panel: a calmer bordered surface. */
 .panel {
   border: 1px solid var(--color-ink-12);
-  background-color: var(--color-panel);
+  background-color: var(--color-paper);
   border-radius: 2px;
 }
 
 .panel-hub {
   border: 1.5px solid var(--color-accent);
-  background-color: var(--color-panel);
+  background-color: var(--color-paper);
   border-radius: 2px;
 }
 
@@ -172,7 +173,7 @@ body {
   letter-spacing: 0.05em;
   color: var(--color-ink-70);
   border: 1px solid var(--color-ink-12);
-  background-color: var(--color-panel);
+  background-color: var(--color-paper);
   border-radius: 2px;
   padding: 0.3rem 0.55rem;
 }
@@ -206,7 +207,7 @@ body {
   color: var(--color-accent);
 }
 
-/* Primary button — solid signal blue, dark ink label. */
+/* Solid ink button. */
 .btn-solid {
   display: inline-flex;
   align-items: center;
@@ -216,15 +217,15 @@ body {
   font-weight: 600;
   font-size: 0.9375rem;
   letter-spacing: 0.01em;
-  color: #07080b;
-  background: var(--color-accent);
-  border: 1px solid var(--color-accent);
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border: 1px solid var(--color-ink);
   border-radius: 2px;
   padding: 0.75rem 1.5rem;
   line-height: 1;
   transition:
     background-color 160ms var(--ease-signal),
-    border-color 160ms var(--ease-signal);
+    color 160ms var(--ease-signal);
 }
 
 /* Ghost button. */
@@ -249,12 +250,12 @@ body {
 
 @media (prefers-reduced-motion: no-preference) {
   .btn-solid:hover {
-    background: var(--color-accent-deep);
-    border-color: var(--color-accent-deep);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-ink);
   }
   .btn-ghost:hover {
     border-color: var(--color-accent);
-    background: rgba(91, 138, 255, 0.06);
   }
 }
 
@@ -284,13 +285,6 @@ summary:focus-visible,
   fill: none;
   stroke: var(--color-ink-35);
   stroke-width: 1.5;
-}
-.svg-trace-dashed {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 1.25;
-  stroke-dasharray: 4 4;
-  opacity: 0.7;
 }
 .svg-junction {
   fill: var(--color-ink-55);

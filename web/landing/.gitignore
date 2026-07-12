@@ -1,13 +1,19 @@
 # build output
 dist/
-# generated types
-.astro/
+.output/
+
 # dependencies
 node_modules/
-# logs
-npm-debug.log*
+
+# astro
+.astro/
+
 # environment
 .env
 .env.production
-# macOS
+
+# logs
+npm-debug.log*
+
+# macos
 .DS_Store

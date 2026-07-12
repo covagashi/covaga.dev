@@ -1,22 +1,32 @@
 ---
+import { getLocaleFromUrl, localizePath } from "../i18n/config";
+import { useContent } from "../i18n/content";
+import LanguageSwitcher from "./language-switcher.astro";
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const home = localizePath("/", lang);
+const signupHref = localizePath("/signup", lang);
+
+// Anchor links go through `home` so they also work from non-home pages (e.g. /signup).
 const links = [
-  { href: "#gym", label: "data" },
-  { href: "#events", label: "automations" },
-  { href: "#how", label: "platform" },
-  { href: "#faq", label: "faq" },
+  { href: home + "#how-it-works", label: t.nav.how },
+  { href: home + "#events", label: t.nav.events },
+  { href: home + "#pricing", label: t.nav.pricing },
+  { href: home + "#faq", label: t.nav.faq },
 ];
 ---
 
 <header
-  class="sticky top-0 z-40 border-b border-[var(--color-ink-12)] bg-[rgba(11,12,15,0.82)] backdrop-blur-md"
+  class="sticky top-0 z-40 border-b border-[var(--color-ink-12)] bg-[rgba(255,255,255,0.82)] backdrop-blur-md"
 >
   <nav
-    aria-label="Primary"
+    aria-label={t.a11y.primaryNav}
     class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
   >
     <div class="flex items-baseline gap-4">
       <a
-        href="#top"
+        href={home + "#top"}
         class="text-xl font-bold tracking-tight text-[var(--color-ink)]"
       >
         byndr
@@ -24,7 +34,7 @@ const links = [
       <span
         class="hidden rounded-sm border border-[var(--color-ink-12)] px-2 py-0.5 font-mono text-[11px] font-medium tracking-wide text-[var(--color-muted)] sm:inline-block"
       >
-        eplan platform
+        signal router
       </span>
     </div>
 
@@ -44,9 +54,11 @@ const links = [
     </ul>
 
     <div class="flex items-center gap-2">
-      <a href="#access" class="btn-solid hidden text-sm md:inline-flex">
-        early access
+      <a href={signupHref} class="btn-solid hidden text-sm md:inline-flex">
+        {t.nav.getStarted}
       </a>
+
+      <LanguageSwitcher />
 
       <button
         type="button"
@@ -55,7 +67,7 @@ const links = [
         aria-controls="nav-menu-panel"
         class="grid h-11 w-11 place-items-center rounded-sm border border-[var(--color-ink-12)] text-[var(--color-ink)] md:hidden"
       >
-        <span class="sr-only">Toggle menu</span>
+        <span class="sr-only">{t.a11y.toggleMenu}</span>
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
@@ -93,11 +105,11 @@ const links = [
       }
       <li class="mt-2">
         <a
-          href="#access"
+          href={signupHref}
           data-nav-menu-link
           class="btn-solid flex min-h-11 w-full items-center justify-center text-sm"
         >
-          early access
+          {t.nav.getStarted}
         </a>
       </li>
     </ul>

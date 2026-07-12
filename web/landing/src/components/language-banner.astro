@@ -1,0 +1,177 @@
+---
+import {
+  locales,
+  localeNames,
+  defaultLocale,
+  getLocaleFromUrl,
+  stripLocale,
+} from "../i18n/config";
+import { content } from "../i18n/content";
+
+const lang = getLocaleFromUrl(Astro.url);
+const route = stripLocale(Astro.url.pathname);
+
+// Client-side payload: per-locale banner strings + endonyms, plus routing info.
+// The banner is rendered in the visitor's DETECTED language, so we ship all of
+// them and pick one at runtime from navigator.languages.
+const data = {
+  current: lang,
+  route,
+  defaultLocale,
+  locales: locales as readonly string[],
+  strings: Object.fromEntries(
+    locales.map((l) => [
+      l,
+      { ...content[l].banner, name: localeNames[l] },
+    ]),
+  ),
+};
+---
+
+<div
+  id="lang-banner"
+  hidden
+  role="region"
+  aria-label="Language suggestion"
+  class="fixed inset-x-0 bottom-0 z-50 translate-y-full opacity-0 transition-all duration-300 motion-reduce:transition-none"
+>
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-3 border-t border-[var(--color-ink-12)] bg-[rgba(255,255,255,0.94)] px-4 py-3 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-6"
+  >
+    <p class="flex items-center gap-2 text-sm text-[var(--color-ink)]">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        class="flex-none text-[var(--color-accent)]"
+      >
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path>
+      </svg>
+      <span id="lang-banner-message"></span>
+    </p>
+    <div class="flex items-center gap-2">
+      <a id="lang-banner-view" href="#" class="btn-solid text-sm"></a>
+      <button
+        type="button"
+        id="lang-banner-dismiss"
+        class="min-h-11 rounded-sm border border-[var(--color-ink-12)] px-3 py-2 font-mono text-[12px] font-medium text-[var(--color-ink-70)] transition-colors hover:text-[var(--color-ink)]"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<script
+  type="application/json"
+  id="lang-banner-data"
+  set:html={JSON.stringify(data)}
+/>
+
+<script>
+  (function () {
+    const DISMISS_KEY = "byndr:lang-banner-dismissed";
+    const CHOICE_KEY = "byndr:lang";
+
+    const el = document.getElementById("lang-banner");
+    const dataEl = document.getElementById("lang-banner-data");
+    if (!el || !dataEl) return;
+
+    let cfg: {
+      current: string;
+      route: string;
+      defaultLocale: string;
+      locales: string[];
+      strings: Record<
+        string,
+        { message: string; view: string; dismiss: string; name: string }
+      >;
+    };
+    try {
+      cfg = JSON.parse(dataEl.textContent || "{}");
+    } catch {
+      return;
+    }
+
+    function read(key: string): string | null {
+      try {
+        return window.localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    }
+    function write(key: string, value: string) {
+      try {
+        window.localStorage.setItem(key, value);
+      } catch {
+        /* storage disabled — non-fatal */
+      }
+    }
+
+    // If the visitor already made an explicit language choice, never nag.
+    if (read(CHOICE_KEY) || read(DISMISS_KEY)) return;
+
+    // Map a browser language tag to one of our supported locales.
+    function matchLocale(tag: string): string | null {
+      const t = tag.toLowerCase();
+      if (t.startsWith("zh")) {
+        // Only Simplified Chinese is offered; skip Traditional variants.
+        if (/hant|tw|hk|mo/.test(t)) return null;
+        return cfg.locales.includes("zh-cn") ? "zh-cn" : null;
+      }
+      const base = t.split("-")[0];
+      return cfg.locales.includes(base) ? base : null;
+    }
+
+    const prefs = navigator.languages && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language];
+
+    let preferred: string | null = null;
+    for (const tag of prefs) {
+      const m = matchLocale(tag);
+      if (m) {
+        preferred = m;
+        break;
+      }
+    }
+
+    if (!preferred || preferred === cfg.current) return;
+
+    const s = cfg.strings[preferred];
+    if (!s) return;
+
+    // Build the target URL: same page, preferred locale.
+    const isDefault = preferred === cfg.defaultLocale;
+    const target = isDefault
+      ? cfg.route
+      : "/" + preferred + (cfg.route === "/" ? "/" : cfg.route);
+
+    const msg = document.getElementById("lang-banner-message");
+    const view = document.getElementById("lang-banner-view") as HTMLAnchorElement | null;
+    const dismiss = document.getElementById("lang-banner-dismiss");
+    if (!msg || !view || !dismiss) return;
+
+    msg.textContent = s.message;
+    view.textContent = s.view;
+    view.setAttribute("href", target);
+    view.setAttribute("lang", preferred === "zh-cn" ? "zh-CN" : preferred);
+    dismiss.textContent = s.dismiss;
+
+    // Remember the choice so the banner does not reappear after navigation.
+    view.addEventListener("click", () => write(CHOICE_KEY, preferred!));
+    dismiss.addEventListener("click", () => {
+      write(DISMISS_KEY, "1");
+      el.setAttribute("hidden", "");
+    });
+
+    // Reveal (next frame so the transition runs).
+    el.removeAttribute("hidden");
+    requestAnimationFrame(() => {
+      el.classList.remove("translate-y-full", "opacity-0");
+    });
+  })();
+</script>
