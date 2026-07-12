@@ -30,6 +30,9 @@ import {
 } from "./services/automation.service.js";
 import { dispatchEvent } from "./services/dispatch.service.js";
 import { createAccount } from "./services/signup.service.js";
+import { listFacets, listParts } from "./services/catalog.service.js";
+import { computeMatrix, computeStats } from "./services/stats.service.js";
+import { rotateApiKey } from "./services/tenant.service.js";
 import { PLANS } from "./models/plan.js";
 import type { Tenant } from "./models/tenant.js";
 
@@ -201,6 +204,43 @@ async function route(
 
   if (request.method === "GET" && path === "/api/plans") {
     return jsonResponse({ plans: PLANS }, 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/parts") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(
+      await listParts(env, tenant, url.searchParams),
+      200,
+      cors,
+    );
+  }
+
+  if (request.method === "GET" && path === "/api/parts/facets") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(
+      await listFacets(env, tenant, url.searchParams),
+      200,
+      cors,
+    );
+  }
+
+  if (request.method === "GET" && path === "/api/stats") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await computeStats(env, tenant), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/stats/matrix") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(
+      await computeMatrix(env, tenant, url.searchParams),
+      200,
+      cors,
+    );
+  }
+
+  if (request.method === "POST" && path === "/api/tenant/rotate-key") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await rotateApiKey(env, tenant), 200, cors);
   }
 
   if (request.method === "POST" && path === "/api/signup") {

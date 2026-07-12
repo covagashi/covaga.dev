@@ -79,6 +79,23 @@ export async function findTenantById(
 }
 
 /**
+ * Replace a tenant's stored API-key hash, rotating its credential.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Tenant whose key is rotated.
+ * @param apiKeyHash - SHA-256 hex digest of the new raw API key.
+ */
+export async function updateTenantApiKeyHash(
+  env: Env,
+  tenantId: string,
+  apiKeyHash: string,
+): Promise<void> {
+  await env.DB.prepare("UPDATE tenants SET api_key_hash = ? WHERE id = ?")
+    .bind(apiKeyHash, tenantId)
+    .run();
+}
+
+/**
  * Look up a tenant by the SHA-256 hex hash of its API key.
  *
  * @param env - Worker environment holding the D1 binding.

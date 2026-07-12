@@ -153,6 +153,43 @@ export async function listArticlesByTenant(
 }
 
 /**
+ * Default cap on how many rows the catalog/stats reads scan for one tenant.
+ * The materials UI filters/aggregates in memory, so reads pull at most this
+ * many of the most-recently-updated rows.
+ */
+export const CATALOG_SCAN_CAP = 5000;
+
+/** Shape of a `data`-only row selected for catalog/stats scans. */
+interface ArticleDataRow {
+  data: string;
+}
+
+/**
+ * Read the raw enriched-part JSON (`data` column) for a tenant's articles,
+ * most-recently-updated first, capped at `cap` rows.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @param cap - Maximum number of rows to scan (defaults to CATALOG_SCAN_CAP).
+ * @returns The `data` JSON strings, one per scanned article.
+ */
+export async function listArticleDataByTenant(
+  env: Env,
+  tenantId: string,
+  cap: number = CATALOG_SCAN_CAP,
+): Promise<string[]> {
+  const result = await env.DB.prepare(
+    `SELECT data FROM articles
+       WHERE tenant_id = ?
+       ORDER BY updated_at DESC, part_number ASC, variant ASC
+       LIMIT ?`,
+  )
+    .bind(tenantId, cap)
+    .all<ArticleDataRow>();
+  return result.results.map((row) => row.data);
+}
+
+/**
  * Count all articles owned by a tenant.
  *
  * @param env - Worker environment holding the D1 binding.
