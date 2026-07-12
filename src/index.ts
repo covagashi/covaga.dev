@@ -29,6 +29,8 @@ import {
   getRoutes,
 } from "./services/automation.service.js";
 import { dispatchEvent } from "./services/dispatch.service.js";
+import { createAccount } from "./services/signup.service.js";
+import { PLANS } from "./models/plan.js";
 import type { Tenant } from "./models/tenant.js";
 
 /** Execution context carrying MCP props read by the Agents SDK `serve`. */
@@ -62,6 +64,26 @@ function parseHookMetadata(rawBody: string): Record<string, unknown> {
     throw new HttpError(400, "invalid_body");
   }
   return payload as Record<string, unknown>;
+}
+
+/**
+ * Narrow an unknown signup body to `{ email, plan }` string fields. Semantic
+ * validation (email shape, known plan) happens in the signup service.
+ *
+ * @param value - Parsed request body.
+ * @returns The typed signup input.
+ * @throws {HttpError} 400 when the body is not an object with string fields.
+ */
+function parseSignupBody(value: unknown): { email: string; plan: string } {
+  if (Object(value) !== value || Array.isArray(value)) {
+    throw new HttpError(400, "invalid_body");
+  }
+  const record = value as Record<string, unknown>;
+  const { email, plan } = record;
+  if (typeof email !== "string" || typeof plan !== "string") {
+    throw new HttpError(400, "invalid_body");
+  }
+  return { email, plan };
 }
 
 /**
@@ -175,6 +197,21 @@ async function route(
   if (request.method === "GET" && path === "/whoami") {
     const tenant = await authenticateTenant(env, request);
     return jsonResponse({ id: tenant.id }, 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/plans") {
+    return jsonResponse({ plans: PLANS }, 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/signup") {
+    const body = await readJsonBody(request);
+    const input = parseSignupBody(body);
+    const result = await createAccount(env, input);
+    return jsonResponse(
+      { ok: true, tenant_id: result.tenant_id, api_key: result.api_key },
+      200,
+      cors,
+    );
   }
 
   if (request.method === "POST" && path === "/api/ingest/start") {

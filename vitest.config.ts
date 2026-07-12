@@ -17,6 +17,9 @@ export default defineWorkersProject(async () => {
 
   return {
     test: {
+      // Only the worker's own tests — never the SPA under web/ (its .tsx tests
+      // need a DOM and run in their own vitest project).
+      include: ["{src,test}/**/*.test.ts"],
       poolOptions: {
         workers: {
           singleWorker: true,

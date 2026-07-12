@@ -18,6 +18,7 @@ const facts = [
 const mailto = `mailto:hello@covaga.xyz?subject=${encodeURIComponent(
   "byndr — early access",
 )}`;
+const dashboardUrl = "https://byndr-dev-dashboard.pages.dev";
 ---
 
 <section
@@ -32,9 +33,9 @@ const mailto = `mailto:hello@covaga.xyz?subject=${encodeURIComponent(
       byndr is in early access.
     </h2>
     <p class="mt-3 text-base leading-relaxed text-[var(--color-muted)]">
-      No pricing yet, and no sign-up wall. If you run EPLAN and want to try the
-      data loop or the automations, join the early-access list and help shape
-      what ships first. Early members help set where this goes.
+      No pricing yet. If you run EPLAN, create a tenant in seconds — pick a plan,
+      get your API key, and try the data loop or the automations. Early members
+      help shape what ships first.
     </p>
   </div>
 
@@ -61,9 +62,13 @@ const mailto = `mailto:hello@covaga.xyz?subject=${encodeURIComponent(
     class="mt-10 flex flex-col items-start gap-4 border-t border-[var(--color-ink-12)] pt-8 sm:flex-row sm:items-center sm:justify-between"
   >
     <p class="max-w-md text-base text-[var(--color-muted)]">
-      Want in? Send a note and tell us which pillar matters most to your team.
+      Create your tenant now, or send a note and tell us which pillar matters
+      most to your team.
     </p>
-    <a href={mailto} class="btn-solid w-full sm:w-auto"> request early access </a>
+    <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+      <a href={dashboardUrl} class="btn-solid w-full sm:w-auto"> create your tenant </a>
+      <a href={mailto} class="btn-ghost w-full sm:w-auto"> say hi </a>
+    </div>
   </div>
 
   <p class="mt-6 font-mono text-xs leading-relaxed text-[var(--color-ink-35)]">

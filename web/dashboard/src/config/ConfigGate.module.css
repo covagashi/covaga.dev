@@ -13,3 +13,21 @@
 .err{color:var(--err);font-size:11.5px;margin:-4px 0 0}
 .btn{background:var(--ac);color:#0a1020;font-weight:600;font-size:12.5px;
   border-radius:7px;padding:9px 12px;margin-top:4px}
+
+.modes{display:flex;gap:2px;background:var(--bg);border:1px solid var(--hl);
+  border-radius:8px;padding:3px}
+.modes button{flex:1;padding:6px 8px;font-size:11.5px;color:var(--mut);border-radius:6px}
+.modes button.modeOn{background:var(--sf3);color:var(--tx);font-weight:500}
+
+.plans{display:flex;gap:2px;background:var(--bg);border:1px solid var(--hl);
+  border-radius:7px;padding:3px}
+.plans button{flex:1;padding:6px 8px;font-size:11.5px;color:var(--mut);border-radius:5px}
+.plans button.planOn{background:var(--act);color:var(--ac);font-weight:600}
+
+.keybox{display:flex;align-items:center;gap:8px;background:var(--bg);
+  border:1px solid var(--ac);border-radius:7px;padding:9px 11px}
+.keybox code{flex:1;font-size:12px;color:var(--tx);word-break:break-all}
+.copy{flex:none;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ac);font-weight:600;border:1px solid var(--hl2);border-radius:6px;padding:4px 8px}
+.copy:hover{border-color:var(--ac)}
+.warn{color:var(--warn);font-size:11.5px;margin:-4px 0 0}

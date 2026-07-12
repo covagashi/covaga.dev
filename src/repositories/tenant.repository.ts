@@ -19,6 +19,46 @@ function toTenant(row: TenantRow): Tenant {
   };
 }
 
+/** Parameters to insert a new tenant during self-service signup. */
+export interface NewTenant {
+  /** Stable unique identifier (e.g. `t_ab12...`). */
+  id: string;
+  /** Human-readable tenant name. */
+  name: string;
+  /** SHA-256 hex digest of the tenant's raw API key. */
+  apiKeyHash: string;
+  /** Contact email, already lowercased and trimmed. */
+  email: string;
+  /** Chosen plan id (see the plans model). */
+  plan: string;
+  /** Creation timestamp in epoch milliseconds. */
+  createdAt: number;
+}
+
+/**
+ * Insert a new tenant. The caller owns id/key generation and validation; this
+ * helper is pure D1 access. A duplicate email surfaces as the underlying D1
+ * UNIQUE-constraint error for the service to translate.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenant - Fully-formed tenant to persist.
+ */
+export async function insertTenant(env: Env, tenant: NewTenant): Promise<void> {
+  await env.DB.prepare(
+    `INSERT INTO tenants (id, name, api_key_hash, email, plan, created_at)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+  )
+    .bind(
+      tenant.id,
+      tenant.name,
+      tenant.apiKeyHash,
+      tenant.email,
+      tenant.plan,
+      tenant.createdAt,
+    )
+    .run();
+}
+
 /**
  * Look up a tenant by its id.
  *
