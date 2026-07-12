@@ -1,0 +1,6 @@
+{
+  // Cloudflare Pages project for the byndr-dev review dashboard (static SPA).
+  "name": "byndr-dev-dashboard",
+  "compatibility_date": "2025-07-01",
+  "pages_build_output_dir": "dist"
+}

@@ -1,0 +1,19 @@
+.app{height:100%;display:flex;flex-direction:column}
+.mast{display:flex;align-items:center;gap:26px;padding:0 22px;height:50px;
+  border-bottom:1px solid var(--hl);flex:none}
+.wm{font-weight:600;font-size:14px}
+.wm i{font-style:normal;color:var(--ac)}
+.nav{display:flex;gap:2px;height:50px}
+.nav button{display:flex;align-items:center;padding:0 13px;font-size:12.5px;
+  color:var(--mut);position:relative}
+.nav button.on{color:var(--tx);font-weight:500}
+.nav button.on::after{content:"";position:absolute;left:13px;right:13px;bottom:0;
+  height:2px;background:linear-gradient(90deg,var(--ac),rgba(91,138,255,.2))}
+.end{margin-left:auto;display:flex;align-items:center;gap:14px}
+.tenant{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--mut)}
+.tenant .mono{font-size:11px;color:var(--tx)}
+.tenant i{font-style:normal;width:6px;height:6px;border-radius:50%;background:var(--ok);
+  box-shadow:0 0 6px rgba(75,195,134,.6)}
+.exit{font-size:11px;color:var(--mut);border:1px solid var(--hl2);border-radius:7px;
+  padding:4px 10px}
+.exit:hover{color:var(--tx);border-color:var(--hl2)}

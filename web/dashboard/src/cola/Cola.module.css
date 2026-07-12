@@ -1,0 +1,30 @@
+.wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.head{display:flex;align-items:baseline;gap:12px;padding:16px 22px 12px;
+  border-bottom:1px solid var(--hl)}
+.title{font-size:15px;font-weight:600}
+.sub{color:var(--dim);font-size:11px}
+.reload{margin-left:auto;font-size:11px;color:var(--mut);border:1px solid var(--hl);
+  border-radius:7px;padding:4px 10px}
+.reload:hover{color:var(--tx)}
+.scroll{flex:1;overflow-y:auto;min-height:0;padding:14px 22px}
+.state{padding:26px 4px;color:var(--dim);font-size:12.5px}
+
+.table{border:1px solid var(--hl);border-radius:9px;overflow:hidden}
+.hrow,.row{display:grid;grid-template-columns:1.4fr .8fr 1fr .7fr 1fr;align-items:center;gap:12px;
+  padding:0 14px}
+.hrow{height:32px;background:var(--sf);border-bottom:1px solid var(--hl2)}
+.hc{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);font-weight:500}
+.right{text-align:right}
+.row{height:36px;border-bottom:1px solid var(--hl);font-size:12px}
+.row:last-child{border-bottom:0}
+.row:hover{background:rgba(235,240,255,.02)}
+.jid{font-size:10.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{justify-self:start;font-size:9.5px;font-family:var(--mono);border-radius:4px;
+  padding:2px 8px;border:1px solid var(--hl2);color:var(--mut)}
+.badge.pending{color:var(--warn);border-color:rgba(217,161,60,.4);background:rgba(217,161,60,.08)}
+.badge.taken{color:var(--ac);border-color:rgba(91,138,255,.4);background:var(--act)}
+.badge.done{color:var(--ok);border-color:rgba(75,195,134,.4);background:rgba(75,195,134,.08)}
+.badge.other{color:var(--dim)}
+.src{color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.num{text-align:right;color:var(--tx);font-size:11px}
+.when{text-align:right;color:var(--dim);font-size:10.5px}
