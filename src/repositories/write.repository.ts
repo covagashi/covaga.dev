@@ -234,6 +234,50 @@ export async function requeueWriteJob(
 }
 
 /**
+ * Read the most recent `taken_at` across a tenant's jobs — the best available
+ * proxy for when the polling bridge last drained a job. Absent when the tenant
+ * has no taken job yet.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @returns The latest take timestamp in epoch milliseconds, or `undefined`.
+ */
+export async function findLastTakenAt(
+  env: Env,
+  tenantId: string,
+): Promise<number | undefined> {
+  const row = await env.DB.prepare(
+    "SELECT MAX(taken_at) AS ts FROM write_jobs WHERE tenant_id = ?",
+  )
+    .bind(tenantId)
+    .first<{ ts?: number }>();
+  const ts = row?.ts;
+  return typeof ts === "number" ? ts : undefined;
+}
+
+/**
+ * Read whether the tenant's most recently completed job was a dry run. Absent
+ * when the tenant has no completed job yet.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @returns `true`/`false` for the last done job's dry-run flag, or `undefined`.
+ */
+export async function findLastDoneDryRun(
+  env: Env,
+  tenantId: string,
+): Promise<boolean | undefined> {
+  const row = await env.DB.prepare(
+    `SELECT dry_run FROM write_jobs
+       WHERE tenant_id = ? AND status = 'done'
+       ORDER BY done_at DESC LIMIT 1`,
+  )
+    .bind(tenantId)
+    .first<{ dry_run: number }>();
+  return row ? row.dry_run !== 0 : undefined;
+}
+
+/**
  * List every job for a tenant, newest first (status / audit view).
  *
  * @param env - Worker environment holding the D1 binding.

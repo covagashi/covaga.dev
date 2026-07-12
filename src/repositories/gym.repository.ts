@@ -61,6 +61,38 @@ export async function insertEpisode(
     .run();
 }
 
+/** One episode's counters plus its start time, for the status view. */
+export interface EpisodeSummary {
+  /** Episode start timestamp in epoch milliseconds. */
+  startedAt: number;
+  /** Total proposals submitted in the episode. */
+  submitted: number;
+  /** Proposals that validated in the episode. */
+  validated: number;
+}
+
+/**
+ * List a tenant's episodes oldest-first, with their submitted/validated
+ * counters — the data the Gym status curve and table render.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @returns The tenant's episodes in start order.
+ */
+export async function listEpisodes(
+  env: Env,
+  tenantId: string,
+): Promise<EpisodeSummary[]> {
+  const result = await env.DB.prepare(
+    `SELECT started_at AS startedAt, submitted, validated
+       FROM gym_episodes WHERE tenant_id = ?
+      ORDER BY started_at ASC`,
+  )
+    .bind(tenantId)
+    .all<EpisodeSummary>();
+  return result.results;
+}
+
 /**
  * Read one episode's counters, scoped to the owning tenant.
  *

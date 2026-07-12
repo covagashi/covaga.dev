@@ -164,6 +164,117 @@ export async function rejectValidatedProposal(
   return result.results.length > 0;
 }
 
+/** A proposal row shaped for a byndrrr-style changeset. */
+export interface ChangesetProposalRow {
+  /** Proposal id (uuid); becomes the changeset id. */
+  id: string;
+  /** Manufacturer part number. */
+  part_number: string;
+  /** Variant discriminator ('' when none). */
+  variant: string;
+  /** Edited field. */
+  field: string;
+  /** Target language ('' for describe). */
+  lang: string;
+  /** Prior value of the field. */
+  old_value: string;
+  /** Proposed value. */
+  new_value: string;
+  /** byndr-dev lifecycle status. */
+  status: string;
+  /** Owning write job id ('' until approved). */
+  job_id: string;
+  /** Creation timestamp in epoch milliseconds. */
+  created_at: number;
+}
+
+/** Column list selected for changeset reads, keeping the two queries in sync. */
+const CHANGESET_COLUMNS =
+  "id, part_number, variant, field, lang, old_value, new_value, status, job_id, created_at";
+
+/**
+ * List a tenant's proposals as changeset rows, newest first. With `status` the
+ * list is filtered to that lifecycle status; without it every proposal is
+ * returned.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @param status - Optional byndr-dev lifecycle status to filter on.
+ * @returns The matching proposal rows.
+ */
+export async function listChangesetProposals(
+  env: Env,
+  tenantId: string,
+  status?: string,
+): Promise<ChangesetProposalRow[]> {
+  const query =
+    status === undefined
+      ? env.DB.prepare(
+          `SELECT ${CHANGESET_COLUMNS} FROM gym_proposals
+             WHERE tenant_id = ? ORDER BY created_at DESC`,
+        ).bind(tenantId)
+      : env.DB.prepare(
+          `SELECT ${CHANGESET_COLUMNS} FROM gym_proposals
+             WHERE tenant_id = ? AND status = ? ORDER BY created_at DESC`,
+        ).bind(tenantId, status);
+  const result = await query.all<ChangesetProposalRow>();
+  return result.results;
+}
+
+/**
+ * Count a tenant's proposals grouped by lifecycle status.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @returns A record of status to proposal count (statuses with no rows absent).
+ */
+export async function countProposalsByStatus(
+  env: Env,
+  tenantId: string,
+): Promise<Record<string, number>> {
+  const result = await env.DB.prepare(
+    `SELECT status, COUNT(*) AS n FROM gym_proposals
+       WHERE tenant_id = ? GROUP BY status`,
+  )
+    .bind(tenantId)
+    .all<{ status: string; n: number }>();
+  const counts: Record<string, number> = {};
+  for (const row of result.results) {
+    counts[row.status] = row.n;
+  }
+  return counts;
+}
+
+/** A proposal already approved and awaiting the bridge. */
+export interface ApprovedProposalJob {
+  /** Proposal id. */
+  id: string;
+  /** Owning write job id. */
+  job_id: string;
+}
+
+/**
+ * List a tenant's approved proposals and their owning write job ids. These are
+ * the changes already enqueued for the bridge to drain.
+ *
+ * @param env - Worker environment holding the D1 binding.
+ * @param tenantId - Owning tenant id.
+ * @returns The approved proposals with their job ids, newest first.
+ */
+export async function listApprovedProposalJobs(
+  env: Env,
+  tenantId: string,
+): Promise<ApprovedProposalJob[]> {
+  const result = await env.DB.prepare(
+    `SELECT id, job_id FROM gym_proposals
+       WHERE tenant_id = ? AND status = 'approved'
+       ORDER BY created_at DESC`,
+  )
+    .bind(tenantId)
+    .all<ApprovedProposalJob>();
+  return result.results;
+}
+
 /**
  * Mark every proposal owned by a completed job as `applied`.
  *

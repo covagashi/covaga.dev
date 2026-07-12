@@ -32,6 +32,16 @@ import { dispatchEvent } from "./services/dispatch.service.js";
 import { createAccount } from "./services/signup.service.js";
 import { listFacets, listParts } from "./services/catalog.service.js";
 import { computeMatrix, computeStats } from "./services/stats.service.js";
+import {
+  applyChanges,
+  approveChange,
+  listChanges,
+  rejectChange,
+} from "./services/changes.service.js";
+import { listQueues } from "./services/queues.service.js";
+import { getSettings, saveSettings } from "./services/settings.service.js";
+import { getGymStatus } from "./services/gym-status.service.js";
+import { getHealth } from "./services/health.service.js";
 import { rotateApiKey } from "./services/tenant.service.js";
 import { PLANS } from "./models/plan.js";
 import type { Tenant } from "./models/tenant.js";
@@ -41,6 +51,9 @@ type McpContext = ExecutionContext & { props?: Record<string, unknown> };
 
 /** Matches `POST /hook/:tenant/:event` (with an optional trailing slash). */
 const HOOK_PATH_RE = /^\/hook\/([^/]+)\/([^/]+)\/?$/;
+
+/** Matches `POST /api/changes/:id/approve` or `.../reject`. */
+const CHANGE_ACTION_RE = /^\/api\/changes\/([^/]+)\/(approve|reject)$/;
 
 /** Maximum accepted event-hook body size (64 KiB). */
 const MAX_HOOK_BODY_BYTES = 64 * 1024;
@@ -288,6 +301,54 @@ async function route(
     const tenant = await authenticateTenant(env, request);
     const body = await readJsonBody(request);
     return jsonResponse(await rejectProposals(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/changes") {
+    const tenant = await authenticateTenant(env, request);
+    const status = url.searchParams.get("status") ?? "";
+    return jsonResponse(await listChanges(env, tenant, status), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/changes/apply") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await applyChanges(env, tenant), 200, cors);
+  }
+
+  const changeActionMatch = CHANGE_ACTION_RE.exec(path);
+  if (request.method === "POST" && changeActionMatch) {
+    const tenant = await authenticateTenant(env, request);
+    const changeId = decodeURIComponent(changeActionMatch[1] ?? "");
+    const action = changeActionMatch[2];
+    if (action === "approve") {
+      return jsonResponse(await approveChange(env, tenant, changeId), 200, cors);
+    }
+    return jsonResponse(await rejectChange(env, tenant, changeId), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/queues") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await listQueues(env, tenant), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/settings") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await getSettings(env, tenant), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/settings") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await saveSettings(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/gym/status") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await getGymStatus(env, tenant), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/health") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await getHealth(env, tenant), 200, cors);
   }
 
   if (request.method === "GET" && path === "/api/write/poll") {
