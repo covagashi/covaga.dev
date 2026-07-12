@@ -1,7 +1,12 @@
 import type { Env } from "./env.js";
 import { HttpError } from "./errors.js";
-import { corsHeaders, jsonResponse } from "./lib/http.js";
+import { corsHeaders, jsonResponse, readJsonBody } from "./lib/http.js";
 import { authenticateTenant } from "./services/auth.service.js";
+import {
+  finishIngest,
+  ingestBatch,
+  startIngest,
+} from "./services/ingest.service.js";
 
 /**
  * Route a single request. Kept small: CORS preflight, health, an
@@ -17,6 +22,18 @@ async function route(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname;
 
+  if (request.method === "GET" && path === "/") {
+    return jsonResponse(
+      {
+        name: "byndr-dev",
+        status: "ok",
+        docs: "https://github.com/covagashi/byndr-dev",
+      },
+      200,
+      cors,
+    );
+  }
+
   if (request.method === "GET" && path === "/health") {
     return jsonResponse({ ok: true }, 200, cors);
   }
@@ -24,6 +41,24 @@ async function route(request: Request, env: Env): Promise<Response> {
   if (request.method === "GET" && path === "/whoami") {
     const tenant = await authenticateTenant(env, request);
     return jsonResponse({ id: tenant.id }, 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/ingest/start") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await startIngest(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/ingest/batch") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await ingestBatch(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/ingest/finish") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await finishIngest(env, tenant, body), 200, cors);
   }
 
   return jsonResponse({ error: "not_found" }, 404, cors);

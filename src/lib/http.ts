@@ -1,4 +1,20 @@
 import type { Env } from "../env.js";
+import { HttpError } from "../errors.js";
+
+/**
+ * Parse a request body as JSON, returning `unknown` for the caller to narrow.
+ *
+ * @param request - Incoming request whose body is JSON.
+ * @returns The parsed value.
+ * @throws {HttpError} 400 when the body is not valid JSON.
+ */
+export async function readJsonBody(request: Request): Promise<unknown> {
+  try {
+    return (await request.json()) as unknown;
+  } catch {
+    throw new HttpError(400, "invalid_json");
+  }
+}
 
 /**
  * Build a JSON `Response` with the given body and status.
@@ -37,7 +53,7 @@ export function corsHeaders(request: Request, env: Env): Headers {
     headers.set("Access-Control-Allow-Origin", origin);
     headers.set("Vary", "Origin");
   }
-  headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   headers.set("Access-Control-Allow-Headers", "Content-Type, X-Api-Key");
   return headers;
 }
