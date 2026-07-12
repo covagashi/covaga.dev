@@ -21,9 +21,99 @@ import {
   submitResult,
   toJobView,
 } from "./services/write-queue.service.js";
+import {
+  createDestination,
+  createRoute,
+  getDestinations,
+  getExecutions,
+  getRoutes,
+} from "./services/automation.service.js";
+import { dispatchEvent } from "./services/dispatch.service.js";
+import type { Tenant } from "./models/tenant.js";
 
 /** Execution context carrying MCP props read by the Agents SDK `serve`. */
 type McpContext = ExecutionContext & { props?: Record<string, unknown> };
+
+/** Matches `POST /hook/:tenant/:event` (with an optional trailing slash). */
+const HOOK_PATH_RE = /^\/hook\/([^/]+)\/([^/]+)\/?$/;
+
+/** Maximum accepted event-hook body size (64 KiB). */
+const MAX_HOOK_BODY_BYTES = 64 * 1024;
+
+/**
+ * Parse and loosely validate the freeform event metadata body: empty means
+ * `{}`; anything that is not a JSON object is rejected.
+ *
+ * @param rawBody - Raw request body text.
+ * @returns The parsed metadata object.
+ * @throws {HttpError} 400 when the body is not a JSON object.
+ */
+function parseHookMetadata(rawBody: string): Record<string, unknown> {
+  if (rawBody.length === 0) {
+    return {};
+  }
+  let payload: unknown;
+  try {
+    payload = JSON.parse(rawBody) as unknown;
+  } catch {
+    throw new HttpError(400, "invalid_json");
+  }
+  if (Object(payload) !== payload || Array.isArray(payload)) {
+    throw new HttpError(400, "invalid_body");
+  }
+  return payload as Record<string, unknown>;
+}
+
+/**
+ * Thin HTTP adapter for `POST /hook/:tenant/:event`. Authenticates the caller,
+ * requires the path tenant to match the authenticated tenant, enforces the body
+ * cap, parses metadata, and delegates to the dispatch service.
+ *
+ * @param request - Incoming request.
+ * @param env - Worker environment.
+ * @param cors - Precomputed CORS headers.
+ * @param pathTenantId - Tenant id parsed from the path.
+ * @param eventId - Event id parsed from the path.
+ * @returns A `202` response describing the recorded executions.
+ * @throws {HttpError} 401/413/400 per the auth, size, and body rules.
+ */
+async function handleHook(
+  request: Request,
+  env: Env,
+  cors: Headers,
+  pathTenantId: string,
+  eventId: string,
+): Promise<Response> {
+  const tenant: Tenant = await authenticateTenant(env, request);
+  if (pathTenantId !== tenant.id) {
+    throw new HttpError(401, "unauthorized");
+  }
+
+  const rawBody = await request.text();
+  if (new TextEncoder().encode(rawBody).length > MAX_HOOK_BODY_BYTES) {
+    throw new HttpError(413, "payload_too_large");
+  }
+
+  const metadata = parseHookMetadata(rawBody);
+  const outcome = await dispatchEvent(env, {
+    tenantId: tenant.id,
+    eventId,
+    metadata,
+  });
+
+  return jsonResponse(
+    {
+      ok: true,
+      executions: outcome.executions.map((execution) => ({
+        id: execution.id,
+        destination_id: execution.destinationId,
+        status: execution.status,
+      })),
+    },
+    202,
+    cors,
+  );
+}
 
 /**
  * Dynamically load the requested MCP mount handler. The Agents SDK / MCP SDK
@@ -154,6 +244,41 @@ async function route(
   if (request.method === "GET" && path === "/api/write/jobs") {
     const tenant = await authenticateTenant(env, request);
     return jsonResponse(await listJobs(env, tenant), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/destinations") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await createDestination(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/destinations") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await getDestinations(env, tenant), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/routes") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await createRoute(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/routes") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await getRoutes(env, tenant), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/executions") {
+    const tenant = await authenticateTenant(env, request);
+    const limit = url.searchParams.get("limit") ?? undefined;
+    return jsonResponse(await getExecutions(env, tenant, limit), 200, cors);
+  }
+
+  const hookMatch = HOOK_PATH_RE.exec(path);
+  if (request.method === "POST" && hookMatch) {
+    const pathTenantId = decodeURIComponent(hookMatch[1] ?? "");
+    const eventId = decodeURIComponent(hookMatch[2] ?? "");
+    return handleHook(request, env, cors, pathTenantId, eventId);
   }
 
   return jsonResponse({ error: "not_found" }, 404, cors);
