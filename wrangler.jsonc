@@ -8,8 +8,8 @@
     {
       "binding": "DB",
       "database_name": "byndr-dev",
-      // Replace with the real id printed by `wrangler d1 create byndr-dev`.
-      "database_id": "PLACEHOLDER_SET_BY_WRANGLER",
+      // Run `wrangler d1 create byndr-dev` in your own account and put its id here.
+      "database_id": "8199672e-0663-486c-a70b-487d839246a8",
       "migrations_dir": "migrations"
     }
   ]

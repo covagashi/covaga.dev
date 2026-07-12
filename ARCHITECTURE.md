@@ -13,14 +13,14 @@ user's machine; the cloud never touches EPLAN directly.
   records a **proposal**. A human reviews proposals like pull requests; approved ones
   enter a **write queue** that a local client applies back into EPLAN.
 - **Automations** — EPLAN events (PDF exported, BOM exported, project closed) are
-  posted to the platform and routed to destinations (Slack, Drive, webhook).
+  posted to the platform and routed to destinations (Microsoft Teams, email, a shared drive, or a webhook).
 
 ## Flow
 
 ```
 Desktop (EPLAN)
   ├── snapshot client ──POST /ingest (X-Api-Key)──► articles (D1)
-  ├── event client    ──POST /hook/:tenant/:event─► dispatcher ──► Slack/Drive/…
+  ├── event client    ──POST /hook/:tenant/:event─► dispatcher ──► Teams/email/…
   └── write client (polling) ──GET /write/poll─────► applies approved changes ──► EPLAN
                               ◄─POST /write/result──
 
@@ -57,7 +57,7 @@ Cloudflare Worker(s)
 | 2 · Ingest | `/ingest` endpoint receiving the snapshot client → `articles` |
 | 3 · Gym MCP | MCP server + tools + `translate`/`describe` validators + episodes/metrics |
 | 4 · Review + write queue | review proposals as PRs → approve → queue → local client applies |
-| 5 · Automations | event dispatcher → destinations (Slack/webhook) |
+| 5 · Automations | event dispatcher → destinations (Teams/email/webhook) |
 
 Non-goals for now: certificates and photo gaps, OAuth (API-key per tenant is enough),
 billing, fine-grained rate limiting.

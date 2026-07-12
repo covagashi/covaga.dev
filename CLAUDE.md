@@ -12,7 +12,7 @@ An open platform for EPLAN teams, built on Cloudflare. Two pillars:
   deterministic and server-side. Proposals are reviewed like pull requests; approved
   changes are written back to EPLAN by a local polling client.
 - **Automations** — EPLAN events (PDF/BOM/project) routed to destinations
-  (Slack/Drive/webhook).
+  (Microsoft Teams, email, webhook).
 
 See `ARCHITECTURE.md` for the full map.
 

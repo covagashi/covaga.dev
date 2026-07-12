@@ -3,8 +3,9 @@
 An open platform for EPLAN teams, built on Cloudflare — **data enrichment** and
 **automations** in one place.
 
-> Status: early. Building the foundation (Etapa 1). See `ARCHITECTURE.md` for the
-> roadmap.
+> ⚠️ **Work in progress — largely conceptual.** The design below describes where
+> this is going; only the **Foundation (Stage 1)** is implemented today. Interfaces
+> and scope will change. See `ARCHITECTURE.md` for the roadmap.
 
 ## Why
 
@@ -17,7 +18,9 @@ tackles both:
   The validators are deterministic and run on the server — the model proposes, the
   server decides. Proposals are reviewed like pull requests; once a human approves,
   the change is queued and a small local client writes it back into EPLAN.
-- **Automations.** Route EPLAN events to Slack, Drive, or a webhook.
+- **Automations.** Route EPLAN events (PDF/BOM exports, project events) to where an
+  engineering team actually looks — Microsoft Teams, email, a shared drive, or a
+  plain webhook you control.
 
 ## Principles
 
@@ -42,6 +45,14 @@ Create a tenant (prints its API key once):
 ```bash
 node scripts/create-tenant.mjs "My Team"
 ```
+
+## Self-hosting
+
+byndr-dev runs on Cloudflare (Workers + D1 + Durable Objects); deploy it to your own
+Cloudflare account with Wrangler (see Quickstart). For teams that cannot use the
+cloud, a fully-local runtime via `workerd` / Miniflare — the same runtime the test
+suite already uses — is on the roadmap. Note: Wrangler configuration uses TOML or
+JSON(C), **not YAML**.
 
 ## Contributing
 

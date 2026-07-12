@@ -4,7 +4,8 @@
 //
 // Usage:
 //   node scripts/create-tenant.mjs "Acme Inc"
-//   node scripts/create-tenant.mjs "Acme Inc" --exec   # runs wrangler d1 execute
+//   node scripts/create-tenant.mjs "Acme Inc" --exec           # local D1
+//   node scripts/create-tenant.mjs "Acme Inc" --exec --remote  # deployed D1
 //
 // The raw API key is printed ONCE. Save it now; it is never recoverable.
 
@@ -28,6 +29,7 @@ function sha256Hex(value) {
 function main() {
   const args = process.argv.slice(2);
   const exec = args.includes("--exec");
+  const remote = args.includes("--remote");
   const name = args.find((arg) => !arg.startsWith("--"));
 
   if (name === undefined || name.trim().length === 0) {
@@ -45,11 +47,17 @@ function main() {
     `('${id}', '${name.replace(/'/g, "''")}', '${apiKeyHash}', ${createdAt});`;
 
   if (exec) {
-    const result = spawnSync(
-      "wrangler",
-      ["d1", "execute", "byndr-dev", "--command", sql],
-      { stdio: "inherit", shell: true },
-    );
+    const wranglerArgs = ["wrangler", "d1", "execute", "byndr-dev", "--command", sql, "-y"];
+    if (remote) {
+      wranglerArgs.push("--remote");
+    }
+    // Use npx so it resolves the locally-installed wrangler (or a global one).
+    // shell:false keeps the SQL a single literal argument (no shell re-parsing).
+    const npx = process.platform === "win32" ? "npx.cmd" : "npx";
+    const result = spawnSync(npx, wranglerArgs, {
+      stdio: "inherit",
+      shell: false,
+    });
     if (result.status !== 0) {
       console.error("wrangler d1 execute failed.");
       process.exit(result.status ?? 1);
