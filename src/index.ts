@@ -7,6 +7,20 @@ import {
   ingestBatch,
   startIngest,
 } from "./services/ingest.service.js";
+import {
+  approveProposals,
+  listProposals,
+  rejectProposals,
+} from "./services/review.service.js";
+import {
+  jobToTxt,
+  listJobs,
+  POLL_NONE,
+  pollJob,
+  requeueJob,
+  submitResult,
+  toJobView,
+} from "./services/write-queue.service.js";
 
 /** Execution context carrying MCP props read by the Agents SDK `serve`. */
 type McpContext = ExecutionContext & { props?: Record<string, unknown> };
@@ -89,6 +103,57 @@ async function route(
     const tenant = await authenticateTenant(env, request);
     const body = await readJsonBody(request);
     return jsonResponse(await finishIngest(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/gym/proposals") {
+    const tenant = await authenticateTenant(env, request);
+    const status = url.searchParams.get("status") ?? "validated";
+    return jsonResponse(await listProposals(env, tenant, status), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/gym/proposals/approve") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await approveProposals(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/gym/proposals/reject") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await rejectProposals(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/write/poll") {
+    const tenant = await authenticateTenant(env, request);
+    const job = await pollJob(env, tenant);
+    if (url.searchParams.get("format") === "txt") {
+      const headers = new Headers(cors);
+      headers.set("Content-Type", "text/plain; charset=utf-8");
+      const body = job === undefined ? POLL_NONE : jobToTxt(job);
+      return new Response(body, { status: 200, headers });
+    }
+    return jsonResponse(
+      { job: job === undefined ? undefined : toJobView(job) },
+      200,
+      cors,
+    );
+  }
+
+  if (request.method === "POST" && path === "/api/write/result") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await submitResult(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "POST" && path === "/api/write/requeue") {
+    const tenant = await authenticateTenant(env, request);
+    const body = await readJsonBody(request);
+    return jsonResponse(await requeueJob(env, tenant, body), 200, cors);
+  }
+
+  if (request.method === "GET" && path === "/api/write/jobs") {
+    const tenant = await authenticateTenant(env, request);
+    return jsonResponse(await listJobs(env, tenant), 200, cors);
   }
 
   return jsonResponse({ error: "not_found" }, 404, cors);
