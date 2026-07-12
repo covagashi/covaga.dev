@@ -1,0 +1,14 @@
+# Secrets & real data — NEVER commit
+.dev.vars
+.env
+*.local
+data/snapshot.json
+data/*.jsonl
+
+# Internal working docs (design specs, brainstorming) — not for the public repo
+docs/superpowers/
+
+# Cloudflare / node
+node_modules/
+.wrangler/
+dist/

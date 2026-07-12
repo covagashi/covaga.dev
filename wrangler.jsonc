@@ -1,0 +1,16 @@
+{
+  // Cloudflare Worker configuration for byndr-dev.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "byndr-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-07-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "byndr-dev",
+      // Replace with the real id printed by `wrangler d1 create byndr-dev`.
+      "database_id": "PLACEHOLDER_SET_BY_WRANGLER",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
