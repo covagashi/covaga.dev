@@ -1,0 +1,241 @@
+---
+---
+
+<section
+  id="top"
+  class="mx-auto max-w-6xl border-x border-[var(--color-ink-12)] px-4 sm:px-6"
+>
+  <div
+    class="grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[minmax(0,480px)_1fr] lg:gap-16"
+  >
+    <!-- Copy -->
+    <div class="max-w-xl">
+      <p class="eyebrow mb-7">
+        one platform&nbsp;&nbsp;<span class="arrow" aria-hidden="true"
+          >&#8594;</span
+        >&nbsp;&nbsp;two pillars
+      </p>
+
+      <h1
+        class="text-5xl font-bold leading-[1.03] tracking-tight text-[var(--color-ink)] sm:text-6xl"
+      >
+        your eplan data and events, in one place<span
+          class="text-[var(--color-accent)]">.</span
+        >
+      </h1>
+
+      <p
+        class="mt-7 max-w-md text-lg leading-relaxed text-[var(--color-muted)]"
+      >
+        byndr closes the text gaps in your <strong
+          class="font-semibold text-[var(--color-ink)]">EPLAN</strong
+        > article database with a reviewed, validated loop — and routes EPLAN events
+        to where your team actually looks. the cloud never writes to EPLAN directly.
+      </p>
+
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="#access" class="btn-solid w-full sm:w-auto">
+          request early access
+        </a>
+        <a href="#how" class="btn-ghost w-full sm:w-auto">
+          see how it works
+        </a>
+      </div>
+
+      <div
+        class="mt-9 flex flex-wrap items-center gap-2 border-t border-[var(--color-ink-12)] pt-6"
+        aria-label="Platform specification"
+      >
+        <span class="chip">stack <b>eplan</b></span>
+        <span class="chip">runs <b>cloudflare</b></span>
+        <span class="chip">client <b>open-source</b></span>
+      </div>
+    </div>
+
+    <!-- Schematic -->
+    <figure class="min-w-0">
+      <svg
+        viewBox="0 0 720 520"
+        role="img"
+        aria-labelledby="schemaTitle schemaDesc"
+        class="block h-auto w-full"
+      >
+        <title id="schemaTitle">byndr platform schematic</title>
+        <desc id="schemaDesc">
+          Wiring schematic: EPLAN sources (article database, PDF export, BOM
+          export) route through the byndr platform hub to two outputs — reviewed
+          data proposals for the gym, and event destinations Microsoft Teams,
+          email and webhook. A dashed return path shows human-approved changes
+          written back into EPLAN.
+        </desc>
+
+        <!-- traces: sources -> hub -->
+        <path class="svg-trace" d="M160 110 L230 110 L230 210 L300 210"></path>
+        <path class="svg-trace" d="M160 260 L300 260"></path>
+        <path class="svg-trace" d="M160 410 L230 410 L230 310 L300 310"></path>
+
+        <!-- traces: hub -> outputs -->
+        <path class="svg-trace" d="M420 200 L490 200 L490 120 L560 120"></path>
+        <path class="svg-trace" d="M420 240 L510 240 L510 220 L560 220"></path>
+        <path class="svg-trace" d="M420 280 L510 280 L510 300 L560 300"></path>
+        <path class="svg-trace" d="M420 320 L490 320 L490 400 L560 400"></path>
+
+        <!-- write-back loop: hub -> back into EPLAN (human-approved) -->
+        <path
+          class="svg-trace-dashed"
+          d="M360 336 L360 472 L85 472 L85 132"></path>
+
+        <!-- solder-dot junctions -->
+        <circle class="svg-junction" cx="230" cy="110" r="2.5"></circle>
+        <circle class="svg-junction" cx="230" cy="210" r="2.5"></circle>
+        <circle class="svg-junction" cx="230" cy="410" r="2.5"></circle>
+        <circle class="svg-junction" cx="230" cy="310" r="2.5"></circle>
+        <circle class="svg-junction" cx="490" cy="200" r="2.5"></circle>
+        <circle class="svg-junction" cx="490" cy="120" r="2.5"></circle>
+        <circle class="svg-junction" cx="510" cy="240" r="2.5"></circle>
+        <circle class="svg-junction" cx="510" cy="220" r="2.5"></circle>
+        <circle class="svg-junction" cx="510" cy="280" r="2.5"></circle>
+        <circle class="svg-junction" cx="510" cy="300" r="2.5"></circle>
+        <circle class="svg-junction" cx="490" cy="320" r="2.5"></circle>
+        <circle class="svg-junction" cx="490" cy="400" r="2.5"></circle>
+
+        <!-- annotations (second-read detail) -->
+        <text class="svg-anno" x="176" y="100">snapshot</text>
+        <text class="svg-anno" x="188" y="250">X-Api-Key</text>
+        <text class="svg-anno" x="176" y="426">evt_bus</text>
+        <text class="svg-anno" x="430" y="192">gym · review</text>
+
+        <!-- source terminals -->
+        <g>
+          <rect class="svg-box" x="10" y="88" width="150" height="44"></rect>
+          <text class="svg-label" x="26" y="115">article-db</text>
+          <rect class="svg-box" x="10" y="238" width="150" height="44"></rect>
+          <text class="svg-label" x="26" y="265">pdf-exported</text>
+          <rect class="svg-box" x="10" y="388" width="150" height="44"></rect>
+          <text class="svg-label" x="26" y="415">bom-exported</text>
+          <text class="svg-anno" x="10" y="76">SRC &#183; EPLAN</text>
+        </g>
+
+        <!-- hub module -->
+        <g>
+          <rect class="svg-hub" x="300" y="184" width="120" height="152"></rect>
+          <line class="svg-pin" x1="293" y1="210" x2="300" y2="210"></line>
+          <line class="svg-pin" x1="293" y1="260" x2="300" y2="260"></line>
+          <line class="svg-pin" x1="293" y1="310" x2="300" y2="310"></line>
+          <line class="svg-pin" x1="420" y1="200" x2="427" y2="200"></line>
+          <line class="svg-pin" x1="420" y1="240" x2="427" y2="240"></line>
+          <line class="svg-pin" x1="420" y1="280" x2="427" y2="280"></line>
+          <line class="svg-pin" x1="420" y1="320" x2="427" y2="320"></line>
+          <text class="svg-hub-title" x="360" y="258" text-anchor="middle"
+            >byndr</text
+          >
+          <text class="svg-hub-sub" x="360" y="278" text-anchor="middle"
+            >U1 &#183; PLATFORM</text
+          >
+          <text class="svg-anno" x="300" y="176">IC1</text>
+        </g>
+
+        <!-- output terminals -->
+        <g>
+          <rect class="svg-box" x="560" y="98" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="125">proposals</text>
+          <rect class="svg-box" x="560" y="198" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="225">Teams</text>
+          <rect class="svg-box" x="560" y="278" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="305">email</text>
+          <rect class="svg-box" x="560" y="378" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="405">webhook</text>
+          <text class="svg-anno" x="560" y="86">DST &#183; GYM + AUTOMATIONS</text>
+        </g>
+
+        <!-- write-back label -->
+        <text class="svg-anno" x="150" y="466">approved writes &#8594; eplan</text>
+
+        <!-- drafting title block -->
+        <g>
+          <rect
+            x="560"
+            y="464"
+            width="150"
+            height="44"
+            fill="none"
+            stroke="var(--color-ink-35)"
+            stroke-width="1"></rect>
+          <line
+            x1="560"
+            y1="486"
+            x2="710"
+            y2="486"
+            stroke="var(--color-ink-35)"
+            stroke-width="1"></line>
+          <text class="svg-anno" x="568" y="479">byndr &#183; eplan platform</text>
+          <text class="svg-anno" x="568" y="501">sheet 1/1 &#183; rev A</text>
+        </g>
+
+        <!-- animated signal pulses -->
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="2.4s"
+            begin="-0.2s"
+            repeatCount="indefinite"
+            path="M160 110 L230 110 L230 210 L300 210"></animateMotion>
+        </circle>
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="2.0s"
+            begin="-1.1s"
+            repeatCount="indefinite"
+            path="M160 260 L300 260"></animateMotion>
+        </circle>
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="2.4s"
+            begin="-1.7s"
+            repeatCount="indefinite"
+            path="M160 410 L230 410 L230 310 L300 310"></animateMotion>
+        </circle>
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="2.2s"
+            begin="-0.6s"
+            repeatCount="indefinite"
+            path="M420 200 L490 200 L490 120 L560 120"></animateMotion>
+        </circle>
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="1.9s"
+            begin="-1.4s"
+            repeatCount="indefinite"
+            path="M420 240 L510 240 L510 220 L560 220"></animateMotion>
+        </circle>
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="1.9s"
+            begin="-0.9s"
+            repeatCount="indefinite"
+            path="M420 280 L510 280 L510 300 L560 300"></animateMotion>
+        </circle>
+        <circle class="svg-pulse" r="3">
+          <animateMotion
+            dur="2.2s"
+            begin="-1.9s"
+            repeatCount="indefinite"
+            path="M420 320 L490 320 L490 400 L560 400"></animateMotion>
+        </circle>
+
+        <!-- static pulses for prefers-reduced-motion -->
+        <circle class="svg-pulse-static" cx="230" cy="160" r="3"></circle>
+        <circle class="svg-pulse-static" cx="230" cy="260" r="3"></circle>
+        <circle class="svg-pulse-static" cx="490" cy="160" r="3"></circle>
+        <circle class="svg-pulse-static" cx="490" cy="360" r="3"></circle>
+      </svg>
+      <figcaption
+        class="mt-4 flex justify-between border-t border-[var(--color-ink-12)] pt-3 font-mono text-[11px] tracking-wide text-[var(--color-muted)]"
+      >
+        <span>fig. 01 — byndr platform schematic</span>
+        <span class="hidden sm:inline">eplan &#8594; byndr &#8594; gym + automations</span
+        >
+      </figcaption>
+    </figure>
+  </div>
+</section>

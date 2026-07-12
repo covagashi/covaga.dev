@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="byndr — one platform for your EPLAN data and events">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="rgba(231,236,245,0.05)" stroke-width="1" />
+    </pattern>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5b8aff" stop-opacity="0.16" />
+      <stop offset="1" stop-color="#0b0c0f" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0b0c0f" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+
+  <!-- wordmark -->
+  <text x="80" y="150" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="52" font-weight="700" fill="#e7e9ee" letter-spacing="-1">byndr</text>
+  <rect x="252" y="118" width="150" height="34" rx="3" fill="none" stroke="rgba(231,233,238,0.18)" />
+  <text x="270" y="141" font-family="'IBM Plex Mono',monospace" font-size="16" fill="#9aa1ad" letter-spacing="1">eplan platform</text>
+
+  <!-- headline -->
+  <text x="80" y="320" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="70" font-weight="700" fill="#e7e9ee" letter-spacing="-2">your eplan data</text>
+  <text x="80" y="400" font-family="'Inter','Segoe UI',system-ui,sans-serif" font-size="70" font-weight="700" fill="#e7e9ee" letter-spacing="-2">and events, in one place<tspan fill="#5b8aff">.</tspan></text>
+
+  <!-- subline -->
+  <text x="82" y="470" font-family="'IBM Plex Mono',monospace" font-size="22" fill="#9aa1ad">data + gym &#183; automations &#183; the cloud never writes eplan</text>
+
+  <!-- schematic hint: source -> hub -> out -->
+  <g transform="translate(82,520)">
+    <line x1="0" y1="20" x2="70" y2="20" stroke="rgba(231,233,238,0.34)" stroke-width="2" />
+    <circle cx="0" cy="20" r="4" fill="#5b8aff" />
+    <rect x="70" y="4" width="120" height="32" rx="2" fill="#0b0c0f" stroke="#5b8aff" stroke-width="1.5" />
+    <text x="130" y="26" font-family="'IBM Plex Mono',monospace" font-size="15" fill="#e7e9ee" text-anchor="middle">byndr</text>
+    <line x1="190" y1="20" x2="260" y2="20" stroke="rgba(231,233,238,0.34)" stroke-width="2" />
+    <circle cx="260" cy="20" r="4" fill="#5b8aff" />
+  </g>
+</svg>

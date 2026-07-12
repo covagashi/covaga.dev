@@ -1,0 +1,75 @@
+---
+const steps = [
+  {
+    n: "01",
+    title: "Ingest a snapshot",
+    body: "A read-only copy of your article database is ingested into your private tenant. Real data stays yours — it never enters our repository.",
+  },
+  {
+    n: "02",
+    title: "The LLM proposes",
+    body: "Through an MCP server, a model reads article context and submits a value for a missing translation or description. It only ever proposes.",
+  },
+  {
+    n: "03",
+    title: "Validators decide",
+    body: "Deterministic, server-side checks accept or reject each value. The model proposes; the server decides. No value is taken on trust.",
+  },
+  {
+    n: "04",
+    title: "Review like a pull request",
+    body: "A human approves or rejects each proposal. Approved ones enter a write queue; rejected ones close the loop with feedback.",
+  },
+  {
+    n: "05",
+    title: "A local client writes back",
+    body: "A small client next to EPLAN polls the queue and applies only approved changes. The cloud never writes to EPLAN directly.",
+  },
+];
+---
+
+<section
+  id="gym"
+  class="mx-auto max-w-6xl scroll-mt-20 border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-24"
+>
+  <div class="max-w-2xl">
+    <span class="eyebrow">data &#183; gym</span>
+    <h2
+      class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
+    >
+      Close the gaps without guessing.
+    </h2>
+    <p class="mt-3 max-w-xl text-base leading-relaxed text-[var(--color-muted)]">
+      The gym is a loop, not a batch job. An LLM proposes text values; a
+      deterministic validator is the only thing that can accept them; a human
+      signs off before anything is written back.
+    </p>
+  </div>
+
+  <ol
+    class="mt-10 grid gap-px overflow-hidden border border-[var(--color-ink-12)] sm:grid-cols-2 lg:grid-cols-5"
+  >
+    {
+      steps.map((step) => (
+        <li class="flex flex-col bg-[var(--color-panel)] p-6 outline outline-1 outline-[var(--color-ink-12)]">
+          <span class="font-mono text-sm font-semibold text-[var(--color-accent)]">
+            {step.n}
+          </span>
+          <h3 class="mt-4 text-base font-semibold text-[var(--color-ink)]">
+            {step.title}
+          </h3>
+          <p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+            {step.body}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p
+    class="mt-6 font-mono text-xs leading-relaxed text-[var(--color-muted)]"
+  >
+    overlay, never mutation — the gym's only output is proposal rows. your
+    ingested data is read-only.
+  </p>
+</section>

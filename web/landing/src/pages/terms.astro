@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../layouts/base-layout.astro";
+import SiteNav from "../components/site-nav.astro";
+import SiteFooter from "../components/site-footer.astro";
+import LegalPage from "../components/legal-page.astro";
+
+const sections = [
+  {
+    heading: "The service",
+    body: [
+      "byndr is a per-tenant platform for EPLAN teams: a gym that proposes reviewed text enrichments, and an automations pillar that routes EPLAN events to destinations you configure. The clients are open source; the hosted service, when offered, would run under terms like these.",
+    ],
+  },
+  {
+    heading: "Your responsibilities",
+    body: [
+      "You are responsible for holding valid licences for the EPLAN software you run and for the destination accounts you connect. You must only ingest and route data you are authorised to move.",
+    ],
+  },
+  {
+    heading: "The open-source clients",
+    body: [
+      "The local clients are provided under the MIT licence, as-is, without warranty. You are free to read, audit, run and modify them within the terms of that licence.",
+    ],
+  },
+  {
+    heading: "Human-approved writes",
+    body: [
+      "The cloud never writes to EPLAN directly. It produces proposals and a write queue; a local client applies only human-approved changes. You keep control of what is written back.",
+    ],
+  },
+  {
+    heading: "Availability & liability",
+    body: [
+      "This is early-access software under active development; we do not guarantee uninterrupted service. To the extent permitted by law, byndr is not liable for indirect or consequential loss arising from use of the service. Keep independent backups of your data.",
+    ],
+  },
+  {
+    heading: "Changes",
+    body: [
+      "We may update these placeholder terms as the product develops. Continued use after a change constitutes acceptance of the updated terms.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="byndr — Terms (placeholder)"
+  description="Placeholder terms for byndr, an open platform for EPLAN teams. Early-access draft, not a binding contract."
+>
+  <SiteNav />
+  <LegalPage
+    eyebrow="legal · terms"
+    title="Terms of Service"
+    updated="2026-07-12"
+    intro="Plain placeholder terms for an early-access product: run a licensed EPLAN, move only data you're allowed to, and keep your own backups."
+    sections={sections}
+  />
+  <SiteFooter />
+</BaseLayout>

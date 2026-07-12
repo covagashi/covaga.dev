@@ -1,0 +1,97 @@
+---
+const year = new Date().getFullYear();
+
+const nav = [
+  { href: "#gym", label: "data" },
+  { href: "#events", label: "automations" },
+  { href: "#how", label: "platform" },
+  { href: "#access", label: "early access" },
+];
+
+const legal = [
+  { href: "/privacy", label: "privacy" },
+  { href: "/terms", label: "terms" },
+  { href: "mailto:hello@covaga.xyz", label: "contact" },
+];
+---
+
+<footer class="border-t border-[var(--color-ink-12)]">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-8 border-x border-[var(--color-ink-12)] px-4 py-10 sm:px-6 lg:flex-row lg:items-start lg:justify-between"
+  >
+    <div class="max-w-sm">
+      <div class="flex items-baseline gap-3">
+        <p class="text-lg font-bold tracking-tight text-[var(--color-ink)]">
+          byndr
+        </p>
+        <span
+          class="font-mono text-[11px] tracking-wide text-[var(--color-muted)]"
+          >eplan platform</span
+        >
+      </div>
+      <p class="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+        An open platform for EPLAN teams: reviewed data enrichment and event
+        automations, in one place. The cloud never writes to EPLAN directly.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-x-12 gap-y-6">
+      <nav aria-label="Sections">
+        <p
+          class="font-mono text-[11px] uppercase tracking-wider text-[var(--color-ink-35)]"
+        >
+          product
+        </p>
+        <ul class="mt-3 flex flex-col gap-2 font-mono text-sm">
+          {
+            nav.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-[var(--color-ink-70)] transition-colors hover:text-[var(--color-ink)]"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav aria-label="Legal">
+        <p
+          class="font-mono text-[11px] uppercase tracking-wider text-[var(--color-ink-35)]"
+        >
+          legal
+        </p>
+        <ul class="mt-3 flex flex-col gap-2 font-mono text-sm">
+          {
+            legal.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-[var(--color-ink-70)] transition-colors hover:text-[var(--color-ink)]"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="border-t border-[var(--color-ink-12)]">
+    <div
+      class="mx-auto flex max-w-6xl flex-col gap-2 border-x border-[var(--color-ink-12)] px-4 py-4 font-mono text-xs text-[var(--color-muted)] sm:flex-row sm:items-center sm:justify-between sm:px-6"
+    >
+      <p>&copy; {year} byndr — early access, name provisional</p>
+      <p class="max-w-xl sm:text-right">
+        byndr is an independent project, not affiliated with or endorsed by
+        EPLAN or any ECAD vendor. All product names are trademarks of their
+        respective owners.
+      </p>
+    </div>
+  </div>
+</footer>

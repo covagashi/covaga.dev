@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/base-layout.astro";
+import SiteNav from "../components/site-nav.astro";
+import HeroSection from "../components/hero-section.astro";
+import PillarsSection from "../components/pillars-section.astro";
+import ProblemSolutionSection from "../components/problem-solution-section.astro";
+import GymSection from "../components/gym-section.astro";
+import EventsDestinationsSection from "../components/events-destinations-section.astro";
+import HowItWorksSection from "../components/how-it-works-section.astro";
+import PricingSection from "../components/pricing-section.astro";
+import FaqSection from "../components/faq-section.astro";
+import SiteFooter from "../components/site-footer.astro";
+---
+
+<BaseLayout>
+  <SiteNav />
+  <main>
+    <HeroSection />
+    <PillarsSection />
+    <ProblemSolutionSection />
+    <GymSection />
+    <EventsDestinationsSection />
+    <HowItWorksSection />
+    <PricingSection />
+    <FaqSection />
+  </main>
+  <SiteFooter />
+</BaseLayout>

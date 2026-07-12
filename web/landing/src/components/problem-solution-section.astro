@@ -1,0 +1,86 @@
+---
+const today = [
+  {
+    title: "Gappy article data",
+    body: "Missing translations and descriptions patched by hand — spreadsheet round-trips, inconsistent wording, and gaps that differ language by language.",
+  },
+  {
+    title: "One-off local macros",
+    body: "Export scripts living on a single workstation. You own the maintenance forever, and they break when a colleague changes machines.",
+  },
+  {
+    title: "Events trapped on the desktop",
+    body: "A PDF or BOM export never leaves the CAD PC. Nobody downstream sees it unless someone remembers to attach it somewhere.",
+  },
+];
+
+const solution = [
+  {
+    title: "A reviewed enrichment loop",
+    body: "The LLM proposes, deterministic server-side validators decide, and a human approves each change like a pull request — nothing is guessed into your database.",
+  },
+  {
+    title: "Configured routes, not code",
+    body: "Point an EPLAN event at a destination and you're done. Turn a PDF export into a Teams notice or a webhook call in minutes.",
+  },
+  {
+    title: "The cloud never writes EPLAN",
+    body: "byndr produces proposals and a write queue only. A small local client applies human-approved changes back into EPLAN — that boundary is a hard invariant.",
+  },
+];
+---
+
+<section
+  class="mx-auto max-w-6xl border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-24"
+>
+  <div class="max-w-2xl">
+    <span class="eyebrow">the shift</span>
+    <h2
+      class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
+    >
+      One platform instead of scattered fixes.
+    </h2>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-2">
+    <article class="panel p-6 sm:p-8">
+      <h3
+        class="font-mono text-xs font-medium uppercase tracking-wider text-[var(--color-muted)]"
+      >
+        // today
+      </h3>
+      <ul class="mt-5 space-y-5">
+        {
+          today.map((item) => (
+            <li class="border-l border-[var(--color-ink-12)] pl-4">
+              <p class="font-semibold text-[var(--color-ink)]">{item.title}</p>
+              <p class="mt-1 text-base leading-relaxed text-[var(--color-muted)]">
+                {item.body}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+
+    <article class="panel-hub p-6 sm:p-8">
+      <h3
+        class="font-mono text-xs font-medium uppercase tracking-wider text-[var(--color-accent)]"
+      >
+        // with byndr
+      </h3>
+      <ul class="mt-5 space-y-5">
+        {
+          solution.map((item) => (
+            <li class="border-l border-[var(--color-accent)] pl-4">
+              <p class="font-semibold text-[var(--color-ink)]">{item.title}</p>
+              <p class="mt-1 text-base leading-relaxed text-[var(--color-muted)]">
+                {item.body}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+  </div>
+</section>

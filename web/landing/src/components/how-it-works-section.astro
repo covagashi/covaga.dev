@@ -1,0 +1,58 @@
+---
+const steps = [
+  {
+    n: "01",
+    title: "Clients run next to EPLAN",
+    body: "A snapshot client, an event client, and a write client — each doing one small job on the machine that runs EPLAN. Nobody changes how they work.",
+  },
+  {
+    n: "02",
+    title: "The cloud coordinates",
+    body: "Per-tenant, byndr ingests articles, runs the gym's deterministic validators, dispatches events, and holds the write queue. Credentials stay server-side.",
+  },
+  {
+    n: "03",
+    title: "Approved changes flow back",
+    body: "The write client polls for human-approved changes and applies them in EPLAN. The cloud never writes to EPLAN directly — that boundary is fixed.",
+  },
+];
+---
+
+<section
+  id="how"
+  class="mx-auto max-w-6xl scroll-mt-20 border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-24"
+>
+  <div class="max-w-2xl">
+    <span class="eyebrow">how it works</span>
+    <h2
+      class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
+    >
+      Small clients next to EPLAN, one cloud.
+    </h2>
+    <p class="mt-3 max-w-xl text-base leading-relaxed text-[var(--color-muted)]">
+      Both pillars share the same shape: lightweight clients on the desktop, a
+      per-tenant cloud that coordinates, and a hard rule that only a local client
+      ever writes to EPLAN.
+    </p>
+  </div>
+
+  <ol
+    class="mt-10 grid gap-px overflow-hidden border border-[var(--color-ink-12)] md:grid-cols-3"
+  >
+    {
+      steps.map((step) => (
+        <li class="flex flex-col bg-[var(--color-panel)] p-6 outline outline-1 outline-[var(--color-ink-12)] sm:p-8">
+          <span class="font-mono text-sm font-semibold text-[var(--color-accent)]">
+            {step.n}
+          </span>
+          <h3 class="mt-4 text-lg font-semibold text-[var(--color-ink)]">
+            {step.title}
+          </h3>
+          <p class="mt-2 text-base leading-relaxed text-[var(--color-muted)]">
+            {step.body}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+</section>

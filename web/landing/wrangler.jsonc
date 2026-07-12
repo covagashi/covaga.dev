@@ -1,0 +1,6 @@
+{
+  // Cloudflare Pages project for the byndr-dev marketing landing (Astro static).
+  "name": "byndr-dev-landing",
+  "compatibility_date": "2025-07-01",
+  "pages_build_output_dir": "dist"
+}

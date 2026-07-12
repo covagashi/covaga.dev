@@ -1,0 +1,343 @@
+@import "tailwindcss";
+
+/* Self-hosted faces: Inter (display/body) + IBM Plex Mono (labels/identifiers). */
+@import "@fontsource-variable/inter";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* ---------------------------------------------------------------------------
+   byndr — graphite platform theme
+   Dark drafting surface, blue signal accent used sparingly, wiring-schematic
+   diagram. Retuned from the source "Blueprint" system to match the byndr-dev
+   product design language (see app/src/styles/tokens.css).
+--------------------------------------------------------------------------- */
+@theme {
+  /* Surfaces */
+  --color-paper: #0b0c0f; /* Graphite base */
+  --color-panel: #14161c; /* Raised surface (chips, code) */
+
+  /* Ink ramp (light-on-dark, WCAG AA on graphite) */
+  --color-ink: #e7e9ee; /* Primary text */
+  --color-ink-70: rgba(231, 233, 238, 0.7);
+  --color-ink-55: rgba(231, 233, 238, 0.55);
+  --color-ink-35: rgba(231, 233, 238, 0.34);
+  --color-ink-12: rgba(231, 233, 238, 0.11);
+  --color-muted: #9aa1ad; /* Muted text (>= 4.5:1 on graphite) */
+
+  /* Single accent — Signal Blue */
+  --color-accent: #5b8aff; /* Signal Blue */
+  --color-accent-deep: #7aa0ff; /* Brighter — hover / links */
+
+  /* Drafting grid */
+  --color-grid-line: rgba(231, 236, 245, 0.07);
+  --color-grid-major: rgba(231, 236, 245, 0.045);
+
+  /* Type */
+  --font-display: "Inter Variable", "Segoe UI", system-ui, -apple-system,
+    BlinkMacSystemFont, Roboto, sans-serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, -apple-system,
+    BlinkMacSystemFont, Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, Menlo,
+    monospace;
+
+  /* Motion */
+  --ease-signal: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------------------
+   Grid-reveal overlay — the drafting grid "develops" under the cursor.
+--------------------------------------------------------------------------- */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      var(--color-grid-line) 0,
+      var(--color-grid-line) 1px,
+      transparent 1px,
+      transparent 24px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--color-grid-line) 0,
+      var(--color-grid-line) 1px,
+      transparent 1px,
+      transparent 24px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--color-grid-major) 0,
+      var(--color-grid-major) 1px,
+      transparent 1px,
+      transparent 120px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--color-grid-major) 0,
+      var(--color-grid-major) 1px,
+      transparent 1px,
+      transparent 120px
+    );
+  -webkit-mask-image: radial-gradient(
+    circle 200px at var(--mx, -400px) var(--my, -400px),
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    circle 200px at var(--mx, -400px) var(--my, -400px),
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity 300ms var(--ease-signal);
+}
+
+.grid-overlay.is-live {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-overlay {
+    transition: none;
+  }
+}
+
+/* Content sits above the drafting grid. */
+.site-shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Reusable component classes
+--------------------------------------------------------------------------- */
+
+/* Schematic terminal box: square-cornered, hairline stroke. */
+.term-box {
+  border: 1px solid var(--color-ink-55);
+  background-color: var(--color-paper);
+  border-radius: 2px;
+}
+
+/* Panel: a calmer bordered surface. */
+.panel {
+  border: 1px solid var(--color-ink-12);
+  background-color: var(--color-panel);
+  border-radius: 2px;
+}
+
+.panel-hub {
+  border: 1.5px solid var(--color-accent);
+  background-color: var(--color-panel);
+  border-radius: 2px;
+}
+
+/* Mono chip / tag. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-70);
+  border: 1px solid var(--color-ink-12);
+  background-color: var(--color-panel);
+  border-radius: 2px;
+  padding: 0.3rem 0.55rem;
+}
+
+.chip b {
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+/* Mono eyebrow with a leading rule. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background: var(--color-accent);
+  flex: none;
+}
+
+.eyebrow .arrow {
+  color: var(--color-accent);
+}
+
+/* Primary button — solid signal blue, dark ink label. */
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  color: #07080b;
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 2px;
+  padding: 0.75rem 1.5rem;
+  line-height: 1;
+  transition:
+    background-color 160ms var(--ease-signal),
+    border-color 160ms var(--ease-signal);
+}
+
+/* Ghost button. */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px solid var(--color-ink-12);
+  border-radius: 2px;
+  padding: 0.75rem 1.5rem;
+  line-height: 1;
+  transition:
+    border-color 160ms var(--ease-signal),
+    background-color 160ms var(--ease-signal);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn-solid:hover {
+    background: var(--color-accent-deep);
+    border-color: var(--color-accent-deep);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-accent);
+    background: rgba(91, 138, 255, 0.06);
+  }
+}
+
+/* Visible focus states on every interactive element. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Schematic SVG helpers (used by the hero diagram). */
+.svg-box {
+  fill: var(--color-paper);
+  stroke: var(--color-ink-55);
+  stroke-width: 1;
+}
+.svg-hub {
+  fill: var(--color-paper);
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+}
+.svg-trace {
+  fill: none;
+  stroke: var(--color-ink-35);
+  stroke-width: 1.5;
+}
+.svg-trace-dashed {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.25;
+  stroke-dasharray: 4 4;
+  opacity: 0.7;
+}
+.svg-junction {
+  fill: var(--color-ink-55);
+}
+.svg-pin {
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+}
+.svg-pulse {
+  fill: var(--color-accent);
+}
+.svg-pulse-static {
+  fill: var(--color-accent);
+  display: none;
+}
+.svg-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--color-ink);
+  letter-spacing: 0.02em;
+}
+.svg-anno {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--color-ink-55);
+  letter-spacing: 0.05em;
+}
+.svg-hub-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  fill: var(--color-ink);
+  letter-spacing: -0.02em;
+}
+.svg-hub-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--color-ink-55);
+  letter-spacing: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svg-pulse {
+    display: none;
+  }
+  .svg-pulse-static {
+    display: block;
+  }
+}

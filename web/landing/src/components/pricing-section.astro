@@ -1,0 +1,73 @@
+---
+// Placeholder / early-access — no pricing, no numbers, no commitments.
+const facts = [
+  {
+    title: "Open source, self-hostable",
+    body: "byndr runs on Cloudflare (Workers + D1 + Durable Objects). Deploy it to your own account, or wait for the hosted option.",
+  },
+  {
+    title: "Per-tenant from day one",
+    body: "One tenant, one auth model, both pillars. Your setup is isolated from everyone else's.",
+  },
+  {
+    title: "You bring your own data",
+    body: "Real article data lives in your private database — never in our repository. The gym only ever proposes.",
+  },
+];
+
+const mailto = `mailto:hello@covaga.xyz?subject=${encodeURIComponent(
+  "byndr — early access",
+)}`;
+---
+
+<section
+  id="access"
+  class="mx-auto max-w-6xl scroll-mt-20 border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-24"
+>
+  <div class="max-w-2xl">
+    <span class="eyebrow">early access</span>
+    <h2
+      class="mt-4 text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl"
+    >
+      byndr is in early access.
+    </h2>
+    <p class="mt-3 text-base leading-relaxed text-[var(--color-muted)]">
+      No pricing yet, and no sign-up wall. If you run EPLAN and want to try the
+      data loop or the automations, join the early-access list and help shape
+      what ships first. Early members help set where this goes.
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-3">
+    {
+      facts.map((fact) => (
+        <article class="panel flex flex-col p-6 sm:p-8">
+          <span
+            aria-hidden="true"
+            class="inline-block h-2 w-2 flex-none bg-[var(--color-accent)]"
+          />
+          <h3 class="mt-4 text-lg font-semibold text-[var(--color-ink)]">
+            {fact.title}
+          </h3>
+          <p class="mt-2 text-base leading-relaxed text-[var(--color-muted)]">
+            {fact.body}
+          </p>
+        </article>
+      ))
+    }
+  </div>
+
+  <div
+    class="mt-10 flex flex-col items-start gap-4 border-t border-[var(--color-ink-12)] pt-8 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p class="max-w-md text-base text-[var(--color-muted)]">
+      Want in? Send a note and tell us which pillar matters most to your team.
+    </p>
+    <a href={mailto} class="btn-solid w-full sm:w-auto"> request early access </a>
+  </div>
+
+  <p class="mt-6 font-mono text-xs leading-relaxed text-[var(--color-ink-35)]">
+    placeholder — no numbers, no tiers, no commitments. this page describes an
+    early-access product under active development.
+  </p>
+</section>

@@ -1,0 +1,143 @@
+---
+const links = [
+  { href: "#gym", label: "data" },
+  { href: "#events", label: "automations" },
+  { href: "#how", label: "platform" },
+  { href: "#faq", label: "faq" },
+];
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-[var(--color-ink-12)] bg-[rgba(11,12,15,0.82)] backdrop-blur-md"
+>
+  <nav
+    aria-label="Primary"
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
+  >
+    <div class="flex items-baseline gap-4">
+      <a
+        href="#top"
+        class="text-xl font-bold tracking-tight text-[var(--color-ink)]"
+      >
+        byndr
+      </a>
+      <span
+        class="hidden rounded-sm border border-[var(--color-ink-12)] px-2 py-0.5 font-mono text-[11px] font-medium tracking-wide text-[var(--color-muted)] sm:inline-block"
+      >
+        eplan platform
+      </span>
+    </div>
+
+    <ul class="hidden items-center gap-8 md:flex">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="border-b border-transparent pb-1 font-mono text-[13px] font-medium tracking-wide text-[var(--color-ink-70)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-ink)]"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a href="#access" class="btn-solid hidden text-sm md:inline-flex">
+        early access
+      </a>
+
+      <button
+        type="button"
+        id="nav-menu-toggle"
+        aria-expanded="false"
+        aria-controls="nav-menu-panel"
+        class="grid h-11 w-11 place-items-center rounded-sm border border-[var(--color-ink-12)] text-[var(--color-ink)] md:hidden"
+      >
+        <span class="sr-only">Toggle menu</span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div
+    id="nav-menu-panel"
+    data-open="false"
+    class="hidden border-t border-[var(--color-ink-12)] px-4 py-3 sm:px-6 md:hidden"
+  >
+    <ul class="flex flex-col gap-1">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              data-nav-menu-link
+              class="flex min-h-11 items-center rounded-sm px-2 font-mono text-sm text-[var(--color-ink-70)] transition-colors hover:text-[var(--color-ink)]"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="mt-2">
+        <a
+          href="#access"
+          data-nav-menu-link
+          class="btn-solid flex min-h-11 w-full items-center justify-center text-sm"
+        >
+          early access
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("nav-menu-toggle");
+  const panel = document.getElementById("nav-menu-panel");
+
+  function closeMenu() {
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", "false");
+    panel.dataset.open = "false";
+    panel.classList.add("hidden");
+  }
+
+  function openMenu() {
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", "true");
+    panel.dataset.open = "true";
+    panel.classList.remove("hidden");
+  }
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = panel?.dataset.open === "true";
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  panel
+    ?.querySelectorAll<HTMLAnchorElement>("[data-nav-menu-link]")
+    .forEach((link) => {
+      link.addEventListener("click", () => closeMenu());
+    });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+</script>
