@@ -1,0 +1,61 @@
+---
+import { getLocaleFromUrl, localizePath } from "../i18n/config";
+import { useContent } from "../i18n/content";
+import LanguageSwitcher from "./language-switcher.astro";
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const home = localizePath("/", lang);
+const hub = localizePath("/hub", lang);
+const nav = t.umbrella.nav;
+
+const links = [
+  { href: "#tools", label: nav.tools },
+  { href: "#open", label: nav.open },
+];
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-[var(--color-ink-12)] bg-[rgba(255,255,255,0.82)] backdrop-blur-md"
+>
+  <nav
+    aria-label={t.a11y.primaryNav}
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
+  >
+    <a href={home + "#top"} class="flex items-baseline gap-2">
+      <span class="text-xl font-bold tracking-tight text-[var(--color-ink)]"
+        >covaga<span class="text-[var(--color-accent)]">.</span></span
+      >
+      <span
+        class="hidden font-mono text-[11px] tracking-wide text-[var(--color-muted)] sm:inline"
+        >// eplan toolkit</span
+      >
+    </a>
+
+    <ul class="hidden items-center gap-8 md:flex">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="border-b border-transparent pb-1 font-mono text-[13px] font-medium tracking-wide text-[var(--color-ink-70)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-ink)]"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={hub}
+        class="btn-solid hidden text-sm sm:inline-flex"
+        style="padding:0.6rem 1.1rem"
+      >
+        {nav.getHub}
+      </a>
+      <LanguageSwitcher />
+    </div>
+  </nav>
+</header>

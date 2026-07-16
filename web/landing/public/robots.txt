@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://byndr.dev/sitemap-index.xml
+Sitemap: https://covaga.dev/sitemap-index.xml

@@ -5,15 +5,15 @@ import LanguageSwitcher from "./language-switcher.astro";
 
 const lang = getLocaleFromUrl(Astro.url);
 const t = useContent(lang);
-const home = localizePath("/", lang);
+const hub = localizePath("/hub", lang);
 const signupHref = localizePath("/signup", lang);
 
-// Anchor links go through `home` so they also work from non-home pages (e.g. /signup).
+// The Hub sections live on /hub; anchors route there so they work from any page.
 const links = [
-  { href: home + "#how-it-works", label: t.nav.how },
-  { href: home + "#events", label: t.nav.events },
-  { href: home + "#pricing", label: t.nav.pricing },
-  { href: home + "#faq", label: t.nav.faq },
+  { href: hub + "#how-it-works", label: t.nav.how },
+  { href: hub + "#events", label: t.nav.events },
+  { href: hub + "#pricing", label: t.nav.pricing },
+  { href: hub + "#faq", label: t.nav.faq },
 ];
 ---
 
@@ -26,10 +26,10 @@ const links = [
   >
     <div class="flex items-baseline gap-4">
       <a
-        href={home + "#top"}
+        href={hub + "#top"}
         class="text-xl font-bold tracking-tight text-[var(--color-ink)]"
       >
-        byndr
+        covaga
       </a>
       <span
         class="hidden rounded-sm border border-[var(--color-ink-12)] px-2 py-0.5 font-mono text-[11px] font-medium tracking-wide text-[var(--color-muted)] sm:inline-block"

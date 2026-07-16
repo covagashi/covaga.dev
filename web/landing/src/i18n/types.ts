@@ -50,15 +50,106 @@ export interface LegalDoc {
   sections: LegalSection[];
 }
 
+/** One spec chip: a translated-ish label and a technical value (value NOT translated). */
+export interface SpecChip {
+  label: string;
+  value: string;
+}
+
+/** A link on a tool module. `label` and `href` are NOT translated (technical). */
+export interface ToolLink {
+  label: string;
+  href: string;
+}
+
+/** One of the three tools presented on the umbrella landing. */
+export interface ToolModule {
+  /** Mono designator, e.g. "U1 · MCP" — NOT translated. */
+  ref: string;
+  /** Tool name / repo slug — NOT translated. */
+  name: string;
+  /** Short benefit line — translated. */
+  what: string;
+  /** One-paragraph description — translated. */
+  body: string;
+  /** Technical spec chips — values NOT translated. */
+  chips: SpecChip[];
+  /** Availability label — translated (e.g. "open source"). */
+  status: string;
+  /** Status style selector — NOT translated. */
+  statusKind: "oss" | "hosted";
+  /** Outbound links (GitHub, subdomain) — NOT translated. */
+  links: ToolLink[];
+  /** When true, the module is stroked in the accent colour (the platform). */
+  primary: boolean;
+}
+
+/** The umbrella landing (covaga.dev root) that presents all three tools. */
+export interface UmbrellaContent {
+  nav: {
+    tools: string;
+    open: string;
+    getHub: string;
+  };
+  hero: {
+    eyebrow: string;
+    /** Heading; the trailing period is rendered as the accent by the component. */
+    heading: string;
+    /** Lead paragraph, may contain an inline <strong> — rendered as HTML. */
+    leadHtml: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    /** Technical spec chips under the hero — values NOT translated. */
+    specChips: SpecChip[];
+    schemaTitle: string;
+    schemaDesc: string;
+    figCaption: string;
+    /** Short mono caption on the right of the figure — NOT translated. */
+    figFlow: string;
+  };
+  tools: {
+    eyebrow: string;
+    heading: string;
+    lead: string;
+    statusOssLabel: string;
+    statusHostedLabel: string;
+    items: ToolModule[];
+  };
+  principles: {
+    eyebrow: string;
+    heading: string;
+    items: TitleBody[];
+  };
+  cta: {
+    eyebrow: string;
+    heading: string;
+    primary: string;
+    secondary: string;
+  };
+  footer: {
+    tagline: string;
+    net: string;
+    toolsLabel: string;
+    codeLabel: string;
+    projectLabel: string;
+    localesLabel: string;
+  };
+}
+
 export interface SiteContent {
   meta: {
     homeTitle: string;
     homeDescription: string;
+    /** Umbrella (covaga.dev root) page title + description. */
+    umbrellaTitle: string;
+    umbrellaDescription: string;
     privacyTitle: string;
     privacyDescription: string;
     termsTitle: string;
     termsDescription: string;
   };
+  /** Umbrella landing content (covaga.dev root). */
+  umbrella: UmbrellaContent;
   a11y: {
     skipToContent: string;
     primaryNav: string;

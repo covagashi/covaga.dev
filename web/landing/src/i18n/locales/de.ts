@@ -3,15 +3,135 @@ import type { SiteContent } from "../types";
 // German (de) — mirrors the English source keys.
 export const de: SiteContent = {
   meta: {
-    homeTitle: "byndr — Leiten Sie Ihre ECAD-Exporte überallhin",
+    umbrellaTitle: "Covaga — Offenes Toolkit für EPLAN-Ingenieure",
+    umbrellaDescription:
+      "Drei offene Werkzeuge für EPLAN-Elektroingenieure: EPLAN mit KI steuern (eplan-rag-mcp), Projekte in jedem Browser öffnen (ecad-view) und seine Events an die Werkzeuge Ihres Büros leiten (Covaga Hub). Auf Cloudflare gebaut.",
+    homeTitle: "Covaga Hub — Leiten Sie Ihre EPLAN-Exporte überallhin",
     homeDescription:
-      "byndr lauscht auf Ihre ECAD-Exporte — PDF, BOM, Projektabschluss — und liefert sie an Teams, SharePoint, Drive oder E-Mail. Zugangsdaten bleiben serverseitig; der Client bleibt Open Source.",
-    privacyTitle: "byndr — Datenschutz",
+      "Covaga Hub lauscht auf Ihre EPLAN-Exporte — PDF, BOM, Projektabschluss — und liefert sie an Teams, SharePoint, Drive oder E-Mail. Zugangsdaten bleiben serverseitig; der Client bleibt Open Source.",
+    privacyTitle: "Covaga — Datenschutz",
     privacyDescription:
-      "Wie byndr Daten über seine Website und den gehosteten Event-Routing-Dienst verarbeitet.",
-    termsTitle: "byndr — Nutzungsbedingungen",
+      "Wie Covaga Daten über seine Website und die gehosteten Dienste verarbeitet.",
+    termsTitle: "Covaga — Nutzungsbedingungen",
     termsDescription:
-      "Die Bedingungen für die Nutzung des gehosteten byndr Event-Routing-Dienstes und des Open-Source-Clients.",
+      "Die Bedingungen für die Nutzung des gehosteten Dienstes Covaga Hub und der Open-Source-Werkzeuge von Covaga.",
+  },
+  umbrella: {
+    nav: {
+      tools: "tools",
+      open: "open source",
+      getHub: "Hub holen",
+    },
+    hero: {
+      eyebrow: "offenes toolkit für eplan",
+      heading: "Mehr aus Ihren EPLAN-Projekten machen",
+      leadHtml:
+        'Drei offene Werkzeuge für Elektroingenieure — steuern Sie <strong class="font-semibold text-[var(--color-ink)]">EPLAN</strong> mit KI, öffnen Sie Projekte in jedem Browser und leiten Sie seine Events an die Werkzeuge, die Ihr Büro bereits nutzt. Kostenlos starten, selbst hostbar.',
+      ctaPrimary: "Toolkit erkunden",
+      ctaSecondary: "Kostenlos starten",
+      specChips: [
+        { label: "stack", value: "cloudflare" },
+        { label: "core", value: "open source" },
+        { label: "i18n", value: "7 locales" },
+      ],
+      schemaTitle: "Schaltbild des Covaga-Toolkits",
+      schemaDesc:
+        "Ein Verdrahtungsschaltbild: Eine EPLAN-P8-Quellklemme links speist das covaga-Busmodul in der Mitte, das nach rechts zu drei Werkzeugklemmen auffächert — rag-mcp, ecad-view und hub.",
+      figCaption: "Abb. 01 — Toolkit-Schaltbild",
+      figFlow: "eplan → covaga → tools",
+    },
+    tools: {
+      eyebrow: "tools · 03",
+      heading: "Ein Toolkit, drei Module.",
+      lead: "Jedes Werkzeug schließt eine echte EPLAN-Lücke und läuft für sich — wählen Sie eines aus oder verdrahten Sie alle drei. Zwei sind Open Source zum Selbst-Hosten; die Plattform wird für Sie gehostet.",
+      statusOssLabel: "open source",
+      statusHostedLabel: "open core · gehostet",
+      items: [
+        {
+          ref: "U1 · MCP",
+          name: "eplan-rag-mcp",
+          what: "EPLAN mit KI steuern.",
+          body: "Ein lokaler MCP-Server, der 149 EPLAN-Aktionen still im QuietMode ausführt, dazu RAG-Dokumentation für P8 und EEC Pro 2026 sowie ein Claude-Code-Skill, das korrekte EPLAN-Skripte schreibt.",
+          chips: [
+            { label: "tools", value: "156" },
+            { label: "rag", value: "p8 + eec" },
+            { label: "runtime", value: "local" },
+          ],
+          status: "open source",
+          statusKind: "oss",
+          links: [
+            { label: "GitHub ↗", href: "https://github.com/covagashi/eplan-rag-mcp" },
+          ],
+          primary: false,
+        },
+        {
+          ref: "U2 · VIEWER",
+          name: "ecad-view",
+          what: "Projekte im Browser öffnen.",
+          body: "Legen Sie einen .epdz-Export oder ein .e3d-Bauteil ab und lesen Sie es in jedem Browser — 3D-Modelle, Schaltplanseiten, Gerätesuche und Querverweise. Offline-PWA; Dateien verlassen nie das Gerät.",
+          chips: [
+            { label: "fmt", value: ".epdz / .e3d" },
+            { label: "3d", value: "three.js" },
+            { label: "runs", value: "client-side" },
+          ],
+          status: "open source",
+          statusKind: "oss",
+          links: [
+            { label: "GitHub ↗", href: "https://github.com/covagashi/ecad-view" },
+            { label: "view.covaga.dev", href: "https://view.covaga.dev" },
+          ],
+          primary: false,
+        },
+        {
+          ref: "U3 · PLATFORM",
+          name: "Covaga Hub",
+          what: "Events leiten · Datenlücken schließen.",
+          body: "Die gehostete Plattform. Leiten Sie EPLAN-Events — PDF, BOM, Projektabschluss — an Teams, SharePoint, Drive oder E-Mail und schließen Sie Textlücken der Artikeldatenbank durch geprüfte KI-Vorschläge. Zugangsdaten bleiben serverseitig.",
+          chips: [
+            { label: "mode", value: "hosted" },
+            { label: "tenancy", value: "multi" },
+            { label: "gym", value: "mcp" },
+          ],
+          status: "open core · gehostet",
+          statusKind: "hosted",
+          links: [{ label: "hub.covaga.dev", href: "/hub" }],
+          primary: true,
+        },
+      ],
+    },
+    principles: {
+      eyebrow: "wie covaga gebaut ist",
+      heading: "Regeln aus dem Ingenieurbüro.",
+      items: [
+        {
+          title: "Offen als Standard",
+          body: "Die lokalen Werkzeuge sind Open Source und kostenlos im Betrieb — lesen Sie jede Zeile, bevor Sie installieren, prüfen Sie sie mit Ihrem IT-Team, hosten Sie überall selbst.",
+        },
+        {
+          title: "Dort, wo Ihr Team arbeitet",
+          body: "Kein neues Werkzeug zu erlernen. Covaga spricht EPLAN und den M365-Stack, den Ihr Büro bereits nutzt; Ingenieure exportieren genau so weiter wie heute.",
+        },
+        {
+          title: "Ihre Daten bleiben Ihre",
+          body: "Projekte werden auf Ihrem Gerät gerendert; echte Artikeldaten liegen in Ihrer eigenen Datenbank, nie in einem Repo. Der gehostete Worker hält Zugangsdaten, keine Dateien.",
+        },
+      ],
+    },
+    cta: {
+      eyebrow: "loslegen",
+      heading: "Starten Sie mit einem Werkzeug. Verdrahten Sie den Rest, wenn Sie bereit sind.",
+      primary: "Hub-Tenant erstellen",
+      secondary: "Repos durchstöbern",
+    },
+    footer: {
+      tagline:
+        "Ein offenes Toolkit für EPLAN-Elektroingenieure, auf Cloudflare gebaut. Steuern Sie EPLAN mit KI, öffnen Sie Projekte überall, leiten Sie Events an die Werkzeuge, die Sie bereits nutzen.",
+      net: "Teil von covaga.xyz",
+      toolsLabel: "tools",
+      codeLabel: "code",
+      projectLabel: "projekt",
+      localesLabel: "In sieben Sprachen verfügbar",
+    },
   },
   a11y: {
     skipToContent: "Zum Inhalt springen",
@@ -37,19 +157,19 @@ export const de: SiteContent = {
     eyebrowTo: "zugestellt",
     headingPre: "CAD-Events, geroutet",
     leadHtml:
-      'byndr lauscht auf Ihre <strong class="font-semibold text-[var(--color-ink)]">ECAD</strong>-Exporte und liefert sie an Teams, SharePoint, Drive oder E-Mail — Zugangsdaten bleiben serverseitig.',
+      'Covaga Hub lauscht auf Ihre <strong class="font-semibold text-[var(--color-ink)]">ECAD</strong>-Exporte und liefert sie an Teams, SharePoint, Drive oder E-Mail — Zugangsdaten bleiben serverseitig.',
     ctaPrimary: "Loslegen",
     ctaSecondary: "So funktioniert's",
     schemaTitle: "Schaltbild des Event-Routings",
     schemaDesc:
-      "Verdrahtungsschaltbild: Drei ECAD-Event-Klemmen links werden über das byndr-Hub-Modul zu den SharePoint-, Teams-, Drive- und Email-Klemmen rechts geführt.",
+      "Verdrahtungsschaltbild: Drei ECAD-Event-Klemmen links werden über das Covaga-Hub-Modul zu den SharePoint-, Teams-, Drive- und Email-Klemmen rechts geführt.",
     figCaption: "Abb. 01 — Schaltbild des Event-Routings",
   },
   problem: {
     eyebrow: "der wandel",
     heading: "Integrationen ohne das Integrationsprojekt.",
     todayLabel: "// heute",
-    withLabel: "// mit byndr",
+    withLabel: "// mit Covaga Hub",
     today: [
       {
         title: "Einmalige lokale Makros",
@@ -183,7 +303,7 @@ export const de: SiteContent = {
       },
     ],
     footnote:
-      "Kein Slack? Ganz bewusst — byndr spricht den M365- + PLM-Stack, den Ihr Büro bereits nutzt. Brauchen Sie etwas anderes? Ein generisches HTTP-Ziel leitet die Nutzlast überallhin weiter.",
+      "Kein Slack? Ganz bewusst — Covaga Hub spricht den M365- + PLM-Stack, den Ihr Büro bereits nutzt. Brauchen Sie etwas anderes? Ein generisches HTTP-Ziel leitet die Nutzlast überallhin weiter.",
   },
   pricing: {
     eyebrow: "preise",
@@ -239,7 +359,7 @@ export const de: SiteContent = {
     items: [
       {
         q: "Welche ECAD-Werkzeuge unterstützen Sie?",
-        a: "byndr ist ECAD-unabhängig. Der Open-Source-Client erfasst Events aus Ihrem CAD-Werkzeug und sendet sie per POST an Ihren Tenant. EPLAN Electric P8 wird zuerst unterstützt; der Client ist so ausgelegt, dass andere ECAD-Werkzeuge auf dieselbe Weise ergänzt werden können.",
+        a: "Covaga Hub ist ECAD-unabhängig. Der Open-Source-Client erfasst Events aus Ihrem CAD-Werkzeug und sendet sie per POST an Ihren Tenant. EPLAN Electric P8 wird zuerst unterstützt; der Client ist so ausgelegt, dass andere ECAD-Werkzeuge auf dieselbe Weise ergänzt werden können.",
       },
       {
         q: "Muss die CAD-Software geöffnet sein?",
@@ -255,17 +375,17 @@ export const de: SiteContent = {
       },
       {
         q: "Warum kein Slack?",
-        a: "Weil Ingenieurbüros nicht auf Slack laufen. byndr zielt auf die Werkzeuge, die Sie tatsächlich verwenden — Microsoft Teams, SharePoint, Drive, E-Mail, Netzwerkordner und PLM/PDM. Ein generisches HTTP-Ziel deckt alles andere ab.",
+        a: "Weil Ingenieurbüros nicht auf Slack laufen. Covaga Hub zielt auf die Werkzeuge, die Sie tatsächlich verwenden — Microsoft Teams, SharePoint, Drive, E-Mail, Netzwerkordner und PLM/PDM. Ein generisches HTTP-Ziel deckt alles andere ab.",
       },
       {
         q: "Müssen wir ändern, wie das Team arbeitet?",
-        a: "Nein. Ingenieure exportieren PDFs und BOMs genau so weiter wie heute. byndr lauscht auf diese Events und liefert sie aus, sodass es kein neues Werkzeug zu erlernen gibt.",
+        a: "Nein. Ingenieure exportieren PDFs und BOMs genau so weiter wie heute. Covaga Hub lauscht auf diese Events und liefert sie aus, sodass es kein neues Werkzeug zu erlernen gibt.",
       },
     ],
   },
   signup: {
-    metaTitle: "byndr — Loslegen",
-    metaDescription: "Erstelle deinen byndr-Tenant: verbinde einen Telegram-Bot und route deine ECAD-Ereignisse in Minuten.",
+    metaTitle: "Covaga Hub — Loslegen",
+    metaDescription: "Erstelle deinen Covaga-Hub-Tenant: verbinde einen Telegram-Bot und route deine ECAD-Ereignisse in Minuten.",
     eyebrow: "loslegen",
     heading: "Tenant erstellen",
     lead: "Erstelle deinen Tenant nur mit deiner E-Mail. Verbindungen und Ereignis-Routing richtest du danach im Dashboard ein. Keine Kreditkarte.",
@@ -282,8 +402,8 @@ export const de: SiteContent = {
     nextHeading: "Nächste Schritte",
     nextSteps: [
       "Öffne im Dashboard die Connections und verbinde Telegram, Google Drive oder einen Webhook.",
-      "Kopiere byndr.config nach %APPDATA%\\byndr\\ und trage tenantId und apiKey ein.",
-      "Führe in EPLAN scripts/ByndrPing.cs aus und wähle auf der Events-Seite, welche Ereignisse geroutet werden.",
+      "Kopiere covaga.config nach %APPDATA%\\covaga\\ und trage tenantId und apiKey ein.",
+      "Führe in EPLAN scripts/CovagaPing.cs aus und wähle auf der Events-Seite, welche Ereignisse geroutet werden.",
     ],
   },
   footer: {
@@ -295,10 +415,10 @@ export const de: SiteContent = {
     terms: "nutzungsbedingungen",
     contact: "kontakt",
     disclaimer:
-      "byndr ist ein unabhängiges Produkt und steht in keiner Verbindung zu EPLAN oder einem ECAD-Anbieter und wird von diesen nicht unterstützt. Alle Produktnamen sind Marken ihrer jeweiligen Inhaber.",
+      "Covaga Hub ist ein unabhängiges Produkt und steht in keiner Verbindung zu EPLAN oder einem ECAD-Anbieter und wird von diesen nicht unterstützt. Alle Produktnamen sind Marken ihrer jeweiligen Inhaber.",
   },
   legal: {
-    back: "zurück zu byndr",
+    back: "zurück zu Covaga Hub",
     lastUpdatedLabel: "zuletzt aktualisiert",
     draftLabel: "entwurf",
     updated: "2026-07-05",
@@ -308,12 +428,12 @@ export const de: SiteContent = {
       eyebrow: "legal · privacy",
       title: "Datenschutzerklärung",
       intro:
-        "Wir halten die Datenerhebung minimal und Zugangsdaten serverseitig. Hier steht genau, was byndr verarbeitet und warum.",
+        "Wir halten die Datenerhebung minimal und Zugangsdaten serverseitig. Hier steht genau, was Covaga Hub verarbeitet und warum.",
       sections: [
         {
           heading: "Wer wir sind",
           body: [
-            "byndr ist ein unabhängiges Produkt, das ECAD-Events an die Werkzeuge leitet, die Engineering-Teams nutzen. Diese Richtlinie erläutert, welche Daten wir verarbeiten, wenn Sie unsere Website und den gehosteten Dienst nutzen.",
+            "Covaga Hub ist ein unabhängiges Produkt, das ECAD-Events an die Werkzeuge leitet, die Engineering-Teams nutzen. Diese Richtlinie erläutert, welche Daten wir verarbeiten, wenn Sie unsere Website und den gehosteten Dienst nutzen.",
           ],
         },
         {
@@ -339,7 +459,7 @@ export const de: SiteContent = {
         {
           heading: "Ihre Rechte",
           body: [
-            "Sie können jederzeit unter hello@covaga.xyz Auskunft, Berichtigung oder Löschung der personenbezogenen Daten verlangen, die wir über Sie speichern. Wir antworten innerhalb einer angemessenen Frist.",
+            "Sie können jederzeit unter hello@covaga.dev Auskunft, Berichtigung oder Löschung der personenbezogenen Daten verlangen, die wir über Sie speichern. Wir antworten innerhalb einer angemessenen Frist.",
           ],
         },
         {
@@ -359,7 +479,7 @@ export const de: SiteContent = {
         {
           heading: "Der Dienst",
           body: [
-            "byndr stellt einen gehosteten Router bereit, der ECAD-Events von einem Open-Source-Client empfängt und sie an die von Ihnen konfigurierten Ziele liefert. Der Client ist MIT-lizenziert; der gehostete Dienst wird unter diesen Bedingungen angeboten.",
+            "Covaga Hub stellt einen gehosteten Router bereit, der ECAD-Events von einem Open-Source-Client empfängt und sie an die von Ihnen konfigurierten Ziele liefert. Der Client ist MIT-lizenziert; der gehostete Dienst wird unter diesen Bedingungen angeboten.",
           ],
         },
         {
@@ -383,7 +503,7 @@ export const de: SiteContent = {
         {
           heading: "Haftung",
           body: [
-            "Soweit gesetzlich zulässig, haftet byndr nicht für indirekte Schäden oder Folgeschäden, die aus der Nutzung des Dienstes entstehen. Der gehostete Dienst bewegt Ihre Dateien; es liegt in Ihrer Verantwortung, unabhängige Sicherungen zu führen.",
+            "Soweit gesetzlich zulässig, haftet Covaga Hub nicht für indirekte Schäden oder Folgeschäden, die aus der Nutzung des Dienstes entstehen. Der gehostete Dienst bewegt Ihre Dateien; es liegt in Ihrer Verantwortung, unabhängige Sicherungen zu führen.",
           ],
         },
         {

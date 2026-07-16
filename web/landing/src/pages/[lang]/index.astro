@@ -1,14 +1,13 @@
 ---
 import BaseLayout from "../../layouts/base-layout.astro";
-import SiteNav from "../../components/site-nav.astro";
-import HeroSection from "../../components/hero-section.astro";
-import ProblemSolutionSection from "../../components/problem-solution-section.astro";
-import HowItWorksSection from "../../components/how-it-works-section.astro";
-import EventsDestinationsSection from "../../components/events-destinations-section.astro";
-import PricingSection from "../../components/pricing-section.astro";
-import FaqSection from "../../components/faq-section.astro";
-import SiteFooter from "../../components/site-footer.astro";
-import { locales, defaultLocale } from "../../i18n/config";
+import UmbrellaNav from "../../components/umbrella-nav.astro";
+import UmbrellaHero from "../../components/umbrella-hero.astro";
+import UmbrellaTools from "../../components/umbrella-tools.astro";
+import UmbrellaPrinciples from "../../components/umbrella-principles.astro";
+import UmbrellaCta from "../../components/umbrella-cta.astro";
+import UmbrellaFooter from "../../components/umbrella-footer.astro";
+import { locales, defaultLocale, getLocaleFromUrl } from "../../i18n/config";
+import { useContent } from "../../i18n/content";
 
 // One static page per non-default locale (en lives at the site root).
 export function getStaticPaths() {
@@ -16,17 +15,21 @@ export function getStaticPaths() {
     .filter((lang) => lang !== defaultLocale)
     .map((lang) => ({ params: { lang } }));
 }
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
 ---
 
-<BaseLayout>
-  <SiteNav />
+<BaseLayout
+  title={t.meta.umbrellaTitle}
+  description={t.meta.umbrellaDescription}
+>
+  <UmbrellaNav />
   <main>
-    <HeroSection />
-    <ProblemSolutionSection />
-    <HowItWorksSection />
-    <EventsDestinationsSection />
-    <PricingSection />
-    <FaqSection />
+    <UmbrellaHero />
+    <UmbrellaTools />
+    <UmbrellaPrinciples />
+    <UmbrellaCta />
   </main>
-  <SiteFooter />
+  <UmbrellaFooter />
 </BaseLayout>

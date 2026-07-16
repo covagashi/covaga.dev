@@ -3,15 +3,135 @@ import type { SiteContent } from "../types";
 // English — source of truth. All other locales mirror these keys.
 export const en: SiteContent = {
   meta: {
-    homeTitle: "byndr — Route your ECAD exports anywhere",
+    umbrellaTitle: "Covaga — Open toolkit for EPLAN engineers",
+    umbrellaDescription:
+      "Three open tools for EPLAN electrical engineers: drive EPLAN with AI (eplan-rag-mcp), open projects in any browser (ecad-view), and route its events to the tools your office runs (Covaga Hub). Built on Cloudflare.",
+    homeTitle: "Covaga Hub — Route your EPLAN exports anywhere",
     homeDescription:
-      "byndr listens for your ECAD exports — PDF, BOM, project close — and delivers them to Teams, SharePoint, Drive or email. Credentials stay server-side; the client stays open source.",
-    privacyTitle: "byndr — Privacy",
+      "Covaga Hub listens for your EPLAN exports — PDF, BOM, project close — and delivers them to Teams, SharePoint, Drive or email. Credentials stay server-side; the client stays open source.",
+    privacyTitle: "Covaga — Privacy",
     privacyDescription:
-      "How byndr handles data across its website and hosted event-routing service.",
-    termsTitle: "byndr — Terms",
+      "How Covaga handles data across its website and hosted services.",
+    termsTitle: "Covaga — Terms",
     termsDescription:
-      "The terms that govern use of the byndr hosted event-routing service and open-source client.",
+      "The terms that govern use of the Covaga Hub hosted service and the open-source Covaga tools.",
+  },
+  umbrella: {
+    nav: {
+      tools: "tools",
+      open: "open source",
+      getHub: "Get Hub",
+    },
+    hero: {
+      eyebrow: "open toolkit for eplan",
+      heading: "Do more with your EPLAN projects",
+      leadHtml:
+        'Three open tools for electrical engineers — drive <strong class="font-semibold text-[var(--color-ink)]">EPLAN</strong> with AI, open projects in any browser, and route its events to the tools your office already runs. Free to start, yours to host.',
+      ctaPrimary: "Explore the toolkit",
+      ctaSecondary: "Start free",
+      specChips: [
+        { label: "stack", value: "cloudflare" },
+        { label: "core", value: "open source" },
+        { label: "i18n", value: "7 locales" },
+      ],
+      schemaTitle: "Covaga toolkit schematic",
+      schemaDesc:
+        "A wiring schematic: an EPLAN P8 source terminal on the left feeds the covaga bus module in the centre, which fans out to three tool terminals on the right — rag-mcp, ecad-view and hub.",
+      figCaption: "fig. 01 — toolkit schematic",
+      figFlow: "eplan → covaga → tools",
+    },
+    tools: {
+      eyebrow: "tools · 03",
+      heading: "One toolkit, three modules.",
+      lead: "Each tool solves one real EPLAN gap and runs on its own — pick one, or wire all three. Two are open source you self-host; the platform is hosted for you.",
+      statusOssLabel: "open source",
+      statusHostedLabel: "open core · hosted",
+      items: [
+        {
+          ref: "U1 · MCP",
+          name: "eplan-rag-mcp",
+          what: "Drive EPLAN with AI.",
+          body: "A local MCP server that runs 149 EPLAN actions silently in QuietMode, plus RAG documentation for P8 and EEC Pro 2026 and a Claude Code skill that writes correct EPLAN scripts.",
+          chips: [
+            { label: "tools", value: "156" },
+            { label: "rag", value: "p8 + eec" },
+            { label: "runtime", value: "local" },
+          ],
+          status: "open source",
+          statusKind: "oss",
+          links: [
+            { label: "GitHub ↗", href: "https://github.com/covagashi/eplan-rag-mcp" },
+          ],
+          primary: false,
+        },
+        {
+          ref: "U2 · VIEWER",
+          name: "ecad-view",
+          what: "Open projects in the browser.",
+          body: "Drop an .epdz export or an .e3d part and read it in any browser — 3D models, schematic pages, device search and cross-refs. Offline PWA; files never leave the device.",
+          chips: [
+            { label: "fmt", value: ".epdz / .e3d" },
+            { label: "3d", value: "three.js" },
+            { label: "runs", value: "client-side" },
+          ],
+          status: "open source",
+          statusKind: "oss",
+          links: [
+            { label: "GitHub ↗", href: "https://github.com/covagashi/ecad-view" },
+            { label: "view.covaga.dev", href: "https://view.covaga.dev" },
+          ],
+          primary: false,
+        },
+        {
+          ref: "U3 · PLATFORM",
+          name: "Covaga Hub",
+          what: "Route events · close data gaps.",
+          body: "The hosted platform. Route EPLAN events — PDF, BOM, project close — to Teams, SharePoint, Drive or email, and close article-database text gaps through reviewed AI proposals. Credentials stay server-side.",
+          chips: [
+            { label: "mode", value: "hosted" },
+            { label: "tenancy", value: "multi" },
+            { label: "gym", value: "mcp" },
+          ],
+          status: "open core · hosted",
+          statusKind: "hosted",
+          links: [{ label: "hub.covaga.dev", href: "/hub" }],
+          primary: true,
+        },
+      ],
+    },
+    principles: {
+      eyebrow: "how covaga is built",
+      heading: "Engineering-office rules.",
+      items: [
+        {
+          title: "Open by default",
+          body: "The local tools are open source and free to run — read every line before you install, audit them with your IT team, self-host anywhere.",
+        },
+        {
+          title: "Where your team works",
+          body: "No new tool to learn. Covaga speaks EPLAN and the M365 stack your office already runs; engineers keep exporting exactly as they do today.",
+        },
+        {
+          title: "Your data stays yours",
+          body: "Projects render on your device; real article data lives in your own database, never in a repo. The hosted worker holds credentials, not files.",
+        },
+      ],
+    },
+    cta: {
+      eyebrow: "get started",
+      heading: "Start with one tool. Wire the rest when you're ready.",
+      primary: "Create a Hub tenant",
+      secondary: "Browse the repos",
+    },
+    footer: {
+      tagline:
+        "An open toolkit for EPLAN electrical engineers, built on Cloudflare. Drive EPLAN with AI, open projects anywhere, route events to the tools you already run.",
+      net: "part of covaga.xyz",
+      toolsLabel: "tools",
+      codeLabel: "code",
+      projectLabel: "project",
+      localesLabel: "Available in seven languages",
+    },
   },
   a11y: {
     skipToContent: "Skip to content",
@@ -37,19 +157,19 @@ export const en: SiteContent = {
     eyebrowTo: "delivered",
     headingPre: "CAD events, routed",
     leadHtml:
-      'byndr listens for your <strong class="font-semibold text-[var(--color-ink)]">ECAD</strong> exports and delivers them to Teams, SharePoint, Drive or email — credentials stay server-side.',
+      'Covaga Hub listens for your <strong class="font-semibold text-[var(--color-ink)]">ECAD</strong> exports and delivers them to Teams, SharePoint, Drive or email — credentials stay server-side.',
     ctaPrimary: "Get started",
     ctaSecondary: "See how it works",
     schemaTitle: "Event routing schematic",
     schemaDesc:
-      "Wiring schematic: three ECAD event terminals on the left route through the byndr hub module to SharePoint, Teams, Drive and Email terminals on the right.",
+      "Wiring schematic: three ECAD event terminals on the left route through the Covaga hub module to SharePoint, Teams, Drive and Email terminals on the right.",
     figCaption: "fig. 01 — event routing schematic",
   },
   problem: {
     eyebrow: "the shift",
     heading: "Integrations without the integration project.",
     todayLabel: "// today",
-    withLabel: "// with byndr",
+    withLabel: "// with Covaga Hub",
     today: [
       {
         title: "One-off local macros",
@@ -183,7 +303,7 @@ export const en: SiteContent = {
       },
     ],
     footnote:
-      "No Slack? By design — byndr speaks the M365 + PLM stack your office already runs. Need something else? A generic HTTP destination forwards the payload anywhere.",
+      "No Slack? By design — Covaga Hub speaks the M365 + PLM stack your office already runs. Need something else? A generic HTTP destination forwards the payload anywhere.",
   },
   pricing: {
     eyebrow: "pricing",
@@ -239,7 +359,7 @@ export const en: SiteContent = {
     items: [
       {
         q: "Which ECAD tools do you support?",
-        a: "byndr is ECAD-agnostic. The open-source client captures events from your CAD tool and POSTs them to your tenant. EPLAN Electric P8 is supported first; the client is designed so other ECAD tools can be added the same way.",
+        a: "Covaga Hub is ECAD-agnostic. The open-source client captures events from your CAD tool and POSTs them to your tenant. EPLAN Electric P8 is supported first; the client is designed so other ECAD tools can be added the same way.",
       },
       {
         q: "Does the CAD software need to be open?",
@@ -255,17 +375,17 @@ export const en: SiteContent = {
       },
       {
         q: "Why no Slack?",
-        a: "Because engineering offices don't run on Slack. byndr targets the tools you actually use — Microsoft Teams, SharePoint, Drive, email, network folders, and PLM/PDM. A generic HTTP destination covers anything else.",
+        a: "Because engineering offices don't run on Slack. Covaga Hub targets the tools you actually use — Microsoft Teams, SharePoint, Drive, email, network folders, and PLM/PDM. A generic HTTP destination covers anything else.",
       },
       {
         q: "Do we have to change how the team works?",
-        a: "No. Engineers keep exporting PDFs and BOMs exactly as they do today. byndr listens for those events and delivers them, so there's no new tool to learn.",
+        a: "No. Engineers keep exporting PDFs and BOMs exactly as they do today. Covaga Hub listens for those events and delivers them, so there's no new tool to learn.",
       },
     ],
   },
   signup: {
-    metaTitle: "byndr — Get started",
-    metaDescription: "Create your byndr tenant: connect a Telegram bot and route your ECAD events in minutes.",
+    metaTitle: "Covaga Hub — Get started",
+    metaDescription: "Create your Covaga Hub tenant: connect a Telegram bot and route your ECAD events in minutes.",
     eyebrow: "get started",
     heading: "Create your tenant",
     lead: "Create your tenant with just your email. Connections and event routing are configured afterwards in your dashboard. No credit card.",
@@ -282,8 +402,8 @@ export const en: SiteContent = {
     nextHeading: "Next steps",
     nextSteps: [
       "In the dashboard, open Connections and hook up Telegram, Google Drive or a webhook.",
-      "Copy byndr.config to %APPDATA%\\byndr\\ and paste your tenantId and apiKey.",
-      "In EPLAN run scripts/ByndrPing.cs, then pick which events to route on the Events page.",
+      "Copy covaga.config to %APPDATA%\\covaga\\ and paste your tenantId and apiKey.",
+      "In EPLAN run scripts/CovagaPing.cs, then pick which events to route on the Events page.",
     ],
   },
   footer: {
@@ -295,10 +415,10 @@ export const en: SiteContent = {
     terms: "terms",
     contact: "contact",
     disclaimer:
-      "byndr is an independent product, not affiliated with or endorsed by EPLAN or any ECAD vendor. All product names are trademarks of their respective owners.",
+      "Covaga Hub is an independent product, not affiliated with or endorsed by EPLAN or any ECAD vendor. All product names are trademarks of their respective owners.",
   },
   legal: {
-    back: "back to byndr",
+    back: "back to Covaga Hub",
     lastUpdatedLabel: "last updated",
     draftLabel: "draft",
     updated: "2026-07-05",
@@ -308,12 +428,12 @@ export const en: SiteContent = {
       eyebrow: "legal · privacy",
       title: "Privacy Policy",
       intro:
-        "We keep data collection minimal and credentials server-side. Here is exactly what byndr handles and why.",
+        "We keep data collection minimal and credentials server-side. Here is exactly what Covaga Hub handles and why.",
       sections: [
         {
           heading: "Who we are",
           body: [
-            "byndr is an independent product that routes ECAD events to the tools engineering teams use. This policy explains what data we handle when you use our website and hosted service.",
+            "Covaga Hub is an independent product that routes ECAD events to the tools engineering teams use. This policy explains what data we handle when you use our website and hosted service.",
           ],
         },
         {
@@ -339,7 +459,7 @@ export const en: SiteContent = {
         {
           heading: "Your rights",
           body: [
-            "You can ask us to access, correct or delete the personal data we hold about you at any time by emailing hello@covaga.xyz. We will respond within a reasonable period.",
+            "You can ask us to access, correct or delete the personal data we hold about you at any time by emailing hello@covaga.dev. We will respond within a reasonable period.",
           ],
         },
         {
@@ -359,7 +479,7 @@ export const en: SiteContent = {
         {
           heading: "The service",
           body: [
-            "byndr provides a hosted router that receives ECAD events from an open-source client and delivers them to destinations you configure. The client is MIT licensed; the hosted service is offered under these terms.",
+            "Covaga Hub provides a hosted router that receives ECAD events from an open-source client and delivers them to destinations you configure. The client is MIT licensed; the hosted service is offered under these terms.",
           ],
         },
         {
@@ -383,7 +503,7 @@ export const en: SiteContent = {
         {
           heading: "Liability",
           body: [
-            "To the extent permitted by law, byndr is not liable for indirect or consequential loss arising from use of the service. The hosted service moves your files; it is your responsibility to keep independent backups.",
+            "To the extent permitted by law, Covaga Hub is not liable for indirect or consequential loss arising from use of the service. The hosted service moves your files; it is your responsibility to keep independent backups.",
           ],
         },
         {

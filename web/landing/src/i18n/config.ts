@@ -1,4 +1,4 @@
-// Locale registry + URL helpers for the byndr landing site.
+// Locale registry + URL helpers for the Covaga landing site.
 // English is the default and lives at the site root (no prefix); every other
 // locale is served under its own path prefix (/es/, /de/, /zh-cn/, ...).
 

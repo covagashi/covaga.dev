@@ -1,0 +1,181 @@
+---
+import { getLocaleFromUrl, localizePath } from "../i18n/config";
+import { useContent } from "../i18n/content";
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const h = t.umbrella.hero;
+const hub = localizePath("/hub", lang);
+---
+
+<section
+  id="top"
+  class="mx-auto max-w-6xl border-x border-[var(--color-ink-12)] px-4 sm:px-6"
+>
+  <div
+    class="grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[minmax(0,470px)_1fr] lg:gap-16"
+  >
+    <!-- Copy -->
+    <div class="max-w-xl">
+      <p class="eyebrow mb-7">
+        covaga&nbsp;&nbsp;<span class="arrow" aria-hidden="true">&#8594;</span
+        >&nbsp;&nbsp;{h.eyebrow}
+      </p>
+
+      <h1
+        class="text-5xl font-bold leading-[1.02] tracking-tight text-[var(--color-ink)] sm:text-6xl"
+      >
+        {h.heading}<span class="text-[var(--color-accent)]">.</span>
+      </h1>
+
+      <p
+        class="mt-7 max-w-md text-lg leading-relaxed text-[var(--color-muted)]"
+        set:html={h.leadHtml}
+      />
+
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="#tools" class="btn-solid w-full sm:w-auto">{h.ctaPrimary}</a>
+        <a href={hub} class="btn-ghost w-full sm:w-auto">{h.ctaSecondary}</a>
+      </div>
+
+      <div
+        class="mt-9 flex flex-wrap items-center gap-2 border-t border-[var(--color-ink-12)] pt-6"
+        aria-label="Toolkit specification"
+      >
+        {
+          h.specChips.map((c) => (
+            <span class="chip">
+              {c.label} <b>{c.value}</b>
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Schematic: EPLAN P8 -> covaga bus -> three tool modules -->
+    <figure class="min-w-0">
+      <svg
+        viewBox="0 0 720 520"
+        role="img"
+        aria-labelledby="uSchemaTitle uSchemaDesc"
+        class="block h-auto w-full"
+      >
+        <title id="uSchemaTitle">{h.schemaTitle}</title>
+        <desc id="uSchemaDesc">{h.schemaDesc}</desc>
+
+        <!-- source -> bus -->
+        <path class="svg-trace" d="M170 260 L300 260"></path>
+        <!-- bus -> three tools -->
+        <path class="svg-trace" d="M420 220 L500 220 L500 118 L560 118"></path>
+        <path class="svg-trace" d="M420 260 L560 260"></path>
+        <path class="svg-trace" d="M420 300 L500 300 L500 402 L560 402"></path>
+
+        <!-- junctions -->
+        <circle class="svg-junction" cx="500" cy="220" r="2.5"></circle>
+        <circle class="svg-junction" cx="500" cy="118" r="2.5"></circle>
+        <circle class="svg-junction" cx="500" cy="300" r="2.5"></circle>
+        <circle class="svg-junction" cx="500" cy="402" r="2.5"></circle>
+
+        <!-- annotations -->
+        <text class="svg-anno" x="196" y="250">EPLAN.API</text>
+        <text class="svg-anno" x="430" y="212">bus_out</text>
+
+        <!-- source terminal: EPLAN P8 -->
+        <g>
+          <text class="svg-anno" x="20" y="228">SRC &#183; DESKTOP</text>
+          <rect class="svg-box" x="20" y="238" width="150" height="44"></rect>
+          <text class="svg-label" x="36" y="265">EPLAN P8</text>
+        </g>
+
+        <!-- bus / hub module: covaga -->
+        <g>
+          <text class="svg-anno" x="300" y="176">IC1</text>
+          <rect class="svg-hub" x="300" y="184" width="120" height="152"></rect>
+          <line class="svg-pin" x1="293" y1="260" x2="300" y2="260"></line>
+          <line class="svg-pin" x1="420" y1="220" x2="427" y2="220"></line>
+          <line class="svg-pin" x1="420" y1="260" x2="427" y2="260"></line>
+          <line class="svg-pin" x1="420" y1="300" x2="427" y2="300"></line>
+          <text class="svg-hub-title" x="360" y="256" text-anchor="middle"
+            >covaga</text
+          >
+          <text class="svg-hub-sub" x="360" y="276" text-anchor="middle"
+            >U1 &#183; TOOLKIT</text
+          >
+        </g>
+
+        <!-- destination terminals: the three tools -->
+        <g>
+          <text class="svg-anno" x="560" y="86">OUT &#183; TOOLS</text>
+          <rect class="svg-box" x="560" y="96" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="123">rag-mcp</text>
+          <rect class="svg-box" x="560" y="238" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="265">ecad-view</text>
+          <rect class="svg-box" x="560" y="380" width="150" height="44"></rect>
+          <text class="svg-label" x="576" y="407">hub</text>
+        </g>
+
+        <!-- drafting title block -->
+        <g>
+          <rect
+            x="20"
+            y="454"
+            width="230"
+            height="46"
+            fill="none"
+            stroke="var(--color-ink-35)"
+            stroke-width="1"></rect>
+          <line
+            x1="20"
+            y1="477"
+            x2="250"
+            y2="477"
+            stroke="var(--color-ink-35)"
+            stroke-width="1"></line>
+          <text class="svg-anno" x="28" y="470">covaga &#183; eplan toolkit</text>
+          <text class="svg-anno" x="28" y="493">sheet 1/1 &#183; rev A</text>
+        </g>
+
+        <!-- animated signal pulses -->
+        <circle class="svg-pulse" r="3"
+          ><animateMotion
+            dur="2.0s"
+            begin="-0.2s"
+            repeatCount="indefinite"
+            path="M170 260 L300 260"></animateMotion></circle
+        >
+        <circle class="svg-pulse" r="3"
+          ><animateMotion
+            dur="2.3s"
+            begin="-0.7s"
+            repeatCount="indefinite"
+            path="M420 220 L500 220 L500 118 L560 118"></animateMotion></circle
+        >
+        <circle class="svg-pulse" r="3"
+          ><animateMotion
+            dur="1.9s"
+            begin="-1.3s"
+            repeatCount="indefinite"
+            path="M420 260 L560 260"></animateMotion></circle
+        >
+        <circle class="svg-pulse" r="3"
+          ><animateMotion
+            dur="2.3s"
+            begin="-1.9s"
+            repeatCount="indefinite"
+            path="M420 300 L500 300 L500 402 L560 402"></animateMotion></circle
+        >
+
+        <!-- static pulses for reduced-motion -->
+        <circle class="svg-pulse-static" cx="235" cy="260" r="3"></circle>
+        <circle class="svg-pulse-static" cx="500" cy="160" r="3"></circle>
+        <circle class="svg-pulse-static" cx="500" cy="360" r="3"></circle>
+      </svg>
+      <figcaption
+        class="mt-4 flex justify-between border-t border-[var(--color-ink-12)] pt-3 font-mono text-[11px] tracking-wide text-[var(--color-muted)]"
+      >
+        <span>{h.figCaption}</span>
+        <span class="hidden sm:inline">{h.figFlow}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>

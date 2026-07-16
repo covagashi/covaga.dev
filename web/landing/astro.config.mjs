@@ -6,7 +6,7 @@ import sitemap from "@astrojs/sitemap";
 // Static output, Cloudflare Pages ready. No SSR adapter.
 export default defineConfig({
   output: "static",
-  site: "https://byndr.dev",
+  site: "https://covaga.dev",
   // English stays at the root (/); other locales are prefixed (/es/, /de/, ...).
   i18n: {
     defaultLocale: "en",

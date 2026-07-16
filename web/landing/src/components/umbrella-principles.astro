@@ -1,0 +1,41 @@
+---
+import { getLocaleFromUrl } from "../i18n/config";
+import { useContent } from "../i18n/content";
+
+const lang = getLocaleFromUrl(Astro.url);
+const t = useContent(lang);
+const p = t.umbrella.principles;
+---
+
+<section id="open" class="border-t border-[var(--color-ink-12)]">
+  <div
+    class="mx-auto max-w-6xl border-x border-[var(--color-ink-12)] px-4 py-16 sm:px-6 sm:py-20"
+  >
+    <div class="max-w-2xl">
+      <p class="eyebrow">{p.eyebrow}</p>
+      <h2
+        class="mt-5 text-3xl font-bold leading-tight tracking-tight text-balance text-[var(--color-ink)] sm:text-4xl"
+      >
+        {p.heading}
+      </h2>
+    </div>
+
+    <div class="mt-11 grid gap-7 sm:grid-cols-3">
+      {
+        p.items.map((it, i) => (
+          <div class="border-t border-[var(--color-ink)] pt-4">
+            <span class="font-mono text-[12px] tracking-wide text-[var(--color-accent)]">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 class="mt-2 text-lg font-semibold tracking-tight text-[var(--color-ink)]">
+              {it.title}
+            </h3>
+            <p class="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-muted)]">
+              {it.body}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

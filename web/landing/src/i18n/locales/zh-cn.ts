@@ -3,15 +3,135 @@ import type { SiteContent } from "../types";
 // Simplified Chinese (zh-cn) — mirrors the English source keys.
 export const zhCn: SiteContent = {
   meta: {
-    homeTitle: "byndr — 将你的 ECAD 导出内容路由到任何地方",
+    umbrellaTitle: "Covaga — 面向 EPLAN 工程师的开源工具集",
+    umbrellaDescription:
+      "面向 EPLAN 电气工程师的三款开源工具：用 AI 驱动 EPLAN（eplan-rag-mcp）、在任意浏览器中打开项目（ecad-view），并将其事件路由到你办公室已在运行的工具（Covaga Hub）。构建于 Cloudflare 之上。",
+    homeTitle: "Covaga Hub — 将你的 ECAD 导出内容路由到任何地方",
     homeDescription:
-      "byndr 监听你的 ECAD 导出事件 — PDF、BOM、项目归档 — 并将它们送达 Teams、SharePoint、Drive 或 Email。凭据始终留在服务端；客户端始终开源。",
-    privacyTitle: "byndr — 隐私政策",
+      "Covaga Hub 监听你的 ECAD 导出事件 — PDF、BOM、项目归档 — 并将它们送达 Teams、SharePoint、Drive 或 Email。凭据始终留在服务端；客户端始终开源。",
+    privacyTitle: "Covaga — 隐私政策",
     privacyDescription:
-      "byndr 在其网站及托管的事件路由服务中如何处理数据。",
-    termsTitle: "byndr — 服务条款",
+      "Covaga 在其网站及托管服务中如何处理数据。",
+    termsTitle: "Covaga — 服务条款",
     termsDescription:
-      "管辖 byndr 托管事件路由服务及开源客户端使用的条款。",
+      "管辖 Covaga Hub 托管服务及开源 Covaga 工具使用的条款。",
+  },
+  umbrella: {
+    nav: {
+      tools: "工具",
+      open: "开源",
+      getHub: "获取 Hub",
+    },
+    hero: {
+      eyebrow: "open toolkit for eplan",
+      heading: "用你的 EPLAN 项目做更多事",
+      leadHtml:
+        '面向电气工程师的三款开源工具 — 用 AI 驱动 <strong class="font-semibold text-[var(--color-ink)]">EPLAN</strong>、在任意浏览器中打开项目，并将其事件路由到你办公室已在运行的工具。免费起步，自主托管。',
+      ctaPrimary: "探索工具集",
+      ctaSecondary: "免费开始",
+      specChips: [
+        { label: "stack", value: "cloudflare" },
+        { label: "core", value: "open source" },
+        { label: "i18n", value: "7 locales" },
+      ],
+      schemaTitle: "Covaga 工具集原理图",
+      schemaDesc:
+        "接线原理图：左侧的一个 EPLAN P8 源端子接入中央的 covaga 总线模块，再扇出到右侧三个工具端子 — rag-mcp、ecad-view 和 hub。",
+      figCaption: "图 01 — 工具集原理图",
+      figFlow: "eplan → covaga → tools",
+    },
+    tools: {
+      eyebrow: "tools · 03",
+      heading: "一套工具集，三个模块。",
+      lead: "每款工具都解决一个真实的 EPLAN 缺口，并可独立运行 — 选用其一，或将三者串联。其中两款是你自行托管的开源工具；平台则由我们为你托管。",
+      statusOssLabel: "开源",
+      statusHostedLabel: "开放内核 · 托管",
+      items: [
+        {
+          ref: "U1 · MCP",
+          name: "eplan-rag-mcp",
+          what: "用 AI 驱动 EPLAN。",
+          body: "一个本地 MCP 服务器，在 QuietMode 下静默执行 149 个 EPLAN 动作，并附带面向 P8 和 EEC Pro 2026 的 RAG 文档，以及一个能编写正确 EPLAN 脚本的 Claude Code 技能。",
+          chips: [
+            { label: "tools", value: "156" },
+            { label: "rag", value: "p8 + eec" },
+            { label: "runtime", value: "local" },
+          ],
+          status: "开源",
+          statusKind: "oss",
+          links: [
+            { label: "GitHub ↗", href: "https://github.com/covagashi/eplan-rag-mcp" },
+          ],
+          primary: false,
+        },
+        {
+          ref: "U2 · VIEWER",
+          name: "ecad-view",
+          what: "在浏览器中打开项目。",
+          body: "拖入一个 .epdz 导出文件或一个 .e3d 零件，即可在任意浏览器中查看 — 3D 模型、原理图页、设备搜索与交叉引用。离线 PWA；文件从不离开设备。",
+          chips: [
+            { label: "fmt", value: ".epdz / .e3d" },
+            { label: "3d", value: "three.js" },
+            { label: "runs", value: "client-side" },
+          ],
+          status: "开源",
+          statusKind: "oss",
+          links: [
+            { label: "GitHub ↗", href: "https://github.com/covagashi/ecad-view" },
+            { label: "view.covaga.dev", href: "https://view.covaga.dev" },
+          ],
+          primary: false,
+        },
+        {
+          ref: "U3 · PLATFORM",
+          name: "Covaga Hub",
+          what: "路由事件 · 弥合数据缺口。",
+          body: "托管平台。将 EPLAN 事件 — PDF、BOM、项目归档 — 路由到 Teams、SharePoint、Drive 或 Email，并通过经审核的 AI 提案弥合物品数据库的文本缺口。凭据始终留在服务端。",
+          chips: [
+            { label: "mode", value: "hosted" },
+            { label: "tenancy", value: "multi" },
+            { label: "gym", value: "mcp" },
+          ],
+          status: "开放内核 · 托管",
+          statusKind: "hosted",
+          links: [{ label: "hub.covaga.dev", href: "/hub" }],
+          primary: true,
+        },
+      ],
+    },
+    principles: {
+      eyebrow: "how covaga is built",
+      heading: "工程办公室的准则。",
+      items: [
+        {
+          title: "默认开放",
+          body: "本地工具开源且可免费运行 — 安装前读遍每一行，与你的 IT 团队一起审计，随处自行托管。",
+        },
+        {
+          title: "在你团队工作的地方",
+          body: "无需学习新工具。Covaga 通晓 EPLAN 以及你办公室已在运行的 M365 技术栈；工程师照旧导出，和今天一模一样。",
+        },
+        {
+          title: "你的数据始终属于你",
+          body: "项目在你的设备上渲染；真实的物品数据存放在你自己的数据库中，从不进入代码仓库。托管工作进程持有的是凭据，而非文件。",
+        },
+      ],
+    },
+    cta: {
+      eyebrow: "get started",
+      heading: "从一款工具开始。准备就绪时再接入其余的。",
+      primary: "创建一个 Hub 租户",
+      secondary: "浏览代码仓库",
+    },
+    footer: {
+      tagline:
+        "面向 EPLAN 电气工程师的开源工具集，构建于 Cloudflare 之上。用 AI 驱动 EPLAN，随处打开项目，将事件路由到你已在运行的工具。",
+      net: "隶属于 covaga.xyz",
+      toolsLabel: "工具",
+      codeLabel: "代码",
+      projectLabel: "项目",
+      localesLabel: "提供七种语言",
+    },
   },
   a11y: {
     skipToContent: "跳到正文",
@@ -37,19 +157,19 @@ export const zhCn: SiteContent = {
     eyebrowTo: "送达",
     headingPre: "CAD 事件，即刻路由",
     leadHtml:
-      'byndr 监听你的 <strong class="font-semibold text-[var(--color-ink)]">ECAD</strong> 导出内容，并将它们送达 Teams、SharePoint、Drive 或 Email — 凭据始终留在服务端。',
+      'Covaga Hub 监听你的 <strong class="font-semibold text-[var(--color-ink)]">ECAD</strong> 导出内容，并将它们送达 Teams、SharePoint、Drive 或 Email — 凭据始终留在服务端。',
     ctaPrimary: "立即开始",
     ctaSecondary: "查看工作原理",
     schemaTitle: "事件路由原理图",
     schemaDesc:
-      "接线原理图：左侧三个 ECAD 事件端子经由 byndr 中枢模块路由至右侧的 SharePoint、Teams、Drive 和 Email 端子。",
+      "接线原理图：左侧三个 ECAD 事件端子经由 Covaga 中枢模块路由至右侧的 SharePoint、Teams、Drive 和 Email 端子。",
     figCaption: "图 01 — 事件路由原理图",
   },
   problem: {
     eyebrow: "the shift",
     heading: "无需集成项目的集成。",
     todayLabel: "// 现状",
-    withLabel: "// 使用 byndr",
+    withLabel: "// 使用 Covaga Hub",
     today: [
       {
         title: "一次性的本地宏",
@@ -183,7 +303,7 @@ export const zhCn: SiteContent = {
       },
     ],
     footnote:
-      "没有 Slack？这是刻意为之 — byndr 只对接你办公室已经在用的 M365 + PLM 技术栈。需要别的？一个通用 HTTP 目的地可把负载转发到任何地方。",
+      "没有 Slack？这是刻意为之 — Covaga Hub 只对接你办公室已经在用的 M365 + PLM 技术栈。需要别的？一个通用 HTTP 目的地可把负载转发到任何地方。",
   },
   pricing: {
     eyebrow: "pricing",
@@ -239,7 +359,7 @@ export const zhCn: SiteContent = {
     items: [
       {
         q: "你们支持哪些 ECAD 工具？",
-        a: "byndr 与具体 ECAD 无关。开源客户端从你的 CAD 工具捕获事件，并将其 POST 到你的租户。EPLAN Electric P8 是首个支持的工具；客户端的设计使得其他 ECAD 工具能以同样的方式接入。",
+        a: "Covaga Hub 与具体 ECAD 无关。开源客户端从你的 CAD 工具捕获事件，并将其 POST 到你的租户。EPLAN Electric P8 是首个支持的工具；客户端的设计使得其他 ECAD 工具能以同样的方式接入。",
       },
       {
         q: "CAD 软件需要保持打开吗？",
@@ -255,17 +375,17 @@ export const zhCn: SiteContent = {
       },
       {
         q: "为什么没有 Slack？",
-        a: "因为工程办公室并不靠 Slack 运转。byndr 对接你真正在用的工具 — Microsoft Teams、SharePoint、Drive、Email、网络文件夹以及 PLM/PDM。通用 HTTP 目的地则覆盖其余一切。",
+        a: "因为工程办公室并不靠 Slack 运转。Covaga Hub 对接你真正在用的工具 — Microsoft Teams、SharePoint、Drive、Email、网络文件夹以及 PLM/PDM。通用 HTTP 目的地则覆盖其余一切。",
       },
       {
         q: "我们必须改变团队的工作方式吗？",
-        a: "不必。工程师照旧导出 PDF 和 BOM，和今天一模一样。byndr 监听这些事件并完成送达，因此没有新工具需要学习。",
+        a: "不必。工程师照旧导出 PDF 和 BOM，和今天一模一样。Covaga Hub 监听这些事件并完成送达，因此没有新工具需要学习。",
       },
     ],
   },
   signup: {
-    metaTitle: "byndr — 开始使用",
-    metaDescription: "创建您的 byndr 租户：连接 Telegram 机器人，几分钟内即可路由您的 ECAD 事件。",
+    metaTitle: "Covaga Hub — 开始使用",
+    metaDescription: "创建您的 Covaga Hub 租户：连接 Telegram 机器人，几分钟内即可路由您的 ECAD 事件。",
     eyebrow: "开始使用",
     heading: "创建您的租户",
     lead: "只需邮箱即可创建租户。连接和事件路由之后在控制台中配置。无需信用卡。",
@@ -282,8 +402,8 @@ export const zhCn: SiteContent = {
     nextHeading: "后续步骤",
     nextSteps: [
       "在控制台的 Connections 中连接 Telegram、Google Drive 或 Webhook。",
-      "将 byndr.config 复制到 %APPDATA%\\byndr\\ 并粘贴您的 tenantId 和 apiKey。",
-      "在 EPLAN 中运行 scripts/ByndrPing.cs，然后在 Events 页面选择要路由的事件。",
+      "将 covaga.config 复制到 %APPDATA%\\covaga\\ 并粘贴您的 tenantId 和 apiKey。",
+      "在 EPLAN 中运行 scripts/CovagaPing.cs，然后在 Events 页面选择要路由的事件。",
     ],
   },
   footer: {
@@ -295,10 +415,10 @@ export const zhCn: SiteContent = {
     terms: "条款",
     contact: "联系",
     disclaimer:
-      "byndr 是一款独立产品，与 EPLAN 或任何 ECAD 供应商均无隶属关系，亦未获其背书。所有产品名称均为其各自所有者的商标。",
+      "Covaga Hub 是一款独立产品，与 EPLAN 或任何 ECAD 供应商均无隶属关系，亦未获其背书。所有产品名称均为其各自所有者的商标。",
   },
   legal: {
-    back: "返回 byndr",
+    back: "返回 Covaga Hub",
     lastUpdatedLabel: "最近更新",
     draftLabel: "草案",
     updated: "2026-07-05",
@@ -308,12 +428,12 @@ export const zhCn: SiteContent = {
       eyebrow: "legal · privacy",
       title: "隐私政策",
       intro:
-        "我们将数据收集保持在最低限度，并把凭据放在服务端。以下正是 byndr 处理的内容及其原因。",
+        "我们将数据收集保持在最低限度，并把凭据放在服务端。以下正是 Covaga Hub 处理的内容及其原因。",
       sections: [
         {
           heading: "我们是谁",
           body: [
-            "byndr 是一款独立产品，将 ECAD 事件路由到工程团队所用的工具。本政策说明你在使用我们的网站和托管服务时，我们会处理哪些数据。",
+            "Covaga Hub 是一款独立产品，将 ECAD 事件路由到工程团队所用的工具。本政策说明你在使用我们的网站和托管服务时，我们会处理哪些数据。",
           ],
         },
         {
@@ -339,7 +459,7 @@ export const zhCn: SiteContent = {
         {
           heading: "你的权利",
           body: [
-            "你可以随时发邮件至 hello@covaga.xyz，要求我们访问、更正或删除我们所持有的关于你的个人数据。我们会在合理期限内回复。",
+            "你可以随时发邮件至 hello@covaga.dev，要求我们访问、更正或删除我们所持有的关于你的个人数据。我们会在合理期限内回复。",
           ],
         },
         {
@@ -359,7 +479,7 @@ export const zhCn: SiteContent = {
         {
           heading: "服务内容",
           body: [
-            "byndr 提供一个托管路由器，它从开源客户端接收 ECAD 事件，并将其送达你所配置的目的地。客户端采用 MIT 许可证；托管服务则依照本条款提供。",
+            "Covaga Hub 提供一个托管路由器，它从开源客户端接收 ECAD 事件，并将其送达你所配置的目的地。客户端采用 MIT 许可证；托管服务则依照本条款提供。",
           ],
         },
         {
@@ -383,7 +503,7 @@ export const zhCn: SiteContent = {
         {
           heading: "责任",
           body: [
-            "在法律允许的范围内，byndr 不对因使用本服务而产生的间接或后果性损失负责。托管服务会移动你的文件；保留独立备份是你的责任。",
+            "在法律允许的范围内，Covaga Hub 不对因使用本服务而产生的间接或后果性损失负责。托管服务会移动你的文件；保留独立备份是你的责任。",
           ],
         },
         {

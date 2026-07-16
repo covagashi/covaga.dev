@@ -83,7 +83,7 @@ const route = stripLocale(Astro.url.pathname);
       link.addEventListener("click", () => {
         try {
           window.localStorage.setItem(
-            "byndr:lang",
+            "covaga:lang",
             link.dataset.langChoice || "",
           );
         } catch {
