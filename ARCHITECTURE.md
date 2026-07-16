@@ -1,6 +1,6 @@
 # Architecture
 
-byndr-dev is a Cloudflare-native, multi-tenant platform with two pillars sharing one
+Covaga Hub is a Cloudflare-native, multi-tenant platform with two pillars sharing one
 database and one auth model. It is fed by small clients running next to EPLAN on the
 user's machine; the cloud never touches EPLAN directly.
 

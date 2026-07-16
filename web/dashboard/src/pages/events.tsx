@@ -88,7 +88,7 @@ export function EventsPage() {
       <p className="eyebrow">routing</p>
       <h1>Events</h1>
       <p className="page-sub">
-        Every route reads the same way: your script in EPLAN emits, byndr
+        Every route reads the same way: your script in EPLAN emits, Covaga
         receives and routes, your services get the delivery. Pick an event to
         wire it up.
       </p>
@@ -186,11 +186,11 @@ export function EventsPage() {
                 <div className="step-text">
                   <b>EPLAN P8 workstation</b>
                   <span className="sub">
-                    {selectedMeta.script} · via ByndrEventBridge.cs
+                    {selectedMeta.script} · via CovagaEventBridge.cs
                   </span>
                   <p>
                     The event starts here: when your script finishes, it emits
-                    the signal. byndr never executes anything inside your EPLAN.
+                    the signal. Covaga never executes anything inside your EPLAN.
                   </p>
                 </div>
                 <span className="step-status">
@@ -209,12 +209,12 @@ export function EventsPage() {
               <div className="step-h">
                 <span className="num">2</span>
                 <span className="kind">NEXUS</span>
-                <b>byndr receives and routes</b>
+                <b>Covaga receives and routes</b>
               </div>
               <div className="step-b">
                 <span className="step-icon" aria-hidden="true">⇄</span>
                 <div className="step-text">
-                  <b>byndr · event router</b>
+                  <b>Covaga · event router</b>
                   <span className="sub">
                     eu-west · credentials stay server-side
                   </span>
@@ -241,7 +241,7 @@ export function EventsPage() {
               <div className="d-list">
                 {routedDestinations.length === 0 && (
                   <p className="d-empty">
-                    No destination yet: byndr acknowledges this event and drops
+                    No destination yet: Covaga acknowledges this event and drops
                     it. Add one below to start routing.
                   </p>
                 )}
@@ -307,7 +307,7 @@ export function EventsPage() {
             </div>
 
             <p className="foot-note">
-              Your scripts are in charge; byndr is only the nexus between your
+              Your scripts are in charge; Covaga is only the nexus between your
               EPLAN and your services.
             </p>
           </section>

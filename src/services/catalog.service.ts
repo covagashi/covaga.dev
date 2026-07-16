@@ -1,13 +1,13 @@
 /**
  * Catalog read service: browse a tenant's ingested articles and compute the
  * per-deliverable "gap" view the materials UI renders. Mirrors the response
- * shapes of byndrrr's local `server.py` (`/api/parts`, `/api/parts/facets`) so
- * the dashboard port stays near-mechanical, but reads over byndr-dev's D1
+ * shapes of the ported dashboard's local `server.py` (`/api/parts`, `/api/parts/facets`) so
+ * the dashboard port stays near-mechanical, but reads over Covaga Hub's D1
  * `articles` table and is always tenant-scoped.
  *
  * Every catalog read scans at most {@link CATALOG_SCAN_CAP} of the tenant's
  * most-recently-updated rows and then filters / paginates in memory, matching
- * byndrrr's in-memory snapshot model.
+ * the ported dashboard's in-memory snapshot model.
  */
 import type { Env } from "../env.js";
 import type { Tenant } from "../models/tenant.js";
@@ -39,7 +39,7 @@ export type GapKey = (typeof GAP_KEYS)[number];
 /** Per-deliverable booleans; `true` means the deliverable is MISSING. */
 export type Gaps = Record<GapKey, boolean>;
 
-/** Placeholder bucket name for parts with no manufacturer (matches byndrrr). */
+/** Placeholder bucket name for parts with no manufacturer (matches the ported dashboard). */
 export const NO_MANUFACTURER = "(sin fabricante)";
 
 /** Read a string field, treating a non-string (or absent) value as ''. */
@@ -65,7 +65,7 @@ function i18nEmpty(part: Part): boolean {
 /**
  * Compute the six deliverable gaps for a part. A deliverable is missing when
  * neither its `has_*` flag nor its stored value is present; `description` is
- * missing when the `description_i18n` map is empty (byndrrr's exact rule).
+ * missing when the `description_i18n` map is empty (the ported dashboard's exact rule).
  *
  * @param part - Enriched article object.
  * @returns The gap booleans (`true` == missing) for each deliverable.
@@ -181,7 +181,7 @@ const DEFAULT_LIMIT = 100;
 /** Maximum page size for `/api/parts`. */
 const MAX_LIMIT = 500;
 
-/** A page of filtered parts, mirroring byndrrr's `/api/parts` response. */
+/** A page of filtered parts, mirroring the ported dashboard's `/api/parts` response. */
 export interface PartsPage {
   /** Number of parts matching the filter (within the scan cap). */
   total: number;
@@ -230,7 +230,7 @@ export interface ManufacturerFacet {
   count: number;
 }
 
-/** Facet breakdown, mirroring byndrrr's `/api/parts/facets` response. */
+/** Facet breakdown, mirroring the ported dashboard's `/api/parts/facets` response. */
 export interface Facets {
   /** Manufacturers ordered by count desc, then name asc. */
   manufacturers: ManufacturerFacet[];

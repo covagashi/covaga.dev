@@ -1,7 +1,7 @@
 // Static catalog for the 19 ECAD events: human label, the client action
 // script that emits each one, and the group it belongs to in the UI.
 // TODO(oma-deferred): map `script` to the real action names in the
-// eplan-byndr client repo (scripts/actions/*.cs) once both repos link up.
+// the Covaga EPLAN client repo (scripts/actions/*.cs) once both repos link up.
 
 import type { EventId } from "./api";
 

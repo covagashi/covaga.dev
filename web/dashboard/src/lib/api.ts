@@ -1,4 +1,4 @@
-// API client for the byndr-dev worker. Every call authenticates with the
+// API client for the Covaga Hub worker. Every call authenticates with the
 // stored session's API key (header `X-Api-Key`) against the live worker.
 // The exported TYPES and page-facing function names match the original
 // skeleton so the pages/events views render unchanged; only the data layer
@@ -6,7 +6,7 @@
 
 export const API_BASE: string =
   (import.meta.env.VITE_API_URL as string | undefined) ??
-  "https://byndr-dev.clopez-5fd.workers.dev";
+  "https://covaga-hub.clopez-5fd.workers.dev";
 
 export const KNOWN_EVENT_IDS = [
   "pdf-exported",
@@ -57,7 +57,7 @@ export interface Execution {
 }
 
 // ── session ──────────────────────────────────────────────────────────
-// The byndr-dev worker authenticates with an API key (not magic links).
+// The Covaga Hub worker authenticates with an API key (not magic links).
 // A session pins the worker base, the raw key, and the tenant id.
 
 export interface Session {
@@ -66,7 +66,7 @@ export interface Session {
   tenant: string;
 }
 
-const SESSION_KEY = "byndr.session";
+const SESSION_KEY = "covaga.session";
 
 /** Read the stored session, or `undefined` when none/invalid. */
 export function loadSession(): Session | undefined {

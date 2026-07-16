@@ -1,6 +1,6 @@
 {
-  // Cloudflare Pages project for the byndr-dev review dashboard (static SPA).
-  "name": "byndr-dev-dashboard",
+  // Cloudflare Pages project for the covaga.dev (Covaga Hub) review dashboard (static SPA).
+  "name": "covaga-hub-dashboard",
   "compatibility_date": "2025-07-01",
   "pages_build_output_dir": "dist"
 }

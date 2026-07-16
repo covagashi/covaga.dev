@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { loadSession, rotateKey } from "../lib/api";
 
-const MASK = "byndr_****************************";
+const MASK = "covaga_****************************";
 
 export function ApiKeyPage() {
   const [revealed, setRevealed] = useState(false);
@@ -41,7 +41,7 @@ export function ApiKeyPage() {
       <h1>API key</h1>
       <p className="page-sub">
         Your client scripts authenticate with this key (header{" "}
-        <span className="mono">X-Api-Key</span>). byndr stores only its SHA-256
+        <span className="mono">X-Api-Key</span>). Covaga stores only its SHA-256
         hash; the plaintext is shown once at creation or rotation.
       </p>
 

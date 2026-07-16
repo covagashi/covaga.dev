@@ -106,8 +106,8 @@ describe("buildPayload", () => {
     ) as Record<string, unknown>;
     expect(payload["@type"]).toBe("MessageCard");
     expect(payload["@context"]).toBe("http://schema.org/extensions");
-    expect(payload["title"]).toBe("byndr: pdf-exported");
-    expect(payload["text"]).toBe('byndr event "pdf-exported" -- project: P1');
+    expect(payload["title"]).toBe("Covaga: pdf-exported");
+    expect(payload["text"]).toBe('Covaga event "pdf-exported" -- project: P1');
   });
 
   it("passes the raw metadata through for a webhook", () => {

@@ -197,9 +197,9 @@ async function route(
   if (request.method === "GET" && path === "/") {
     return jsonResponse(
       {
-        name: "byndr-dev",
+        name: "covaga-hub",
         status: "ok",
-        docs: "https://github.com/covagashi/byndr-dev",
+        docs: "https://github.com/covagashi/covaga.dev",
       },
       200,
       cors,

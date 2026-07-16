@@ -1,7 +1,7 @@
 /**
- * Gym status adapter for the ported Gym screen. Mirrors byndrrr's
+ * Gym status adapter for the ported Gym screen. Mirrors the ported dashboard's
  * `/api/gym/status` shape (`{ available, episodes, proposals }`) over
- * byndr-dev's real gym data: `gym_episodes` become the episode rows the curve
+ * Covaga Hub's real gym data: `gym_episodes` become the episode rows the curve
  * and table render, and `gym_proposals` grouped by status become the proposal
  * tallies. `available` is true once the tenant has one episode or proposal.
  */
@@ -14,11 +14,11 @@ import { countProposalsByStatus } from "../repositories/proposal.repository.js";
 export interface EpisodeView {
   /** Sequential episode number (1-based, in start order). */
   episode: number;
-  /** Short task label; byndr-dev episodes carry no per-task label. */
+  /** Short task label; Covaga Hub episodes carry no per-task label. */
   task: string;
-  /** Submissions made in the episode (byndrrr's "done"). */
+  /** Submissions made in the episode (the ported dashboard's "done"). */
   done: number;
-  /** Submissions that validated in the episode (byndrrr's "ok"). */
+  /** Submissions that validated in the episode (the ported dashboard's "ok"). */
   ok: number;
 }
 
@@ -28,7 +28,7 @@ export interface GymStatusView {
   available: boolean;
   /** Episodes in start order, newest concerns last. */
   episodes: EpisodeView[];
-  /** Proposal counts keyed by byndr-dev status. */
+  /** Proposal counts keyed by Covaga Hub status. */
   proposals: Record<string, number>;
 }
 

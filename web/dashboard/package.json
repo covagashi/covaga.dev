@@ -1,8 +1,8 @@
 {
-  "name": "byndr-dashboard",
+  "name": "covaga-hub-dashboard",
   "private": true,
   "version": "0.1.0",
-  "description": "byndr tenant dashboard (Cloudflare Pages SPA, subpath /t/{tenantId}/)",
+  "description": "Covaga Hub tenant dashboard (Cloudflare Pages SPA, subpath /t/{tenantId}/)",
   "type": "module",
   "scripts": {
     "dev": "vite",

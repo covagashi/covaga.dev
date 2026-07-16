@@ -1,7 +1,7 @@
 /**
  * Settings adapter for the ported Ajustes screen. Persists a per-tenant JSON
  * blob (`tenant_settings.data`); GET fills defaults when a tenant has no row,
- * POST merges the supplied keys. Mirrors byndrrr's `/api/settings`, whose only
+ * POST merges the supplied keys. Mirrors the ported dashboard's `/api/settings`, whose only
  * key today is the `require_l0_approval` toggle.
  */
 import type { Env } from "../env.js";

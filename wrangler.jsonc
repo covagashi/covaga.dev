@@ -1,7 +1,7 @@
 {
-  // Cloudflare Worker configuration for byndr-dev.
+  // Cloudflare Worker configuration for covaga.dev (Covaga Hub).
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "byndr-dev",
+  "name": "covaga-hub",
   // Production entry re-exports the request handler plus the `GymMcp` Durable
   // Object class. Tests load `src/index.ts` directly (see wrangler.test.jsonc).
   "main": "src/worker.ts",
@@ -14,8 +14,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "byndr-dev",
-      // Run `wrangler d1 create byndr-dev` in your own account and put its id here.
+      "database_name": "covaga-hub",
+      // Run `wrangler d1 create covaga-hub` in your own account and put its id here.
       "database_id": "8199672e-0663-486c-a70b-487d839246a8",
       "migrations_dir": "migrations"
     }

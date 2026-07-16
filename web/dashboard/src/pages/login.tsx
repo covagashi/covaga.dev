@@ -63,13 +63,13 @@ export function LoginPage() {
   return (
     <div className="login-wrap">
       <div className="login-card">
-        <p className="eyebrow">byndr / dashboard</p>
+        <p className="eyebrow">covaga / dashboard</p>
         <h1 style={{ letterSpacing: "-0.03em", margin: "0 0 8px" }}>Sign in</h1>
 
         {mode === "signup" ? (
           <>
             <p style={{ color: "var(--color-muted)" }}>
-              Create an account with your work email. byndr mints an API key and
+              Create an account with your work email. Covaga mints an API key and
               takes you straight in.
             </p>
             <form className="form-row" onSubmit={onSignup}>
@@ -113,14 +113,14 @@ export function LoginPage() {
         ) : (
           <>
             <p style={{ color: "var(--color-muted)" }}>
-              Already have a key? Paste it to enter. byndr validates it and never
+              Already have a key? Paste it to enter. Covaga validates it and never
               stores the plaintext.
             </p>
             <form className="form-row" onSubmit={onEnter}>
               <input
                 type="text"
                 required
-                placeholder="byndr_…"
+                placeholder="covaga_…"
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
                 aria-label="API key"
@@ -163,7 +163,7 @@ export function LoginPage() {
         </p>
 
         <p className="notice">
-          byndr authenticates with an API key (header{" "}
+          Covaga authenticates with an API key (header{" "}
           <span className="mono">X-Api-Key</span>). Only its SHA-256 hash is
           stored server-side.
         </p>

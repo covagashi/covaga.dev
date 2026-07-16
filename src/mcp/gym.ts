@@ -48,7 +48,7 @@ function textResult(value: unknown): {
 export class GymMcp extends McpAgent<Env, unknown, GymProps> {
   /** The MCP server instance whose tools this agent registers in `init`. */
   public readonly server = new McpServer({
-    name: "byndr-gym",
+    name: "covaga-gym",
     version: "0.1.0",
   });
 

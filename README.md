@@ -1,4 +1,4 @@
-# byndr-dev
+# Covaga Hub
 
 An open platform for EPLAN teams, built on Cloudflare — **data enrichment** and
 **automations** in one place.
@@ -10,7 +10,7 @@ An open platform for EPLAN teams, built on Cloudflare — **data enrichment** an
 ## Why
 
 EPLAN article databases are full of gaps: missing translations and descriptions.
-And useful events (a PDF export, a BOM change) never leave the desktop. byndr-dev
+And useful events (a PDF export, a BOM change) never leave the desktop. Covaga Hub
 tackles both:
 
 - **Data + Gym.** Ingest a read-only snapshot of your article database, then let an
@@ -48,7 +48,7 @@ node scripts/create-tenant.mjs "My Team"
 
 ## Self-hosting
 
-byndr-dev runs on Cloudflare (Workers + D1 + Durable Objects); deploy it to your own
+Covaga Hub runs on Cloudflare (Workers + D1 + Durable Objects); deploy it to your own
 Cloudflare account with Wrangler (see Quickstart). For teams that cannot use the
 cloud, a fully-local runtime via `workerd` / Miniflare — the same runtime the test
 suite already uses — is on the roadmap. Note: Wrangler configuration uses TOML or

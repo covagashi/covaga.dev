@@ -164,7 +164,7 @@ export async function rejectValidatedProposal(
   return result.results.length > 0;
 }
 
-/** A proposal row shaped for a byndrrr-style changeset. */
+/** A proposal row shaped for a changeset. */
 export interface ChangesetProposalRow {
   /** Proposal id (uuid); becomes the changeset id. */
   id: string;
@@ -180,7 +180,7 @@ export interface ChangesetProposalRow {
   old_value: string;
   /** Proposed value. */
   new_value: string;
-  /** byndr-dev lifecycle status. */
+  /** proposal lifecycle status. */
   status: string;
   /** Owning write job id ('' until approved). */
   job_id: string;
@@ -199,7 +199,7 @@ const CHANGESET_COLUMNS =
  *
  * @param env - Worker environment holding the D1 binding.
  * @param tenantId - Owning tenant id.
- * @param status - Optional byndr-dev lifecycle status to filter on.
+ * @param status - Optional proposal lifecycle status to filter on.
  * @returns The matching proposal rows.
  */
 export async function listChangesetProposals(

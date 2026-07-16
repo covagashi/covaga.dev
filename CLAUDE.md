@@ -1,4 +1,4 @@
-# CLAUDE.md — working rules for byndr-dev
+# CLAUDE.md — working rules for covaga.dev (Covaga Hub)
 
 Instructions for any AI agent (and humans) working in this repository. This is a
 public, community project: keep it clean, typed, and well organized.
@@ -25,20 +25,20 @@ project's real, existing design — never improvise.
   (in the `eplanbridge` repo, `docs/mockups/`). Build against them, pixel-for-intent.
 - **The events / automations page is mockup `C3` — "editor vertical (Zapier puro)"**:
   master–detail — the event list on the left; selecting an event shows its route as
-  **3 vertical steps** (1 Origen = the EPLAN `.cs` script, 2 Nexo = byndr, 3 Destinos).
+  **3 vertical steps** (1 Origen = the EPLAN `.cs` script, 2 Nexo = Covaga Hub, 3 Destinos).
   It is NOT a CRUD form. (Other mockups A/B/D and canvas variants were explicitly
   rejected.)
 - **Reuse, never regenerate.** If a screen already has a mockup or an existing
-  implementation (e.g. the byndrrr app screens), port/match it exactly — do not
+  implementation (e.g. the ported Covaga dashboard screens), port/match it exactly — do not
   redesign it.
 - **Brand:** dark warm background, **Signal Orange `#f26419`** accent, **Space Grotesk**
-  + **JetBrains Mono**, per the mockups. (The ported byndrrr screens use blue/Inter —
+  + **JetBrains Mono**, per the mockups. (The ported Covaga dashboard screens use blue/Inter —
   that drift must be reconciled with the owner, not left mixed.)
 - **7 LANGUAGES, ALWAYS (non-negotiable).** EVERY user-facing surface — the landing,
   the dashboard, every screen, label, message and empty state — must exist in ALL
   seven locales: **en, es, de, pt, ja, ko, zh-cn**, with a language switcher. No
   single-language screens. Wire i18n from the start (reuse the landing's `i18n/` and
-  the byndrrr app's `dicts.ts`); a screen that is not fully translated is not done.
+  the ported Covaga dashboard's `dicts.ts`); a screen that is not fully translated is not done.
 - If no design exists for something new, **ask the owner** — do not ship generic UI.
 
 ## Hard rules (non-negotiable)

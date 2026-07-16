@@ -217,7 +217,7 @@ describe("GET /api/changes", () => {
       new: "nouveau texte",
     });
 
-    // Counts always carry the four byndrrr statuses; validated == pending.
+    // Counts always carry the four change statuses; validated == pending.
     expect(body.counts.pending).toBe(1);
     expect(body.counts.applied).toBe(1);
     expect(body.counts.approved).toBe(0);
@@ -428,7 +428,7 @@ describe("GET /api/gym/status", () => {
 });
 
 describe("GET /api/health", () => {
-  it("returns the byndrrr Health fields", async () => {
+  it("returns the ported Health fields", async () => {
     const body = await readJson<{
       ok: boolean;
       snapshot: boolean;

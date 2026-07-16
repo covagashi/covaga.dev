@@ -62,8 +62,8 @@ export function TenantLayout() {
   return (
     <div className="app-shell">
       <aside className="app-side">
-        <a className="wordmark" href="https://byndr.dev">
-          byndr<span className="accent">.</span>
+        <a className="wordmark" href="https://covaga.dev">
+          covaga<span className="accent">.</span>
         </a>
         <nav className="side-nav" aria-label="Tenant sections">
           {NAV_ITEMS.map((item) => (

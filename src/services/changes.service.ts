@@ -1,8 +1,8 @@
 /**
- * Changes adapter: presents byndr-dev's gym proposals as byndrrr "changesets"
+ * Changes adapter: presents Covaga Hub's gym proposals as the ported dashboard "changesets"
  * so the ported Cambios screen renders unchanged. Each validated/approved/
- * applied/rejected proposal maps to one changeset; byndr-dev's `validated`
- * status surfaces as byndrrr's `pending` (awaiting human approval).
+ * applied/rejected proposal maps to one changeset; Covaga Hub's `validated`
+ * status surfaces as the ported dashboard's `pending` (awaiting human approval).
  *
  * Approve and reject reuse the existing review service (approve enqueues a
  * write job for the bridge; reject moves a validated proposal to rejected), so
@@ -19,29 +19,29 @@ import {
   listChangesetProposals,
 } from "../repositories/proposal.repository.js";
 
-/** byndrrr change statuses, in the order the Cambios tabs render them. */
-const BYNDRRR_STATUSES = ["pending", "approved", "applied", "rejected"] as const;
+/** changeset statuses, in the order the Cambios tabs render them. */
+const CHANGE_STATUSES = ["pending", "approved", "applied", "rejected"] as const;
 
-/** One of byndrrr's change statuses. */
-type ByndrrrStatus = (typeof BYNDRRR_STATUSES)[number];
+/** One of the ported dashboard's change statuses. */
+type ChangeStatus = (typeof CHANGE_STATUSES)[number];
 
-/** Map a byndr-dev proposal status to its byndrrr change status. */
-const DEV_TO_BYNDRRR: Record<string, ByndrrrStatus> = {
+/** Map a Covaga Hub proposal status to its the ported dashboard change status. */
+const PROPOSAL_TO_CHANGE: Record<string, ChangeStatus> = {
   validated: "pending",
   approved: "approved",
   applied: "applied",
   rejected: "rejected",
 };
 
-/** Map a byndrrr change status to the byndr-dev proposal status it filters. */
-const BYNDRRR_TO_DEV: Record<ByndrrrStatus, string> = {
+/** Map a the ported dashboard change status to the Covaga Hub proposal status it filters. */
+const CHANGE_TO_PROPOSAL: Record<ChangeStatus, string> = {
   pending: "validated",
   approved: "approved",
   applied: "applied",
   rejected: "rejected",
 };
 
-/** One field change inside a changeset (byndrrr's `Required<ChangeItem>`). */
+/** One field change inside a changeset (the ported dashboard's `Required<ChangeItem>`). */
 export interface ChangeItem {
   /** Manufacturer part number. */
   part_number: string;
@@ -57,12 +57,12 @@ export interface ChangeItem {
   new: string;
 }
 
-/** A byndrrr changeset built from one gym proposal. */
+/** A the ported dashboard changeset built from one gym proposal. */
 export interface Changeset {
   /** Changeset id (the proposal id). */
   id: string;
-  /** byndrrr status (validated surfaces as pending). */
-  status: ByndrrrStatus;
+  /** the ported dashboard status (validated surfaces as pending). */
+  status: ChangeStatus;
   /** Human title derived from the part number and field. */
   title: string;
   /** Author label; every changeset here originates from the gym. */
@@ -73,7 +73,7 @@ export interface Changeset {
   items: ChangeItem[];
   /** Owning write job id ('' until approved). */
   job_id: string;
-  /** Last apply result ('' — byndr-dev tracks results on write jobs). */
+  /** Last apply result ('' — Covaga Hub tracks results on write jobs). */
   last_result: string;
 }
 
@@ -81,11 +81,11 @@ export interface Changeset {
 export interface ChangesResponse {
   /** Changesets matching the requested status filter, newest first. */
   items: Changeset[];
-  /** Count per byndrrr status ({@link BYNDRRR_STATUSES}), validated == pending. */
-  counts: Record<ByndrrrStatus, number>;
+  /** Count per the ported dashboard status ({@link CHANGE_STATUSES}), validated == pending. */
+  counts: Record<ChangeStatus, number>;
 }
 
-/** The `/api/changes/apply` response, mirroring byndrrr's `{ queued }` shape. */
+/** The `/api/changes/apply` response, mirroring the ported dashboard's `{ queued }` shape. */
 export interface ApplyResponse {
   /** Always true; approving already enqueued the work. */
   ok: true;
@@ -99,11 +99,11 @@ function titleOf(row: ChangesetProposalRow): string {
   return `${row.part_number} · ${row.field}${suffix}`;
 }
 
-/** Map one proposal row to its byndrrr changeset. */
+/** Map one proposal row to its the ported dashboard changeset. */
 function toChangeset(row: ChangesetProposalRow): Changeset {
   return {
     id: row.id,
-    status: DEV_TO_BYNDRRR[row.status] ?? "pending",
+    status: PROPOSAL_TO_CHANGE[row.status] ?? "pending",
     title: titleOf(row),
     author: "gym",
     created: new Date(row.created_at).toISOString(),
@@ -123,13 +123,13 @@ function toChangeset(row: ChangesetProposalRow): Changeset {
 }
 
 /**
- * List changesets for a tenant, optionally filtered by byndrrr status, plus the
+ * List changesets for a tenant, optionally filtered by the ported dashboard status, plus the
  * per-status counts the Cambios tabs show. An unknown status yields no items
  * but still returns full counts.
  *
  * @param env - Worker environment holding the D1 binding.
  * @param tenant - Authenticated owning tenant.
- * @param status - Optional byndrrr status filter ('' or absent for all).
+ * @param status - Optional the ported dashboard status filter ('' or absent for all).
  * @returns `{ items, counts }`.
  */
 export async function listChanges(
@@ -142,7 +142,7 @@ export async function listChanges(
   if (trimmed.length === 0) {
     rows = await listChangesetProposals(env, tenant.id);
   } else {
-    const devStatus = BYNDRRR_TO_DEV[trimmed as ByndrrrStatus];
+    const devStatus = CHANGE_TO_PROPOSAL[trimmed as ChangeStatus];
     rows =
       devStatus === undefined
         ? []
@@ -150,7 +150,7 @@ export async function listChanges(
   }
 
   const byStatus = await countProposalsByStatus(env, tenant.id);
-  const counts: Record<ByndrrrStatus, number> = {
+  const counts: Record<ChangeStatus, number> = {
     pending: byStatus["validated"] ?? 0,
     approved: byStatus["approved"] ?? 0,
     applied: byStatus["applied"] ?? 0,
@@ -180,8 +180,8 @@ export async function approveChange(
 
 /**
  * Reject one changeset by id: delegates to the review service, moving the
- * proposal `validated → rejected`. The byndrrr reason is accepted but not
- * stored (byndr-dev keeps no reason column).
+ * proposal `validated → rejected`. The the ported dashboard reason is accepted but not
+ * stored (Covaga Hub keeps no reason column).
  *
  * @param env - Worker environment holding the D1 binding.
  * @param tenant - Authenticated owning tenant.
@@ -197,9 +197,9 @@ export async function rejectChange(
 }
 
 /**
- * Apply approved changes. In byndr-dev, approving already enqueued the work for
+ * Apply approved changes. In Covaga Hub, approving already enqueued the work for
  * the bridge, so this is a no-op that reports what is currently queued —
- * keeping byndrrr's `{ queued: [{ change_id, job_id }] }` shape.
+ * keeping the ported dashboard's `{ queued: [{ change_id, job_id }] }` shape.
  *
  * @param env - Worker environment holding the D1 binding.
  * @param tenant - Authenticated owning tenant.

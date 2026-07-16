@@ -7,10 +7,10 @@ using Eplan.EplApi.Scripting;
 using Eplan.EplApi.ApplicationFramework;
 
 /// <summary>
-/// byndr — Event Client (pilar de automatizaciones).
+/// Covaga — Event Client (pilar de automatizaciones).
 ///
 /// Script RESIDENTE: al CARGARLO (EPLAN → Utilidades → Scripts → Cargar) queda
-/// escuchando y reenvía eventos de EPLAN a tu tenant de byndr-dev:
+/// escuchando y reenvía eventos de EPLAN a tu tenant de Covaga Hub:
 ///     POST {SERVER_URL}/hook/{TENANT_ID}/{eventId}   (header X-Api-Key)
 /// El servidor resuelve las rutas del tenant y entrega a los destinos
 /// (Teams / webhook). En el PC no vive ningún secreto de destino ni lógica de
@@ -18,21 +18,21 @@ using Eplan.EplApi.ApplicationFramework;
 /// errores a {LOG_FILE}.
 ///
 /// DOS CAMINOS:
-///  1) Fiable y probable HOY: la acción ByndrEmit &lt;eventId&gt; (y ByndrEventTest)
+///  1) Fiable y probable HOY: la acción CovagaEmit &lt;eventId&gt; (y CovagaEventTest)
 ///     hace el POST. Cablea tu macro/botón de export para que llame
-///     "ByndrEmit pdf-exported" y funciona sin depender de nombres de evento.
+///     "CovagaEmit pdf-exported" y funciona sin depender de nombres de evento.
 ///  2) Auto-captura: el handler OnUserPostAction (mecanismo [DeclareEventHandler],
 ///     confirmado por la API 2026) se dispara tras las acciones y mapea la acción
 ///     a un eventId. El NOMBRE de evento exacto y la lectura del nombre de acción
 ///     dependen de tu versión de EPLAN — CONFÍRMALOS (ver README) antes de fiarte.
 /// </summary>
-public class ByndrEventClient
+public class CovagaEventClient
 {
     // ── Configuración editable ────────────────────────────────────────────
-    private const string SERVER_URL = "https://byndr-dev.clopez-5fd.workers.dev";
+    private const string SERVER_URL = "https://covaga-hub.clopez-5fd.workers.dev";
     private const string TENANT_ID  = "PON_AQUI_TU_TENANT_ID";   // t_...  (créalo en el dashboard)
     private const string API_KEY    = "PON_AQUI_TU_API_KEY";     // se muestra una sola vez al crear la cuenta
-    private const string LOG_FILE   = @"C:\Temp\byndr-eventclient.log";
+    private const string LOG_FILE   = @"C:\Temp\covaga-eventclient.log";
     private const int HTTP_TIMEOUT_MS = 4000;
 
     // Evento del sistema al que nos suscribimos para la auto-captura. El nombre
@@ -49,7 +49,7 @@ public class ByndrEventClient
     public void Register()
     {
         client.Timeout = TimeSpan.FromMilliseconds(HTTP_TIMEOUT_MS);
-        string msg = "byndr event client: cargado, reenviando eventos a " + SERVER_URL + "/hook/" + TENANT_ID;
+        string msg = "covaga event client: cargado, reenviando eventos a " + SERVER_URL + "/hook/" + TENANT_ID;
         new BaseException(msg, MessageLevel.Message).FixMessage();
         Log(msg);
     }
@@ -57,33 +57,33 @@ public class ByndrEventClient
     [DeclareUnregister]
     public void Unregister()
     {
-        Log("byndr event client: descargado, deja de escuchar");
+        Log("covaga event client: descargado, deja de escuchar");
     }
 
     // ── Camino 1: acciones explícitas (fiables) ───────────────────────────
 
-    /// Emite un evento a mano / desde una macro: acción "ByndrEmit pdf-exported".
-    [DeclareAction("ByndrEmit")]
+    /// Emite un evento a mano / desde una macro: acción "CovagaEmit pdf-exported".
+    [DeclareAction("CovagaEmit")]
     public void Emit(string eventId)
     {
         try
         {
-            if (string.IsNullOrEmpty(eventId)) { Log("ByndrEmit sin eventId"); return; }
-            Send(eventId, "{\"source\":\"ByndrEmit\"}");
+            if (string.IsNullOrEmpty(eventId)) { Log("CovagaEmit sin eventId"); return; }
+            Send(eventId, "{\"source\":\"CovagaEmit\"}");
         }
-        catch (Exception ex) { Log("ByndrEmit error: " + ex.Message); }
+        catch (Exception ex) { Log("CovagaEmit error: " + ex.Message); }
     }
 
     /// Prueba de humo: envía un pdf-exported de mentira para verificar el POST.
-    [DeclareAction("ByndrEventTest")]
+    [DeclareAction("CovagaEventTest")]
     public void Test()
     {
         try
         {
             Send("pdf-exported", "{\"test\":true,\"project\":\"PRUEBA\"}");
-            new BaseException("byndr event client: evento de prueba enviado", MessageLevel.Message).FixMessage();
+            new BaseException("covaga event client: evento de prueba enviado", MessageLevel.Message).FixMessage();
         }
-        catch (Exception ex) { Log("ByndrEventTest error: " + ex.Message); }
+        catch (Exception ex) { Log("CovagaEventTest error: " + ex.Message); }
     }
 
     // ── Camino 2: auto-captura tras acciones (confirmar en EPLAN) ──────────
@@ -128,7 +128,7 @@ public class ByndrEventClient
         catch { return ""; }
     }
 
-    // ── HTTP + utilidades (mismo patrón defensivo que ByndrDbSnapshot.cs) ──
+    // ── HTTP + utilidades (mismo patrón defensivo que CovagaDbSnapshot.cs) ──
 
     private void Send(string eventId, string jsonBody)
     {

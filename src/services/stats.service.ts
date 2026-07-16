@@ -1,7 +1,7 @@
 /**
  * Statistics read service: coverage totals and the manufacturer x deliverable
- * matrix the materials UI renders. Mirrors the response shapes of byndrrr's
- * `server.py` (`/api/stats`, `/api/stats/matrix`) over byndr-dev's D1
+ * matrix the materials UI renders. Mirrors the response shapes of the ported dashboard's
+ * `server.py` (`/api/stats`, `/api/stats/matrix`) over Covaga Hub's D1
  * `articles` table, always tenant-scoped, and driven by the same
  * {@link missingOf} gap rule the catalog uses so every screen agrees.
  *
@@ -24,7 +24,7 @@ function zeroGaps(): Record<GapKey, number> {
   return { photo: 0, ul: 0, ce: 0, erp: 0, macro: 0, description: 0 };
 }
 
-/** Coverage/stats summary, mirroring byndrrr's `/api/stats` response. */
+/** Coverage/stats summary, mirroring the ported dashboard's `/api/stats` response. */
 export interface Stats {
   /** Total parts scanned. */
   total: number;
@@ -84,7 +84,7 @@ export interface MatrixRest {
   missing: Record<GapKey, number>;
 }
 
-/** Manufacturer x deliverable matrix, mirroring byndrrr's `/api/stats/matrix`. */
+/** Manufacturer x deliverable matrix, mirroring the ported dashboard's `/api/stats/matrix`. */
 export interface Matrix {
   /** Deliverable keys in column order. */
   deliverables: GapKey[];

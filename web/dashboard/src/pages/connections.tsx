@@ -15,7 +15,7 @@ export function ConnectionsPage() {
       <p className="eyebrow">destinations</p>
       <h1>Connections</h1>
       <p className="page-sub">
-        Where byndr routes your ECAD events. Webhook destinations paste a URL;
+        Where Covaga routes your ECAD events. Webhook destinations paste a URL;
         Google Drive connects with OAuth (credentials stay server-side, never on
         your workstation).
       </p>

@@ -1,12 +1,12 @@
 /**
- * Health adapter for the ported dashboard. byndr-dev's public `/health` stays a
+ * Health adapter for the ported dashboard. Covaga Hub's public `/health` stays a
  * bare unauthenticated `{ ok: true }`; this authenticated `/api/health` returns
- * the richer, tenant-scoped shape byndrrr's getHealth expects, so the Cambios
+ * the richer, tenant-scoped shape the ported dashboard's getHealth expects, so the Cambios
  * and Ajustes screens read the fields they need.
  *
- * Some byndrrr fields have no direct byndr-dev source and are approximated:
- *  - `pat` is always false — byndr-dev is the cloud API and holds no EPLAN
- *    DataPortal token (the byndrrr desktop server is where a PAT would live).
+ * Some the ported dashboard fields have no direct Covaga Hub source and are approximated:
+ *  - `pat` is always false — Covaga Hub is the cloud API and holds no EPLAN
+ *    DataPortal token (the the ported dashboard desktop server is where a PAT would live).
  *  - `bridge_last_poll` is derived from the newest write-job `taken_at`, the
  *    best available proxy for when the polling bridge last drained work.
  */
@@ -19,7 +19,7 @@ import {
   findLastTakenAt,
 } from "../repositories/write.repository.js";
 
-/** The `/api/health` response, matching byndrrr's `Health` type. */
+/** The `/api/health` response, matching the ported dashboard's `Health` type. */
 export interface HealthView {
   /** Always true when the worker answers. */
   ok: true;
@@ -43,7 +43,7 @@ export interface HealthView {
  *
  * @param env - Worker environment holding the D1 binding.
  * @param tenant - Authenticated owning tenant.
- * @returns The health view byndrrr's dashboard reads.
+ * @returns The health view the ported dashboard's dashboard reads.
  */
 export async function getHealth(
   env: Env,

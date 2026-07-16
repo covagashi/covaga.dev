@@ -1,12 +1,12 @@
 /**
  * Queues adapter: the work rail the ported QueuesRail renders. Mirrors
- * byndrrr's `/api/queues` shape (`{ system, saved }`, each queue
- * `{ id, label, filter, count }`) but computes counts from byndr-dev's D1
+ * the ported dashboard's `/api/queues` shape (`{ system, saved }`, each queue
+ * `{ id, label, filter, count }`) but computes counts from Covaga Hub's D1
  * `articles` via the shared {@link missingOf} gap rule so every screen agrees.
  *
- * byndr-dev has no DataPortal or discontinued signal and no saved-queue
+ * Covaga Hub has no DataPortal or discontinued signal and no saved-queue
  * storage, so only the deliverable-gap system queues are produced and `saved`
- * is always empty. The queue ids match byndrrr's so the UI's `queue.<id>`
+ * is always empty. The queue ids match the ported dashboard's so the UI's `queue.<id>`
  * translations resolve.
  */
 import type { Env } from "../env.js";
@@ -22,7 +22,7 @@ import {
 export interface Queue {
   /** Stable id; the UI resolves `queue.<id>` for its label. */
   id: string;
-  /** Fallback label (Spanish, mirroring byndrrr's server). */
+  /** Fallback label (Spanish, mirroring the ported dashboard's server). */
   label: string;
   /** Catalog filter this queue applies (`{}` for "all"). */
   filter: { missing?: GapKey };
@@ -34,7 +34,7 @@ export interface Queue {
 export interface QueuesResponse {
   /** Built-in deliverable-gap queues. */
   system: Queue[];
-  /** Saved queues (byndr-dev stores none; always empty). */
+  /** Saved queues (Covaga Hub stores none; always empty). */
   saved: Queue[];
 }
 
@@ -46,7 +46,7 @@ interface QueueDef {
   gap?: GapKey;
 }
 
-/** System queues in byndrrr's order (DataPortal/discontinued ones omitted). */
+/** System queues in the ported dashboard's order (DataPortal/discontinued ones omitted). */
 const SYSTEM_QUEUES: readonly QueueDef[] = [
   { id: "all", label: "todo" },
   { id: "no_ul", label: "sin ul", gap: "ul" },

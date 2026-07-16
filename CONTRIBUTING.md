@@ -1,4 +1,4 @@
-# Contributing to byndr-dev
+# Contributing to Covaga Hub
 
 Thanks for your interest! This is an early, community-driven project. Contributions
 of code, docs, and issues are all welcome.

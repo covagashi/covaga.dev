@@ -1,5 +1,5 @@
 {
-  // Test-only Worker configuration for byndr-dev.
+  // Test-only Worker configuration for covaga.dev (Covaga Hub).
   //
   // Identical to wrangler.jsonc except `main` points at `src/index.ts` (the
   // agents-free request handler) and the `GYM_MCP` Durable Object binding is
@@ -8,14 +8,14 @@
   // `require("*.json")`, which the pool's module fallback does not serve), so
   // the test worker never imports it. The D1 binding is kept byte-for-byte.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "byndr-dev",
+  "name": "covaga-hub",
   "main": "src/index.ts",
   "compatibility_date": "2025-07-01",
   "compatibility_flags": ["nodejs_compat"],
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "byndr-dev",
+      "database_name": "covaga-hub",
       "database_id": "8199672e-0663-486c-a70b-487d839246a8",
       "migrations_dir": "migrations"
     }

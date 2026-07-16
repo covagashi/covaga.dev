@@ -37,8 +37,8 @@ function buildMessage(event: DispatchEvent): string {
     .join(", ");
 
   return details.length > 0
-    ? `byndr event "${event.eventId}" -- ${details}`
-    : `byndr event "${event.eventId}"`;
+    ? `Covaga event "${event.eventId}" -- ${details}`
+    : `Covaga event "${event.eventId}"`;
 }
 
 /**
@@ -60,7 +60,7 @@ export function buildPayload(
         "@type": "MessageCard",
         "@context": "http://schema.org/extensions",
         themeColor: TEAMS_THEME_COLOR,
-        title: `byndr: ${event.eventId}`,
+        title: `Covaga: ${event.eventId}`,
         text: buildMessage(event),
       };
     case "webhook":

@@ -47,7 +47,7 @@ function main() {
     `('${id}', '${name.replace(/'/g, "''")}', '${apiKeyHash}', ${createdAt});`;
 
   if (exec) {
-    const wranglerArgs = ["wrangler", "d1", "execute", "byndr-dev", "--command", sql, "-y"];
+    const wranglerArgs = ["wrangler", "d1", "execute", "covaga-hub", "--command", sql, "-y"];
     if (remote) {
       wranglerArgs.push("--remote");
     }
