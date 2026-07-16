@@ -16,7 +16,7 @@
       "binding": "DB",
       "database_name": "covaga-hub",
       // Run `wrangler d1 create covaga-hub` in your own account and put its id here.
-      "database_id": "8199672e-0663-486c-a70b-487d839246a8",
+      "database_id": "e3c13a84-ecc3-418f-b77a-a95c7d071480",
       "migrations_dir": "migrations"
     }
   ],
