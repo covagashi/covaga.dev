@@ -30,6 +30,7 @@ import {
 } from "./services/automation.service.js";
 import { dispatchEvent } from "./services/dispatch.service.js";
 import { createAccount } from "./services/signup.service.js";
+import { joinWaitlist } from "./services/waitlist.service.js";
 import { listFacets, listParts } from "./services/catalog.service.js";
 import { computeMatrix, computeStats } from "./services/stats.service.js";
 import {
@@ -100,6 +101,27 @@ function parseSignupBody(value: unknown): { email: string; plan: string } {
     throw new HttpError(400, "invalid_body");
   }
   return { email, plan };
+}
+
+/**
+ * Narrow an unknown waitlist body to `{ email, locale }`. `email` is required;
+ * `locale` is optional and defaults to an empty string. Email-shape validation
+ * happens in the waitlist service.
+ *
+ * @param value - Parsed request body.
+ * @returns The typed waitlist input.
+ * @throws {HttpError} 400 when the body is not an object with a string email.
+ */
+function parseWaitlistBody(value: unknown): { email: string; locale: string } {
+  if (Object(value) !== value || Array.isArray(value)) {
+    throw new HttpError(400, "invalid_body");
+  }
+  const record = value as Record<string, unknown>;
+  if (typeof record.email !== "string") {
+    throw new HttpError(400, "invalid_body");
+  }
+  const locale = typeof record.locale === "string" ? record.locale : "";
+  return { email: record.email, locale };
 }
 
 /**
@@ -265,6 +287,13 @@ async function route(
       200,
       cors,
     );
+  }
+
+  if (request.method === "POST" && path === "/api/waitlist") {
+    const body = await readJsonBody(request);
+    const input = parseWaitlistBody(body);
+    await joinWaitlist(env, input);
+    return jsonResponse({ ok: true }, 200, cors);
   }
 
   if (request.method === "POST" && path === "/api/ingest/start") {
