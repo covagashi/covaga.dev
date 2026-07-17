@@ -5,7 +5,9 @@ import HeroSection from "../../components/hero-section.astro";
 import ProblemSolutionSection from "../../components/problem-solution-section.astro";
 import HowItWorksSection from "../../components/how-it-works-section.astro";
 import EventsDestinationsSection from "../../components/events-destinations-section.astro";
-import PricingSection from "../../components/pricing-section.astro";
+// Pricing is hidden while Covaga Hub is under development. Restore this import
+// and the <PricingSection /> below (plus the nav/footer links) before launch.
+// import PricingSection from "../../components/pricing-section.astro";
 import FaqSection from "../../components/faq-section.astro";
 import SiteFooter from "../../components/site-footer.astro";
 import { locales, defaultLocale } from "../../i18n/config";
@@ -25,7 +27,7 @@ export function getStaticPaths() {
     <ProblemSolutionSection />
     <HowItWorksSection />
     <EventsDestinationsSection />
-    <PricingSection />
+    {/* <PricingSection /> hidden while under development */}
     <FaqSection />
   </main>
   <SiteFooter />

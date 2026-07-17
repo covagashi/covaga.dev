@@ -1,8 +1,8 @@
 ---
-// Self-service tenant signup: email (+ optional company) only. Connections
-// (Telegram, Drive, webhooks) and event routing are configured afterwards in
-// the dashboard. Posts to the worker's POST /signup, which returns
-// tenantId + apiKey exactly once.
+// Pre-launch waitlist: Covaga Hub self-service signup is not open yet, so this
+// surface only collects an email. It posts to the worker's POST /api/waitlist
+// (idempotent) and shows a thank-you on success. When signup opens, restore the
+// tenant-creation form from git history (it used POST /api/signup).
 import { getLocaleFromUrl } from "../i18n/config";
 import { useContent } from "../i18n/content";
 
@@ -11,7 +11,7 @@ const t = useContent(lang);
 const s = t.signup;
 
 const API_BASE =
-  import.meta.env.PUBLIC_API_URL ?? "https://eplanbridge-api.clopez-5fd.workers.dev";
+  import.meta.env.PUBLIC_API_URL ?? "https://covaga-hub.clopez-5fd.workers.dev";
 ---
 
 <section
@@ -27,7 +27,7 @@ const API_BASE =
     <p class="mt-3 text-base text-[var(--color-muted)]">{s.lead}</p>
   </div>
 
-  <div class="mt-10 max-w-2xl">
+  <div id="signup-form-wrap" class="mt-10 max-w-2xl">
     <form id="signup-form" class="panel p-6 sm:p-8" novalidate>
       <div class="grid gap-5">
         <label class="block">
@@ -39,19 +39,6 @@ const API_BASE =
             name="email"
             required
             autocomplete="email"
-            class="w-full border border-[var(--color-ink-35)] bg-white px-3 py-2.5 font-mono text-sm text-[var(--color-ink)] focus:border-[var(--color-accent)] focus:outline-none"
-          />
-        </label>
-
-        <label class="block">
-          <span class="mb-1 block text-sm font-medium text-[var(--color-ink)]"
-            >{s.companyLabel}</span
-          >
-          <input
-            type="text"
-            name="company"
-            maxlength="200"
-            autocomplete="organization"
             class="w-full border border-[var(--color-ink-35)] bg-white px-3 py-2.5 font-mono text-sm text-[var(--color-ink)] focus:border-[var(--color-accent)] focus:outline-none"
           />
         </label>
@@ -85,43 +72,9 @@ const API_BASE =
       <h2 class="text-2xl font-bold tracking-tight text-[var(--color-ink)]">
         {s.successHeading}
       </h2>
-      <p class="mt-2 max-w-2xl text-base text-[var(--color-muted)]">{s.successLead}</p>
-
-      <dl class="mt-6 grid gap-4">
-        <div>
-          <dt class="font-mono text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
-            {s.tenantIdLabel}
-          </dt>
-          <dd class="mt-1 flex flex-wrap items-center gap-2">
-            <code
-              id="out-tenant"
-              class="border border-[var(--color-ink-12)] bg-white px-3 py-2 font-mono text-sm"
-            ></code>
-            <button type="button" class="btn-ghost copy-btn text-xs" data-copy="out-tenant">
-              {s.copy}
-            </button>
-          </dd>
-        </div>
-        <div>
-          <dt class="font-mono text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
-            {s.apiKeyLabel}
-          </dt>
-          <dd class="mt-1 flex flex-wrap items-center gap-2">
-            <code
-              id="out-key"
-              class="border border-[var(--color-accent)] bg-white px-3 py-2 font-mono text-sm"
-            ></code>
-            <button type="button" class="btn-ghost copy-btn text-xs" data-copy="out-key">
-              {s.copy}
-            </button>
-          </dd>
-        </div>
-      </dl>
-
-      <h3 class="mt-8 text-lg font-semibold text-[var(--color-ink)]">{s.nextHeading}</h3>
-      <ol class="mt-3 list-decimal space-y-2 pl-5 text-base text-[var(--color-muted)]">
-        {s.nextSteps.map((step) => <li>{step}</li>)}
-      </ol>
+      <p class="mt-2 max-w-2xl text-base text-[var(--color-muted)]">
+        {s.successLead}
+      </p>
     </div>
   </div>
 </section>
@@ -129,6 +82,7 @@ const API_BASE =
 <script
   define:vars={{
     API_BASE,
+    locale: lang,
     submitLabel: s.submit,
     submittingLabel: s.submitting,
     errorGeneric: s.errorGeneric,
@@ -137,24 +91,36 @@ const API_BASE =
   const form = document.getElementById("signup-form");
   const errorBox = document.getElementById("signup-error");
   const submitBtn = document.getElementById("signup-submit");
+  const formWrap = document.getElementById("signup-form-wrap");
   const successBox = document.getElementById("signup-success");
+
+  function showSuccess() {
+    formWrap.classList.add("hidden");
+    successBox.classList.remove("hidden");
+    successBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     errorBox.classList.add("hidden");
+
+    const data = new FormData(form);
+    // Honeypot: a filled hidden field means a bot — pretend success, post nothing.
+    if (String(data.get("website") ?? "")) {
+      showSuccess();
+      return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = submittingLabel;
 
-    const data = new FormData(form);
     const payload = {
       email: String(data.get("email") ?? "").trim(),
-      website: String(data.get("website") ?? ""),
+      locale,
     };
-    const company = String(data.get("company") ?? "").trim();
-    if (company) payload.company = company;
 
     try {
-      const response = await fetch(`${API_BASE}/signup`, {
+      const response = await fetch(`${API_BASE}/api/waitlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -167,11 +133,7 @@ const API_BASE =
         return;
       }
 
-      document.getElementById("out-tenant").textContent = json.tenantId;
-      document.getElementById("out-key").textContent = json.apiKey;
-      form.closest("div").classList.add("hidden");
-      successBox.classList.remove("hidden");
-      successBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      showSuccess();
     } catch {
       errorBox.textContent = errorGeneric;
       errorBox.classList.remove("hidden");
@@ -180,11 +142,4 @@ const API_BASE =
       submitBtn.textContent = submitLabel;
     }
   });
-
-  for (const btn of document.querySelectorAll(".copy-btn")) {
-    btn.addEventListener("click", () => {
-      const target = document.getElementById(btn.dataset.copy);
-      if (target?.textContent) navigator.clipboard?.writeText(target.textContent);
-    });
-  }
 </script>
